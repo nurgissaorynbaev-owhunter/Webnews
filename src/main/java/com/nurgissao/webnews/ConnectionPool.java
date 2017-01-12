@@ -47,7 +47,7 @@ public class ConnectionPool {
         }
     }
 
-    public static Connection getConnection() {
+    public Connection getConnection() {
         Connection connection = null;
         if (pool.isEmpty() && (!isOver)) {
             for (int i = 0; i < 20; i++) {
@@ -64,7 +64,7 @@ public class ConnectionPool {
         return connection;
     }
 
-    public static void closeConnection(Connection connection) {
+    public void closeConnection(Connection connection) {
         try {
             pool.put(connection);
 
@@ -73,7 +73,7 @@ public class ConnectionPool {
         }
     }
 
-    private static Connection createConnection() {
+    private Connection createConnection() {
         Connection connection = null;
         String url = properties.getValue(PROPERTY_URL);
         String driver = properties.getValue(PROPERTY_DRIVER);
@@ -87,7 +87,7 @@ public class ConnectionPool {
         return connection;
     }
 
-    public static void shutdownConnections() {
+    public void shutdownConnections() {
         for (Connection con : pool) {
             try {
                 con.close();
