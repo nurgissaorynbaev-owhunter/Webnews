@@ -1,4 +1,4 @@
-package com.nurgissao.webnews;
+package com.nurgissao.webnews.model.dao;
 
 import org.apache.log4j.Logger;
 

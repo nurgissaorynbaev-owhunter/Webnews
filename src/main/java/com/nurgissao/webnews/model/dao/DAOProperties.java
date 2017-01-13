@@ -1,8 +1,7 @@
-package com.nurgissao.webnews;
+package com.nurgissao.webnews.model.dao;
 
 import org.apache.log4j.Logger;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -31,10 +30,10 @@ public class DAOProperties {
 
     public String getValue(String key) {
         String fulKey = specificKey + "." + key;
-        String result = properties.getProperty(fulKey);
-        if (result == null) {
+        String value = properties.getProperty(fulKey);
+        if (value == null) {
             log.error("Failed to get property value by key.");
         }
-        return result;
+        return value;
     }
 }
