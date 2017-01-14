@@ -59,7 +59,7 @@ public class ConnectionPool {
             connection = pool.take();
 
         } catch (InterruptedException e) {
-            log.error("Failed to take connection.", e);
+            log.error("Failed to take connection from pool.", e);
         }
         return connection;
     }
@@ -69,7 +69,7 @@ public class ConnectionPool {
             pool.put(connection);
 
         } catch (InterruptedException e) {
-            log.error("Failed to put connection.", e);
+            log.error("Failed to put connection to pool.", e);
         }
     }
 
