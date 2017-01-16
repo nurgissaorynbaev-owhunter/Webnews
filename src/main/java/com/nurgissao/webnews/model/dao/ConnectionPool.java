@@ -66,7 +66,11 @@ public class ConnectionPool {
 
     public void closeConnection(Connection connection) {
         try {
-            pool.put(connection);
+            if (connection != null) {
+                pool.put(connection);
+            } else {
+                log.error("Returned connection is null.");
+            }
 
         } catch (InterruptedException e) {
             log.error("Failed to put connection to pool.", e);
