@@ -32,7 +32,7 @@ public class H2UserDAO implements UserDAO {
     public User find(String email, String password) throws DAOException {
         Connection connection = connectionPool.getConnection();
         User user;
-        try(PreparedStatement ps = connection.prepareStatement(
+        try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT id, firstName, lastName, login, email WHERE email=?, password=?")) {
 
             ps.setString(4, email);
@@ -42,7 +42,7 @@ public class H2UserDAO implements UserDAO {
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find User by email, password.", e);
-        }  finally {
+        } finally {
             connectionPool.closeConnection(connection);
         }
         return user;
@@ -53,7 +53,7 @@ public class H2UserDAO implements UserDAO {
         Connection connection = connectionPool.getConnection();
         List<User> users = new ArrayList<>();
 
-        try(PreparedStatement ps = connection.prepareStatement(
+        try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT id, firstName, lastName, login, email FROM USER")) {
 
             ResultSet resultSet = ps.executeQuery();
@@ -63,7 +63,7 @@ public class H2UserDAO implements UserDAO {
 
         } catch (SQLException e) {
             throw new DAOException("Failed to findAll Users.", e);
-        }  finally {
+        } finally {
             connectionPool.closeConnection(connection);
         }
         return users;
@@ -74,16 +74,15 @@ public class H2UserDAO implements UserDAO {
         Connection connection = connectionPool.getConnection();
         User tUser = new User();
 
-        try(PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO USER (id, firstName, lastName, login, email, password)" +
-                        "VALUES (?, ?, ?, ?, ?, ?)")) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                "INSERT INTO USER (firstName, lastName, login, email, password)" +
+                        "VALUES (?, ?, ?, ?, ?)")) {
 
-            ps.setInt(1, user.getId());
-            ps.setString(2, user.getFirstName());
-            ps.setString(3, user.getLastName());
-            ps.setString(4, user.getLogin());
-            ps.setString(5, user.getEmail());
-            ps.setString(6, user.getPassword());
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getLogin());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPassword());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getGeneratedKeys();
@@ -93,62 +92,56 @@ public class H2UserDAO implements UserDAO {
 
         } catch (SQLException e) {
             throw new DAOException("Failed to create User.", e);
-        }  finally {
+        } finally {
             connectionPool.closeConnection(connection);
         }
         return tUser;
     }
 
     @Override
-    public User update(User user) throws DAOException {
+    public int update(User user) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        User tUser = new User();
+        int affectedRowCount;
 
-        try(PreparedStatement ps = connection.prepareStatement(
-                "UPDATE USER SET firstName=?, lastName=?, login=?, email=? WHERE id=?")) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                "UPDATE USER SET firstName=?, lastName=?, login=?, email=?, password=? WHERE id=?",
+                Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getLogin());
             ps.setString(4, user.getEmail());
-            ps.setInt(5, user.getId());
+            ps.setString(5, user.getPassword());
+            ps.setInt(6, user.getId());
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getGeneratedKeys();
-            if (resultSet.next()) {
-                tUser.setId(resultSet.getInt(1));
-            }
+            affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new DAOException("Failed to update User.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
-        return tUser;
+        return affectedRowCount;
     }
 
     @Override
-    public User delete(User user) throws DAOException {
+    public int delete(User user) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        User tUser = new User();
+        int affectedRowCount;
 
-        try(PreparedStatement ps = connection.prepareStatement(
+        try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM USER WHERE id=?")) {
 
             ps.setInt(1, user.getId());
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getGeneratedKeys();
-            if (resultSet.next()) {
-                tUser.setId(resultSet.getInt(1));
-            }
+            affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new DAOException("Failed to delete User.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
-        return tUser;
+        return affectedRowCount;
     }
 
     @Override
@@ -156,7 +149,7 @@ public class H2UserDAO implements UserDAO {
         Connection connection = connectionPool.getConnection();
         User tUser = new User();
 
-        try(PreparedStatement ps = connection.prepareStatement(
+        try (PreparedStatement ps = connection.prepareStatement(
                 "UPDATE USER SET password=? WHERE id=?")) {
 
             ps.executeUpdate();
