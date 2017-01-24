@@ -2,3 +2,5 @@
 db/**
 target/**
 webnews.iml
+src/main/webapp/bootstrap/**
+

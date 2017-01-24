@@ -19,8 +19,9 @@ public class DAOProperties {
 
     private void loadProperties() {
         properties = new Properties();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        try (InputStream in = ClassLoader.getSystemResourceAsStream(file)) {
+        try (InputStream in = classLoader.getResourceAsStream(file)) {
             properties.load(in);
 
         } catch (IOException e) {

@@ -14,7 +14,7 @@ public class ConnectionPool {
     private static final int MIN_POOL_SIZE = 10;
     private static final String PROPERTY_URL = "url";
     private static final String PROPERTY_DRIVER = "driver";
-    private static final String PROPERTY_SPECIFIC_KEY = "h2.jdbc";
+    private static final String PROPERTY_H2_SPECIFIC_KEY = "h2.jdbc";
     private volatile static ConnectionPool instance;
     private static BlockingQueue<Connection> pool;
     private static DAOProperties properties;
@@ -37,7 +37,7 @@ public class ConnectionPool {
 
     private void initialize() {
         pool = new ArrayBlockingQueue<>(MAX_POOL_SIZE);
-        properties = new DAOProperties(PROPERTY_SPECIFIC_KEY);
+        properties = new DAOProperties(PROPERTY_H2_SPECIFIC_KEY);
         initializeConnectionPool();
     }
 

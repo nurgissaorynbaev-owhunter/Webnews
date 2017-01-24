@@ -6,7 +6,6 @@ public class User implements Serializable {
     private int id;
     private String firstName;
     private String lastName;
-    private String login;
     private String email;
     private String password;
 
@@ -34,14 +33,6 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -64,7 +55,6 @@ public class User implements Serializable {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", login='" + login + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';

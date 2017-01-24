@@ -15,7 +15,7 @@ public class H2UserDAO implements UserDAO {
         User user;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT id, firstName, lastName, login, email FROM USER WHERE id=?")) {
+                "SELECT id, firstName, lastName, email FROM USER WHERE id=?")) {
 
             ps.setInt(1, id);
             user = map(ps.executeQuery());
@@ -33,7 +33,7 @@ public class H2UserDAO implements UserDAO {
         Connection connection = connectionPool.getConnection();
         User user;
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT id, firstName, lastName, login, email WHERE email=?, password=?")) {
+                "SELECT id, firstName, lastName, email WHERE email=?, password=?")) {
 
             ps.setString(4, email);
             ps.setString(5, password);
@@ -54,7 +54,7 @@ public class H2UserDAO implements UserDAO {
         List<User> users = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT id, firstName, lastName, login, email FROM USER")) {
+                "SELECT id, firstName, lastName, email FROM USER")) {
 
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
@@ -75,14 +75,13 @@ public class H2UserDAO implements UserDAO {
         User tUser = new User();
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO USER (firstName, lastName, login, email, password)" +
-                        "VALUES (?, ?, ?, ?, ?)")) {
+                "INSERT INTO USER (firstName, lastName, email, password)" +
+                        "VALUES (?, ?, ?, ?)")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getLogin());
-            ps.setString(4, user.getEmail());
-            ps.setString(5, user.getPassword());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPassword());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getGeneratedKeys();
@@ -104,15 +103,14 @@ public class H2UserDAO implements UserDAO {
         int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE USER SET firstName=?, lastName=?, login=?, email=?, password=? WHERE id=?",
+                "UPDATE USER SET firstName=?, lastName=?, email=?, password=? WHERE id=?",
                 Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getLogin());
-            ps.setString(4, user.getEmail());
-            ps.setString(5, user.getPassword());
-            ps.setInt(6, user.getId());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getId());
 
             affectedRowCount = ps.executeUpdate();
 
@@ -145,25 +143,24 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public User changePassword(User user) throws DAOException {
+    public int changePassword(User user) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        User tUser = new User();
+        int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "UPDATE USER SET password=? WHERE id=?")) {
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getGeneratedKeys();
-            if (resultSet.next()) {
-                tUser.setId(resultSet.getInt(1));
-            }
+            ps.setString(1, user.getPassword());
+            ps.setInt(2, user.getId());
+
+            affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new DAOException("Failed to change password.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
-        return tUser;
+        return affectedRowCount;
     }
 
     private User map(ResultSet resultSet) throws SQLException {
@@ -172,8 +169,7 @@ public class H2UserDAO implements UserDAO {
             user.setId(resultSet.getInt(1));
             user.setFirstName(resultSet.getString(2));
             user.setLastName(resultSet.getString(3));
-            user.setLogin(resultSet.getString(4));
-            user.setEmail(resultSet.getString(5));
+            user.setEmail(resultSet.getString(4));
         }
         return user;
     }

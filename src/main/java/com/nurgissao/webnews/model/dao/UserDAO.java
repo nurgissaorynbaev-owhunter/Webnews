@@ -19,5 +19,5 @@ public interface UserDAO {
 
     public int delete(User user) throws DAOException;
 
-    public User changePassword(User user) throws DAOException;
+    public int changePassword(User user) throws DAOException;
 }
