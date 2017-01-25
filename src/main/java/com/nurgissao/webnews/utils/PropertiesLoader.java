@@ -33,13 +33,9 @@ public class PropertiesLoader {
         }
     }
 
-    public void setAdditionalKey(String key) {
-        this.specificKey = specificKey + key;
-    }
-
     public String getValue(String key) {
         String fullKey = specificKey + "." + key;
-        System.out.println("full key: " + fullKey);
+//        System.out.println("full key: " + fullKey);
         String value = properties.getProperty(fullKey);
         if (value == null) {
             log.error("Failed to get property value by key.");

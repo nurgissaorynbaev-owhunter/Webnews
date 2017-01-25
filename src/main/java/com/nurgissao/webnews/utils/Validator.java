@@ -14,7 +14,7 @@ public class Validator {
 
     public Map<String, String> validateSignupForm(Map<String, String> formValue) {
         Map<String, String> violations = new HashMap<>();
-        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY);
+        System.out.println("4");
 
         String firstName = formValue.get("firstName");
         String lastName = formValue.get("lastName");
@@ -30,54 +30,110 @@ public class Validator {
     }
 
     private Map<String, String> validateFirstName(String firstName, Map<String, String> violations) {
-        properties.setAdditionalKey(".firstName");
+        String formName = "firstName";
+        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
         int minLength = Integer.parseInt(properties.getValue("minLength"));
         int maxLength = Integer.parseInt(properties.getValue("maxLength"));
-        if (firstName.length() < minLength) {
-            violations.put("firstNameError", "FirstName is too short");
+
+        Map<String, String> minMap = checkMinLength(formName, firstName, minLength);
+        Map<String, String> maxMap = checkMaxLength(formName, firstName, maxLength);
+
+        if (!minMap.isEmpty()) {
+            violations = minMap;
+            System.out.println("6");
+        } else {
+            violations = maxMap;
         }
-        if (firstName.length() > maxLength) {
-            violations.put("firstNameError", "FirstName is too long");
-        }
+
         return violations;
     }
 
     private Map<String, String> validateLastName(String lastName, Map<String, String> violations) {
-        properties.setAdditionalKey(".lastName");
-        int minLength = Integer.parseInt(properties.getValue("minLength"));
-        int maxLength = Integer.parseInt(properties.getValue("maxLength"));
-        if (lastName.length() < minLength) {
-            violations.put("firstNameError", "FirstName is too short");
+        String formName = "lastName";
+//        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
+//        int minLength = Integer.parseInt(properties.getValue("minLength"));
+//        int maxLength = Integer.parseInt(properties.getValue("maxLength"));
+        setPropertiesKey(formName);
+        int minLength = getPropertiesMinLength();
+        int maxLength = getPropertiesMaxValue();
+
+        Map<String, String> minMap = checkMinLength(formName, lastName, minLength);
+        Map<String, String> maxMap = checkMaxLength(formName, lastName, maxLength);
+
+        if (!minMap.isEmpty()) {
+            violations = minMap;
+        } else {
+            violations = maxMap;
         }
-        if (lastName.length() > maxLength) {
-            violations.put("firstNameError", "FirstName is too long");
-        }
+
         return violations;
     }
 
     private Map<String, String> validateEmail(String email, Map<String, String> violations) {
-        properties.setAdditionalKey(".email");
+        String formName = "email";
+        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
         int minLength = Integer.parseInt(properties.getValue("minLength"));
         int maxLength = Integer.parseInt(properties.getValue("maxLength"));
-        if (email.length() < minLength) {
-            violations.put("firstNameError", "FirstName is too short");
+
+        Map<String, String> minMap = checkMinLength(formName, email, minLength);
+        Map<String, String> maxMap = checkMaxLength(formName, email, maxLength);
+
+        if (!minMap.isEmpty()) {
+            violations = minMap;
+        } else {
+            violations = maxMap;
         }
-        if (email.length() > maxLength) {
-            violations.put("firstNameError", "FirstName is too long");
-        }
+
         return violations;
     }
 
     private Map<String, String> validatePassword(String password, Map<String, String> violations) {
-        properties.setAdditionalKey(".password");
+        String formName = "password";
+        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
         int minLength = Integer.parseInt(properties.getValue("minLength"));
         int maxLength = Integer.parseInt(properties.getValue("maxLength"));
-        if (password.length() < minLength) {
-            violations.put("firstNameError", "FirstName is too short");
+
+        Map<String, String> minMap = checkMinLength(formName, password, minLength);
+        Map<String, String> maxMap = checkMaxLength(formName, password, maxLength);
+
+        if (!minMap.isEmpty()) {
+            violations = minMap;
+        } else {
+            violations = maxMap;
         }
-        if (password.length() > maxLength) {
-            violations.put("firstNameError", "FirstName is too long");
-        }
+
         return violations;
     }
+
+    private Map<String, String> checkMinLength(String formName, String value, int minLength) {
+        Map<String, String> result = new HashMap<>();
+        if (value.length() < minLength) {
+            String errorValue = formName + "  is too short.";
+            result.put(formName, errorValue);
+        }
+        return result;
+    }
+
+    private Map<String, String> checkMaxLength(String formName, String value, int maxLength) {
+        Map<String, String> result = new HashMap<>();
+        if (value.length() > maxLength) {
+            String errorValue = formName + " is too long.";
+            result.put(formName, errorValue);
+        }
+        return result;
+    }
+
+    private void setPropertiesKey(String key) {
+        String fullSpecificKey = SIGN_UP_SPECIFIC_KEY + "." + key;
+        properties.setSpecificKey(fullSpecificKey);
+    }
+
+    private int getPropertiesMinLength() {
+        return Integer.parseInt(properties.getValue("minLength"));
+    }
+
+    private int getPropertiesMaxValue() {
+        return Integer.parseInt(properties.getValue("maxLength"));
+    }
+
 }
