@@ -1,5 +1,6 @@
 package com.nurgissao.webnews.model.dao;
 
+import com.nurgissao.webnews.utils.PropertiesLoader;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -12,12 +13,13 @@ public class ConnectionPool {
     public static Logger log = Logger.getLogger(ConnectionPool.class);
     private static final int MAX_POOL_SIZE = 30;
     private static final int MIN_POOL_SIZE = 10;
+    private static final String FILE_NAME = "dao.properties";
     private static final String PROPERTY_URL = "url";
     private static final String PROPERTY_DRIVER = "driver";
     private static final String PROPERTY_H2_SPECIFIC_KEY = "h2.jdbc";
     private volatile static ConnectionPool instance;
     private static BlockingQueue<Connection> pool;
-    private static DAOProperties properties;
+    private static PropertiesLoader properties;
     private static boolean isOver = false;
 
     private ConnectionPool() {
@@ -37,7 +39,7 @@ public class ConnectionPool {
 
     private void initialize() {
         pool = new ArrayBlockingQueue<>(MAX_POOL_SIZE);
-        properties = new DAOProperties(PROPERTY_H2_SPECIFIC_KEY);
+        properties = new PropertiesLoader(FILE_NAME);
         initializeConnectionPool();
     }
 
@@ -79,6 +81,7 @@ public class ConnectionPool {
 
     private Connection createConnection() {
         Connection connection = null;
+        properties.setSpecificKey(PROPERTY_H2_SPECIFIC_KEY);
         String url = properties.getValue(PROPERTY_URL);
         String driver = properties.getValue(PROPERTY_DRIVER);
         try {

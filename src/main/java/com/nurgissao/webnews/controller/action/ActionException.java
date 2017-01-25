@@ -1,4 +1,4 @@
-package com.nurgissao.webnews.controller;
+package com.nurgissao.webnews.controller.action;
 
 public class ActionException extends Exception {
 
