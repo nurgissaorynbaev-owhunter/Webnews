@@ -14,7 +14,6 @@ public class Validator {
 
     public Map<String, String> validateSignupForm(Map<String, String> formValue) {
         Map<String, String> violations = new HashMap<>();
-        System.out.println("4");
 
         String firstName = formValue.get("firstName");
         String lastName = formValue.get("lastName");
@@ -31,18 +30,17 @@ public class Validator {
 
     private Map<String, String> validateFirstName(String firstName, Map<String, String> violations) {
         String formName = "firstName";
-        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
-        int minLength = Integer.parseInt(properties.getValue("minLength"));
-        int maxLength = Integer.parseInt(properties.getValue("maxLength"));
+        setPropertiesKey(formName);
+        int minLength = getMinLength();
+        int maxLength = getMaxLength();
 
-        Map<String, String> minMap = checkMinLength(formName, firstName, minLength);
-        Map<String, String> maxMap = checkMaxLength(formName, firstName, maxLength);
+        String minLengthResult = checkMinLength(formName, firstName, minLength);
+        String maxLengthResult = checkMaxLength(formName, firstName, maxLength);
 
-        if (!minMap.isEmpty()) {
-            violations = minMap;
-            System.out.println("6");
+        if (minLengthResult != null) {
+            violations.put(formName, minLengthResult);
         } else {
-            violations = maxMap;
+            violations.put(formName, maxLengthResult);
         }
 
         return violations;
@@ -50,20 +48,17 @@ public class Validator {
 
     private Map<String, String> validateLastName(String lastName, Map<String, String> violations) {
         String formName = "lastName";
-//        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
-//        int minLength = Integer.parseInt(properties.getValue("minLength"));
-//        int maxLength = Integer.parseInt(properties.getValue("maxLength"));
         setPropertiesKey(formName);
-        int minLength = getPropertiesMinLength();
-        int maxLength = getPropertiesMaxValue();
+        int minLength = getMinLength();
+        int maxLength = getMaxLength();
 
-        Map<String, String> minMap = checkMinLength(formName, lastName, minLength);
-        Map<String, String> maxMap = checkMaxLength(formName, lastName, maxLength);
+        String minLengthResult = checkMinLength(formName, lastName, minLength);
+        String maxLengthResult = checkMaxLength(formName, lastName, maxLength);
 
-        if (!minMap.isEmpty()) {
-            violations = minMap;
+        if (minLengthResult != null) {
+            violations.put(formName, minLengthResult);
         } else {
-            violations = maxMap;
+            violations.put(formName, maxLengthResult);
         }
 
         return violations;
@@ -71,17 +66,17 @@ public class Validator {
 
     private Map<String, String> validateEmail(String email, Map<String, String> violations) {
         String formName = "email";
-        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
-        int minLength = Integer.parseInt(properties.getValue("minLength"));
-        int maxLength = Integer.parseInt(properties.getValue("maxLength"));
+        setPropertiesKey(formName);
+        int minLength = getMinLength();
+        int maxLength = getMaxLength();
 
-        Map<String, String> minMap = checkMinLength(formName, email, minLength);
-        Map<String, String> maxMap = checkMaxLength(formName, email, maxLength);
+        String minLengthResult = checkMinLength(formName, email, minLength);
+        String maxLengthResult = checkMaxLength(formName, email, maxLength);
 
-        if (!minMap.isEmpty()) {
-            violations = minMap;
+        if (minLengthResult != null) {
+            violations.put(formName, minLengthResult);
         } else {
-            violations = maxMap;
+            violations.put(formName, maxLengthResult);
         }
 
         return violations;
@@ -89,36 +84,34 @@ public class Validator {
 
     private Map<String, String> validatePassword(String password, Map<String, String> violations) {
         String formName = "password";
-        properties.setSpecificKey(SIGN_UP_SPECIFIC_KEY + "." + formName);
-        int minLength = Integer.parseInt(properties.getValue("minLength"));
-        int maxLength = Integer.parseInt(properties.getValue("maxLength"));
+        setPropertiesKey(formName);
+        int minLength = getMinLength();
+        int maxLength = getMaxLength();
 
-        Map<String, String> minMap = checkMinLength(formName, password, minLength);
-        Map<String, String> maxMap = checkMaxLength(formName, password, maxLength);
+        String minLengthResult = checkMinLength(formName, password, minLength);
+        String maxLengthResult = checkMaxLength(formName, password, maxLength);
 
-        if (!minMap.isEmpty()) {
-            violations = minMap;
+        if (minLengthResult != null) {
+            violations.put(formName, minLengthResult);
         } else {
-            violations = maxMap;
+            violations.put(formName, maxLengthResult);
         }
 
         return violations;
     }
 
-    private Map<String, String> checkMinLength(String formName, String value, int minLength) {
-        Map<String, String> result = new HashMap<>();
+    private String checkMinLength(String formName, String value, int minLength) {
+        String result = null;
         if (value.length() < minLength) {
-            String errorValue = formName + "  is too short.";
-            result.put(formName, errorValue);
+            result = formName + "  is too short.";
         }
         return result;
     }
 
-    private Map<String, String> checkMaxLength(String formName, String value, int maxLength) {
-        Map<String, String> result = new HashMap<>();
+    private String checkMaxLength(String formName, String value, int maxLength) {
+        String result = null;
         if (value.length() > maxLength) {
-            String errorValue = formName + " is too long.";
-            result.put(formName, errorValue);
+            result = formName + " is too long.";
         }
         return result;
     }
@@ -128,11 +121,11 @@ public class Validator {
         properties.setSpecificKey(fullSpecificKey);
     }
 
-    private int getPropertiesMinLength() {
+    private int getMinLength() {
         return Integer.parseInt(properties.getValue("minLength"));
     }
 
-    private int getPropertiesMaxValue() {
+    private int getMaxLength() {
         return Integer.parseInt(properties.getValue("maxLength"));
     }
 
