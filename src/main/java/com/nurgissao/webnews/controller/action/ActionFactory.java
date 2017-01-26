@@ -9,9 +9,11 @@ public class ActionFactory {
 
     static {
         actions.put("home", new HomeAction());
-        actions.put("signIn", new ShowSignInAction());
-        actions.put("signUp", new ShowSignUpAction());
+        actions.put("showSignIn", new ShowSignInAction());
+        actions.put("showSignUp", new ShowSignUpAction());
         actions.put("register", new SignUpAction());
+        actions.put("signIn", new SignInAction());
+        actions.put("profile", new ProfileAction());
     }
 
     public static Action getAction(HttpServletRequest req) {

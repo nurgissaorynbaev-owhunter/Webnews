@@ -5,15 +5,29 @@ import java.util.Map;
 
 public class Validator {
     private static final String FILE_NAME = "validator.properties";
-    private static final String SIGN_UP_SPECIFIC_KEY = "signUp";
     private static PropertiesLoader properties;
+    private String specificKey;
 
     public Validator() {
         properties = new PropertiesLoader(FILE_NAME);
     }
 
-    public Map<String, String> validateSignupForm(Map<String, String> formValue) {
+    public Map<String, String> validateSignIn(Map<String, String> formValue) {
         Map<String, String> violations = new HashMap<>();
+        specificKey = "sign";
+
+        String email = formValue.get("email");
+        String password = formValue.get("password");
+
+        validateEmail(email, violations);
+        validatePassword(password, violations);
+
+        return violations;
+    }
+
+    public Map<String, String> validateSignUpForm(Map<String, String> formValue) {
+        Map<String, String> violations = new HashMap<>();
+        specificKey = "sign";
 
         String firstName = formValue.get("firstName");
         String lastName = formValue.get("lastName");
@@ -117,7 +131,7 @@ public class Validator {
     }
 
     private void setPropertiesKey(String key) {
-        String fullSpecificKey = SIGN_UP_SPECIFIC_KEY + "." + key;
+        String fullSpecificKey = specificKey + "." + key;
         properties.setSpecificKey(fullSpecificKey);
     }
 
@@ -128,5 +142,4 @@ public class Validator {
     private int getMaxLength() {
         return Integer.parseInt(properties.getValue("maxLength"));
     }
-
 }

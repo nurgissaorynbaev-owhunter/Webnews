@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>it is main page of shop site</h1>
-<form action="/pages/signIn" method="get">
+<form action="/pages/showSignIn" method="get">
     <input type="submit" name="submit" value="Sign In">
 </form>
 </body>

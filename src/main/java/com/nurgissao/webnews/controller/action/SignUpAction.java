@@ -33,15 +33,12 @@ public class SignUpAction implements Action {
             formValue.put("email", email);
             formValue.put("password", password);
 
-            Map<String, String> violations = validator.validateSignupForm(formValue);
+            Map<String, String> violations = validator.validateSignUpForm(formValue);
             if (violations != null) {
                 //TODO set error
-                System.out.println("2");
                 for (Map.Entry<String, String> entry : violations.entrySet()) {
-                    System.out.println("3");
                     System.out.println(entry.getKey() + entry.getValue());
                 }
-                System.out.println("7");
                 return "signUp";
             }
 
@@ -58,7 +55,5 @@ public class SignUpAction implements Action {
 
         return "home";
     }
-
-
 }
 

@@ -14,8 +14,8 @@
             <h3>Please sign in</h3>
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Email address" required>
-            <input type="password" class="form-control" placeholder="Password" required>
+            <input type="text" class="form-control" name="email" placeholder="Email address" required>
+            <input type="password" class="form-control" name="pwd" placeholder="Password" required>
         </div>
         <div class="form-group">
             <label>
