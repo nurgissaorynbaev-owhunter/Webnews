@@ -8,7 +8,7 @@
 <form action="/pages/showSignIn" method="get">
     <input type="submit" name="submit" value="Sign In">
 </form>
-<form action="/pages/profile" method="get">
+<form action="/pages/showProfile" method="get">
     <input type="submit" value="Profile">
 </form>
 </body>

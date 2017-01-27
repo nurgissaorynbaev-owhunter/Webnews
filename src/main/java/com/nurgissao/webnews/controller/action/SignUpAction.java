@@ -20,8 +20,6 @@ public class SignUpAction implements Action {
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             UserDAO userDAO = daoFactory.getUserDAO();
-            Validator validator = new Validator();
-            User user = new User();
 
             String firstName = req.getParameter("fname");
             String lastName = req.getParameter("lname");
@@ -34,6 +32,7 @@ public class SignUpAction implements Action {
             formValue.put("email", email);
             formValue.put("password", password);
 
+            Validator validator = new Validator();
             Map<String, String> violations = validator.validateSignUpForm(formValue);
             if (!violations.isEmpty()) {
                 //TODO set error
@@ -43,6 +42,7 @@ public class SignUpAction implements Action {
                 return "signUp";
             }
 
+            User user = new User();
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
@@ -51,8 +51,11 @@ public class SignUpAction implements Action {
             User generatedUserId = userDAO.create(user);
             if (generatedUserId != null) {
                 HttpSession session = req.getSession();
-                session.setAttribute("key", user);
+                session.setAttribute("user", user);
                 session.setMaxInactiveInterval(30*60);
+
+            } else {
+                //TODO throw appropriate exception
             }
 
         } catch (DAOException e) {

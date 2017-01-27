@@ -12,7 +12,7 @@ public class Validator {
         properties = new PropertiesLoader(FILE_NAME);
     }
 
-    public Map<String, String> validateSignIn(Map<String, String> formValue) {
+    public Map<String, String> validateSignInForm(Map<String, String> formValue) {
         Map<String, String> violations = new HashMap<>();
         specificKey = "sign";
 
@@ -33,11 +33,16 @@ public class Validator {
         String lastName = formValue.get("lastName");
         String email = formValue.get("email");
         String password = formValue.get("password");
+        String confirmPassword = formValue.get("confirmPassword");
 
         validateFirstName(firstName, violations);
         validateLastName(lastName, violations);
         validateEmail(email, violations);
         validatePassword(password, violations);
+
+        if (confirmPassword != null) {
+            validateConfirmationPassword(password, confirmPassword, violations);
+        }
 
         return violations;
     }
@@ -111,6 +116,15 @@ public class Validator {
             violations.put(formName, maxLengthResult);
         }
 
+        return violations;
+    }
+
+    private Map<String, String> validateConfirmationPassword(String password, String confirmPassword,
+                                                             Map<String, String> violations) {
+        String errorMsg = "Passwords not equal.";
+        if (!password.equals(confirmPassword)) {
+            violations.put(password, errorMsg);
+        }
         return violations;
     }
 

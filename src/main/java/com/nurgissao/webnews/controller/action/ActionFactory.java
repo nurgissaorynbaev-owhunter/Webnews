@@ -13,6 +13,7 @@ public class ActionFactory {
         actions.put("showSignUp", new ShowSignUpAction());
         actions.put("register", new SignUpAction());
         actions.put("signIn", new SignInAction());
+        actions.put("showProfile", new ShowProfileAction());
         actions.put("profile", new ProfileAction());
     }
 

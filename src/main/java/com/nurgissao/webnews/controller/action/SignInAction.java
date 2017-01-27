@@ -30,7 +30,7 @@ public class SignInAction implements Action {
             formValue.put("password", password);
 
             Validator validator = new Validator();
-            Map<String, String> violations = validator.validateSignIn(formValue);
+            Map<String, String> violations = validator.validateSignInForm(formValue);
 
             if (!violations.isEmpty()) {
                 for (Map.Entry<String, String> entry : violations.entrySet()) {

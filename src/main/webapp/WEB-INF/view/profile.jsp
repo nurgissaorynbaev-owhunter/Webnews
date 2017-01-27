@@ -8,30 +8,30 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-<form class="form-horizontal">
+<form action="/pages/profile" method="post" class="form-horizontal">
     <div class="col-md-offset-4 col-md-4 c-top70">
         <div class="form-group text-center">
             <h3>My Profile</h3>
         </div>
         <div class="form-group">
             <label for="inputFirstName">FirstName</label>
-            <input type="text" class="form-control" id="inputFirstName">
+            <input type="text" class="form-control" name="fname" id="inputFirstName" value="${sessionScope.user.firstName}">
         </div>
         <div class="form-group">
             <label for="inputLastName">LastName</label>
-            <input type="text" class="form-control" id="inputLastName">
+            <input type="text" class="form-control" name="lname" id="inputLastName" value="${sessionScope.user.lastName}">
         </div>
         <div class="form-group">
             <label for="inputEmail">Email</label>
-            <input type="text" class="form-control" id="inputEmail">
+            <input type="text" class="form-control" name="email" id="inputEmail" value="${sessionScope.user.email}">
         </div>
         <div class="form-group">
             <label for="inputPassword">New password</label>
-            <input type="password" class="form-control" id="inputPassword">
+            <input type="password" class="form-control" name="pwd" id="inputPassword">
         </div>
         <div class="form-group">
             <label for="confirmPassword">Confirm new password</label>
-            <input type="password" class="form-control" id="confirmPassword">
+            <input type="password" class="form-control" name="confirmPwd" id="confirmPassword">
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-primary">Save</button>
