@@ -53,7 +53,7 @@ public class Validator {
 
         if (minLengthResult != null) {
             violations.put(formName, minLengthResult);
-        } else {
+        } else if (maxLengthResult != null){
             violations.put(formName, maxLengthResult);
         }
 
@@ -71,7 +71,7 @@ public class Validator {
 
         if (minLengthResult != null) {
             violations.put(formName, minLengthResult);
-        } else {
+        } else if (maxLengthResult != null){
             violations.put(formName, maxLengthResult);
         }
 
@@ -89,7 +89,7 @@ public class Validator {
 
         if (minLengthResult != null) {
             violations.put(formName, minLengthResult);
-        } else {
+        } else if (maxLengthResult != null){
             violations.put(formName, maxLengthResult);
         }
 
@@ -107,7 +107,7 @@ public class Validator {
 
         if (minLengthResult != null) {
             violations.put(formName, minLengthResult);
-        } else {
+        } else if (maxLengthResult != null){
             violations.put(formName, maxLengthResult);
         }
 

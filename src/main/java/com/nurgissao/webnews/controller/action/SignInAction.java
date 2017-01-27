@@ -9,6 +9,7 @@ import com.nurgissao.webnews.utils.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,6 @@ public class SignInAction implements Action {
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             UserDAO userDAO = daoFactory.getUserDAO();
-            Validator validator = new Validator();
 
             String email = req.getParameter("email");
             String password = req.getParameter("pwd");
@@ -29,9 +29,10 @@ public class SignInAction implements Action {
             formValue.put("email", email);
             formValue.put("password", password);
 
+            Validator validator = new Validator();
             Map<String, String> violations = validator.validateSignIn(formValue);
 
-            if (violations != null) {
+            if (!violations.isEmpty()) {
                 for (Map.Entry<String, String> entry : violations.entrySet()) {
                     System.out.println(entry.getKey() + " " + entry.getValue());
                 }
@@ -40,10 +41,19 @@ public class SignInAction implements Action {
 
             User user = userDAO.find(email, password);
 
+            if (user != null) {
+                HttpSession session = req.getSession();
+                session.setAttribute("user", user);
+                session.setMaxInactiveInterval(30 * 60);
+
+            } else {
+                //TODO throw appropriate exception
+            }
+
         } catch (DAOException e) {
             throw new ActionException(e);
         }
 
-        return null;
+        return "home";
     }
 }

@@ -9,6 +9,7 @@ import com.nurgissao.webnews.utils.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,10 +35,10 @@ public class SignUpAction implements Action {
             formValue.put("password", password);
 
             Map<String, String> violations = validator.validateSignUpForm(formValue);
-            if (violations != null) {
+            if (!violations.isEmpty()) {
                 //TODO set error
                 for (Map.Entry<String, String> entry : violations.entrySet()) {
-                    System.out.println(entry.getKey() + entry.getValue());
+                    System.out.println(entry.getKey() + " " + entry.getValue());
                 }
                 return "signUp";
             }
@@ -47,7 +48,12 @@ public class SignUpAction implements Action {
             user.setEmail(email);
             user.setPassword(password);
 
-            userDAO.create(user);
+            User generatedUserId = userDAO.create(user);
+            if (generatedUserId != null) {
+                HttpSession session = req.getSession();
+                session.setAttribute("key", user);
+                session.setMaxInactiveInterval(30*60);
+            }
 
         } catch (DAOException e) {
             throw new ActionException(e);

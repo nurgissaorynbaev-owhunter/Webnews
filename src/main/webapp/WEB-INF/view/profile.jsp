@@ -9,26 +9,32 @@
 </head>
 <body>
 <form class="form-horizontal">
-    <div class="col-md-offset-3 col-md-6 c-top200">
-        <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control">
+    <div class="col-md-offset-4 col-md-4 c-top70">
+        <div class="form-group text-center">
+            <h3>My Profile</h3>
         </div>
         <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control">
+            <label for="inputFirstName">FirstName</label>
+            <input type="text" class="form-control" id="inputFirstName">
         </div>
         <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control">
+            <label for="inputLastName">LastName</label>
+            <input type="text" class="form-control" id="inputLastName">
         </div>
         <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control">
+            <label for="inputEmail">Email</label>
+            <input type="text" class="form-control" id="inputEmail">
         </div>
         <div class="form-group">
-            <label>FirstName</label>
-            <input type="text" class="form-control">
+            <label for="inputPassword">New password</label>
+            <input type="password" class="form-control" id="inputPassword">
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm new password</label>
+            <input type="password" class="form-control" id="confirmPassword">
+        </div>
+        <div class="form-group text-right">
+            <button type="submit" class="btn btn-primary">Save</button>
         </div>
     </div>
 </form>

@@ -26,7 +26,7 @@
             <button type="submit" class="btn btn-primary btn-block">Submit</button>
         </div>
         <div class="form-group text-right">
-            <a href="http://localhost:8080/pages/signUp">Sign up</a>
+            <a href="http://localhost:8080/pages/showSignUp">Sign up</a>
         </div>
     </div>
 </form>
