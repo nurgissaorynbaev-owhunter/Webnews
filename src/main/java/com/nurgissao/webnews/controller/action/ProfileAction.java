@@ -36,7 +36,7 @@ public class ProfileAction implements Action {
             formValue.put("confirmPassword", confirmPassword);
 
             Validator validator = new Validator();
-            Map<String, String> violations = validator.validateSignUpForm(formValue);
+            Map<String, String> violations = validator.validateProfileForm(formValue);
 
             if (!violations.isEmpty()) {
                 for (Map.Entry<String, String> entry : violations.entrySet()) {
@@ -46,10 +46,10 @@ public class ProfileAction implements Action {
             }
 
             HttpSession session = req.getSession();
-            User sessionAttr = (User) session.getAttribute("user");
+            User userValue = (User) session.getAttribute("user");
 
             User user = new User();
-            user.setId(sessionAttr.getId());
+            user.setId(userValue.getId());
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);

@@ -6,4 +6,9 @@ public class H2DAOFactory extends DAOFactory {
     public UserDAO getUserDAO() {
         return new H2UserDAO();
     }
+
+    @Override
+    public ProductDAO getProductDAO() {
+        return new H2ProductDAO();
+    }
 }

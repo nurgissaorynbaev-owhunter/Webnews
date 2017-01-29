@@ -103,8 +103,7 @@ public class H2UserDAO implements UserDAO {
         int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE USER SET firstName=?, lastName=?, email=?, password=? WHERE id=?",
-                Statement.RETURN_GENERATED_KEYS)) {
+                "UPDATE USER SET firstName=?, lastName=?, email=?, password=? WHERE id=?")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());

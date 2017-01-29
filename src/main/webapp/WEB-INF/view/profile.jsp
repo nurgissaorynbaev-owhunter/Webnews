@@ -9,21 +9,24 @@
 </head>
 <body>
 <form action="/pages/profile" method="post" class="form-horizontal">
-    <div class="col-md-offset-4 col-md-4 c-top70">
+    <div class="col-md-offset-4 col-md-4 c-top20">
         <div class="form-group text-center">
-            <h3>My Profile</h3>
+            <h2>My Profile</h2>
         </div>
         <div class="form-group">
             <label for="inputFirstName">FirstName</label>
-            <input type="text" class="form-control" name="fname" id="inputFirstName" value="${sessionScope.user.firstName}">
+            <input type="text" class="form-control" name="fname" id="inputFirstName"
+                   value="${sessionScope.user.firstName}">
         </div>
         <div class="form-group">
             <label for="inputLastName">LastName</label>
-            <input type="text" class="form-control" name="lname" id="inputLastName" value="${sessionScope.user.lastName}">
+            <input type="text" class="form-control" name="lname" id="inputLastName"
+                   value="${sessionScope.user.lastName}">
         </div>
         <div class="form-group">
             <label for="inputEmail">Email</label>
-            <input type="text" class="form-control" name="email" id="inputEmail" value="${sessionScope.user.email}">
+            <input type="text" class="form-control" name="email" id="inputEmail"
+                   value="${sessionScope.user.email}">
         </div>
         <div class="form-group">
             <label for="inputPassword">New password</label>

@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface UserDAO {
 
-    public User find(int id) throws DAOException;
+    User find(int id) throws DAOException;
 
-    public User find(String email, String password) throws DAOException;
+    User find(String email, String password) throws DAOException;
 
-    public List<User> findAll() throws DAOException;
+    List<User> findAll() throws DAOException;
 
-    public User create(User user) throws DAOException;
+    User create(User user) throws DAOException;
 
-    public int update(User user) throws DAOException;
+    int update(User user) throws DAOException;
 
-    public int delete(User user) throws DAOException;
+    int delete(User user) throws DAOException;
 
-    public int changePassword(User user) throws DAOException;
+    int changePassword(User user) throws DAOException;
 }

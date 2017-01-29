@@ -15,6 +15,8 @@ public class ActionFactory {
         actions.put("signIn", new SignInAction());
         actions.put("showProfile", new ShowProfileAction());
         actions.put("profile", new ProfileAction());
+        actions.put("showAddProduct", new ShowAddProductAction());
+        actions.put("addProduct", new AddProductAction());
     }
 
     public static Action getAction(HttpServletRequest req) {

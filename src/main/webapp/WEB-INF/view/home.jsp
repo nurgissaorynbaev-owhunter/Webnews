@@ -11,5 +11,8 @@
 <form action="/pages/showProfile" method="get">
     <input type="submit" value="Profile">
 </form>
+<form action="/pages/showAddProduct" method="get">
+    <input type="submit" value="Add product">
+</form>
 </body>
 </html>
