@@ -42,7 +42,7 @@ public class ProfileAction implements Action {
                 for (Map.Entry<String, String> entry : violations.entrySet()) {
                     System.out.println(entry.getKey() + " " + entry.getValue());
                 }
-                return "showProfile";
+                return "profile";
             }
 
             HttpSession session = req.getSession();
@@ -64,6 +64,6 @@ public class ProfileAction implements Action {
             throw new ActionException(e);
         }
 
-        return "profile";
+        return "home";
     }
 }

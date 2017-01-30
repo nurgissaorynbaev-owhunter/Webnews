@@ -12,16 +12,7 @@ public class Validator {
         properties = new PropertiesLoader(FILE_NAME);
     }
 
-    public Map<String, String> validateSignInForm(Map<String, String> formValue) {
-        Map<String, String> violations = new HashMap<>();
-        specificKey = "sign";
-
-        checkLength(formValue, violations);
-
-        return violations;
-    }
-
-    public Map<String, String> validateSignUpForm(Map<String, String> formValue) {
+    public Map<String, String> validateSignForm(Map<String, String> formValue) {
         Map<String, String> violations = new HashMap<>();
         specificKey = "sign";
 
@@ -36,11 +27,12 @@ public class Validator {
         String password = formValue.get("password");
         String confirmPassword = formValue.get("confirmPassword");
 
+        checkLength(formValue, violations);
+
         if (!password.equals(confirmPassword)) {
             violations.put("password", "Passwords not equal");
         }
 
-        checkLength(formValue, violations);
 
         return violations;
     }
@@ -56,7 +48,6 @@ public class Validator {
 
     private Map<String, String> checkLength(Map<String, String> formValue, Map<String, String> violations) {
         String key, value;
-        int minLength, maxLength;
         String minErrorMsg = "too short.";
         String maxErrorMsg = "too long.";
 
@@ -65,15 +56,22 @@ public class Validator {
             value = entry.getValue();
 
             setPropertiesKey(key);
-            minLength = Integer.parseInt(properties.getValue("minLength"));
-            maxLength = Integer.parseInt(properties.getValue("maxLength"));
 
-            if (minLength != 0 && value.length() < minLength) {
-                violations.put(key, minErrorMsg);
+            String minValue = properties.getValue("minLength");
+            String maxValue = properties.getValue("maxLength");
+
+            if (minValue != null) {
+                int minLength = Integer.parseInt(minValue);
+                if (value.length() < minLength) {
+                    violations.put(key, minErrorMsg);
+                }
             }
 
-            if (maxLength != 0 && value.length() > maxLength) {
-                violations.put(key, maxErrorMsg);
+            if (maxValue != null) {
+                int maxLength = Integer.parseInt(maxValue);
+                if (value.length() > maxLength) {
+                    violations.put(key, maxErrorMsg);
+                }
             }
         }
         return violations;
