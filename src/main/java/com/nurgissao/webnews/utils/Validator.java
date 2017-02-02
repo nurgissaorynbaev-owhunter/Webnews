@@ -33,7 +33,6 @@ public class Validator {
             violations.put("password", "Passwords not equal");
         }
 
-
         return violations;
     }
 

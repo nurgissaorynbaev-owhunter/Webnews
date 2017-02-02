@@ -6,6 +6,7 @@ import com.nurgissao.webnews.model.dao.DataSourceType;
 import com.nurgissao.webnews.model.dao.UserDAO;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignInAction implements Action {
+    public static Logger log = Logger.getLogger(SignInAction.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -41,13 +43,16 @@ public class SignInAction implements Action {
 
             User user = userDAO.find(email, password);
 
-            if (user != null) {
+            if (user.getId() != 0) {
                 HttpSession session = req.getSession();
                 session.setAttribute("user", user);
-                session.setMaxInactiveInterval(30 * 60);
+                session.setMaxInactiveInterval(30*60);
 
+                System.out.println(session.getAttribute("user"));
             } else {
+                log.info("Not such User.");
                 //TODO throw appropriate exception
+                return "signIn";
             }
 
         } catch (DAOException e) {

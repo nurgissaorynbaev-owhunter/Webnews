@@ -15,7 +15,7 @@ public class H2UserDAO implements UserDAO {
         User user;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT id, firstName, lastName, email, password FROM USER WHERE id=?")) {
+                "SELECT * FROM USER WHERE id=?")) {
 
             ps.setInt(1, id);
             user = map(ps.executeQuery());
@@ -33,7 +33,7 @@ public class H2UserDAO implements UserDAO {
         Connection connection = connectionPool.getConnection();
         User user;
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT id, firstName, lastName, email, password FROM USER WHERE email=? AND password=?")) {
+                "SELECT * FROM USER WHERE email=? AND password=?")) {
 
             ps.setString(1, email);
             ps.setString(2, password);
@@ -54,7 +54,7 @@ public class H2UserDAO implements UserDAO {
         List<User> users = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT id, firstName, lastName, email, password FROM USER")) {
+                "SELECT * FROM USER")) {
 
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {

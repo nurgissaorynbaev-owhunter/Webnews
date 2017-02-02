@@ -40,15 +40,25 @@ public class H2ProductDAO implements ProductDAO {
         List<Product> products = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM Product limit 10")) {
+                "SELECT * FROM Product")) {
 
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                products.add(map(resultSet));
+                Product product = new Product();
+
+                product.setId(resultSet.getInt(1));
+                product.setTitle(resultSet.getString(2));
+                product.setAuthor(resultSet.getString(3));
+                product.setPrice(resultSet.getInt(4));
+                product.setDescription(resultSet.getString(5));
+                product.setDetails(resultSet.getString(6));
+                product.setAboutAuthor(resultSet.getString(7));
+
+                products.add(product);
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to fina all Product.", e);
+            throw new DAOException("Failed to find all Product.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -118,7 +128,7 @@ public class H2ProductDAO implements ProductDAO {
         Connection connection = connectionPool.getConnection();
         int affectedRowCount;
 
-        try(PreparedStatement ps = connection.prepareStatement(
+        try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM Product WHERE id=?")) {
 
             ps.setInt(1, product.getId());

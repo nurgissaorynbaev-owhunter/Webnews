@@ -23,18 +23,21 @@
             <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
             <div class="input-group">
                 <div class="input-group-addon">$</div>
-                <input type="text" class="form-control" name="price" id="exampleInputAmount" placeholder="Amount" required>
+                <input type="text" class="form-control" name="price" id="exampleInputAmount" placeholder="Amount"
+                       required>
                 <div class="input-group-addon">.00</div>
             </div>
         </div>
         <div class="form-group">
-            <textarea class="form-control" rows="10" name="description" placeholder="Product Description" required></textarea>
+            <textarea class="form-control" rows="10" name="description" placeholder="Product Description"
+                      required></textarea>
         </div>
         <div class="form-group">
             <textarea class="form-control" rows="7" name="details" placeholder="Product Details" required></textarea>
         </div>
         <div class="form-group">
-            <textarea class="form-control" rows="5" name="aboutAuthor" placeholder="About The Author" required></textarea>
+            <textarea class="form-control" rows="5" name="aboutAuthor" placeholder="About The Author"
+                      required></textarea>
         </div>
         <div class="form-group">
             <label for="InputImage">Choose Image</label>
@@ -47,16 +50,3 @@
 </form>
 </body>
 </html>
-<%--<div class="container">--%>
-<%--<div class="row">--%>
-<%--<div class="col-md-offset-3 col-md-3">--%>
-<%----%>
-<%--</div>--%>
-<%--<div class="col-md-4">--%>
-
-<%--</div>--%>
-<%--</div>--%>
-<%--<div class="row">--%>
-
-<%--</div>--%>
-<%--</div>--%>

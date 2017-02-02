@@ -3,6 +3,7 @@ package com.nurgissao.webnews.controller;
 import com.nurgissao.webnews.controller.action.Action;
 import com.nurgissao.webnews.controller.action.ActionException;
 import com.nurgissao.webnews.controller.action.ActionFactory;
+import com.nurgissao.webnews.model.dao.ConnectionPool;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,5 +27,11 @@ public class ControllerServlet extends HttpServlet {
         } catch (ActionException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void destroy() {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        connectionPool.shutdownConnections();
     }
 }
