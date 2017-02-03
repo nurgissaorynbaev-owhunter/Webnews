@@ -94,6 +94,28 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
     }
 
     @Override
+    public int update(ShoppingCart shoppingCart) throws DAOException {
+        Connection connection = connectionPool.getConnection();
+        int affectedRowCount;
+
+        try (PreparedStatement ps = connection.prepareStatement(
+                "UPDATE ShoppingCart SET quantity=? WHERE productId=?")) {
+
+            ps.setInt(1, shoppingCart.getQuantity());
+            ps.setInt(2, shoppingCart.getProductId());
+
+            affectedRowCount = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to delete shopping cart item.", e);
+        } finally {
+            connectionPool.closeConnection(connection);
+        }
+
+        return affectedRowCount;
+    }
+
+    @Override
     public int delete(ShoppingCart shoppingCart) throws DAOException {
         Connection connection = connectionPool.getConnection();
         int affectedRowCount;

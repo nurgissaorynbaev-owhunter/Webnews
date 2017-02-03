@@ -8,7 +8,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShoppingCartAction implements Action {
 
@@ -26,6 +28,17 @@ public class ShoppingCartAction implements Action {
                 }
             }
 
+            String pQuantity = req.getParameter("pQuantity");
+            String productId = req.getParameter("productId");
+            if (pQuantity != null && productId != null) {
+                ShoppingCart shoppingCart = new ShoppingCart();
+                shoppingCart.setQuantity(Integer.parseInt(pQuantity));
+                shoppingCart.setProductId(Integer.parseInt(productId));
+
+                System.out.println(shoppingCart);
+                shoppingCartDAO.update(shoppingCart);
+            }
+
             String deleteProductId = req.getParameter("deleteProductId");
             if (deleteProductId != null) {
                 shoppingCartDAO.delete(Integer.parseInt(deleteProductId), cookieId);
@@ -35,13 +48,16 @@ public class ShoppingCartAction implements Action {
             ProductDAO productDAO = daoFactory.getProductDAO();
             List<Product> products = new ArrayList<>();
             Product product;
+            Map<Integer, Integer> productQuantity = new HashMap<>();
 
             if (!shoppingCarts.isEmpty()) {
                 for (ShoppingCart sh : shoppingCarts) {
+                    productQuantity.put(sh.getProductId(), sh.getQuantity());
                     product = productDAO.find(sh.getProductId());
                     products.add(product);
                 }
                 req.setAttribute("products", products);
+                req.setAttribute("productQuantity", productQuantity);
             }
 
         } catch (DAOException e) {

@@ -25,21 +25,23 @@ public class AddShoppingCartAction implements Action {
 
             int productId = Integer.parseInt(req.getParameter("productId"));
 
-            ShoppingCart shoppingCart = new ShoppingCart();
             ShoppingCart takenShoppingCart = shoppingCartDAO.find(productId, cookieId);
+
+            ShoppingCart shoppingCart = new ShoppingCart();
+            shoppingCart.setProductId(productId);
+            shoppingCart.setCookieId(cookieId);
 
             int quantity = 0;
             if (takenShoppingCart != null) {
-                quantity = takenShoppingCart.getQuantity();
-                quantity ++;
+                quantity = takenShoppingCart.getQuantity() + 1;
+                shoppingCart.setQuantity(quantity);
+
+                shoppingCartDAO.update(shoppingCart);
             } else {
-
+                quantity++;
+                shoppingCart.setQuantity(quantity);
+                shoppingCartDAO.create(shoppingCart);
             }
-            shoppingCart.setProductId(productId);
-            shoppingCart.setCookieId(cookieId);
-            shoppingCart.setQuantity(quantity);
-
-            shoppingCartDAO.create(shoppingCart);
 
         } catch (DAOException e) {
             throw new ActionException(e);

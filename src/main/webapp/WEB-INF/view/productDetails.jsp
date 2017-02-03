@@ -19,9 +19,9 @@
             <strong>
                 ${requestScope.product.title}
             </strong><br>
-            <small>
+            <em>
                 by ${requestScope.product.author}
-            </small>
+            </em>
             <br><br>
             <strong>
                 Price: $${requestScope.product.price}

@@ -12,6 +12,8 @@ public interface ShoppingCartDAO {
 
     ShoppingCart create(ShoppingCart shoppingCart) throws DAOException;
 
+    int update(ShoppingCart shoppingCart) throws DAOException;
+
     int delete(ShoppingCart shoppingCart) throws DAOException;
 
     int delete(int productId, String cookieId) throws DAOException;

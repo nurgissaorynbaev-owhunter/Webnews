@@ -25,6 +25,15 @@
                     <td><c:out value="${product.title}"/></td>
                     <td>$<c:out value="${product.price}"/></td>
                     <td>
+                        <c:set var="pQuantity" value="${requestScope.productQuantity}"/>
+                        <c:set var="productId" value="${product.id}"/>
+                        <form action="/pages/shoppingCart" method="post">
+                            <input type="number" min="0" name="pQuantity" value="${pQuantity[productId]}">
+                            <input type="hidden" name="productId" value="${productId}">
+                            <input type="submit" class="btn btn-primary btn-xs" value="save">
+                        </form>
+                    </td>
+                    <td>
                         <form action="/pages/shoppingCart" method="post">
                             <input type="hidden" name="deleteProductId" value="${product.id}">
                             <input type="submit" class="btn btn-primary btn-xs" value="Delete">
