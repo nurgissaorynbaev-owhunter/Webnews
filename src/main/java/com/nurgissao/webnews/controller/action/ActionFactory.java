@@ -17,7 +17,8 @@ public class ActionFactory {
         actions.put("profile", new ProfileAction());
         actions.put("showAddProduct", new ShowAddProductAction());
         actions.put("addProduct", new AddProductAction());
-        actions.put("productDetails", new ShowProductDetailsAction());
+        actions.put("productDetails", new ProductDetailsAction());
+        actions.put("addShoppingCart", new AddShoppingCartAction());
         actions.put("shoppingCart", new ShoppingCartAction());
     }
 

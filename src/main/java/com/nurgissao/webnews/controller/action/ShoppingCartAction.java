@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowShoppingCartAction implements Action {
+public class ShoppingCartAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -23,8 +23,12 @@ public class ShowShoppingCartAction implements Action {
             for (Cookie c : cookies) {
                 if (c.getName().equals("cookieId")) {
                     cookieId = c.getValue();
-                    System.out.println("showShoppingCartAction: " + cookieId);
                 }
+            }
+
+            String deleteProductId = req.getParameter("deleteProductId");
+            if (deleteProductId != null) {
+                shoppingCartDAO.delete(Integer.parseInt(deleteProductId), cookieId);
             }
 
             List<ShoppingCart> shoppingCarts = shoppingCartDAO.find(cookieId);
@@ -36,7 +40,6 @@ public class ShowShoppingCartAction implements Action {
                 for (ShoppingCart sh : shoppingCarts) {
                     product = productDAO.find(sh.getProductId());
                     products.add(product);
-                    System.out.println("product id: " + sh.getProductId());
                 }
                 req.setAttribute("products", products);
             }

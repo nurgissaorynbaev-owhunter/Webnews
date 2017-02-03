@@ -9,7 +9,7 @@ import com.nurgissao.webnews.model.entity.Product;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ShowProductDetailsAction implements Action {
+public class ProductDetailsAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {

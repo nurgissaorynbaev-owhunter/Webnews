@@ -22,7 +22,11 @@ public class ControllerServlet extends HttpServlet {
             Action action = ActionFactory.getAction(req);
             String view = action.execute(req, resp);
 
-            req.getRequestDispatcher("/WEB-INF/view/" + view + ".jsp").forward(req, resp);
+            if (view.equals(req.getPathInfo().substring(1))) {
+                req.getRequestDispatcher("/WEB-INF/view/" + view + ".jsp").forward(req, resp);
+            } else {
+                resp.sendRedirect(view);
+            }
 
         } catch (ActionException e) {
             e.printStackTrace();

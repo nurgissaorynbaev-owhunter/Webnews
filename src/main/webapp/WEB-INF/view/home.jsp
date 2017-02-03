@@ -21,11 +21,11 @@
                 by <em><c:out value="${product.author}"/></em><br><br>
                 Price: $<c:out value="${product.price}"/><br><br>
                 <form action="/pages/productDetails" method="get">
-                    <%--<c:set value="${product.id}" var="productId" scope="request"/>--%>
                     <input type="hidden" name="productId" value="${product.id}">
                     <input type="submit" class="btn btn-default" value="Details">
                 </form>
-                <form action="/pages/shoppingCart" method="post">
+                <form action="/pages/addShoppingCart" method="post">
+                    <input type="hidden" name="productId" value="${product.id}">
                     <input type="submit" class="btn btn-info" value="Add to Shopping Cart">
                 </form>
             </div>
@@ -35,6 +35,11 @@
 </div>
 <div class="container">
     <ul class="list-inline">
+        <li>
+            <form action="/pages/shoppingCart" method="get">
+                <input type="submit" value="Show shopping cart">
+            </form>
+        </li>
         <li>
             <form action="/pages/showSignIn" method="get">
                 <input type="submit" name="submit" value="Sign In">

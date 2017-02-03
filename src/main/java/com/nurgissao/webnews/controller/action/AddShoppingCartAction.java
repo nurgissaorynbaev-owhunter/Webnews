@@ -1,14 +1,13 @@
 package com.nurgissao.webnews.controller.action;
 
 import com.nurgissao.webnews.model.dao.*;
-import com.nurgissao.webnews.model.entity.Product;
 import com.nurgissao.webnews.model.entity.ShoppingCart;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ShoppingCartAction implements Action {
+public class AddShoppingCartAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -24,11 +23,21 @@ public class ShoppingCartAction implements Action {
                 }
             }
 
-            String productId = req.getParameter("productId");
-            System.out.println("product id in cart: " + productId);
+            int productId = Integer.parseInt(req.getParameter("productId"));
+
             ShoppingCart shoppingCart = new ShoppingCart();
-            shoppingCart.setProductId(Integer.parseInt(productId));
-            shoppingCart.setJssesionid(cookieId);
+            ShoppingCart takenShoppingCart = shoppingCartDAO.find(productId, cookieId);
+
+            int quantity = 0;
+            if (takenShoppingCart != null) {
+                quantity = takenShoppingCart.getQuantity();
+                quantity ++;
+            } else {
+
+            }
+            shoppingCart.setProductId(productId);
+            shoppingCart.setCookieId(cookieId);
+            shoppingCart.setQuantity(quantity);
 
             shoppingCartDAO.create(shoppingCart);
 

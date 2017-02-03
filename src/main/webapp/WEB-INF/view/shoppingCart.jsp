@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,5 +11,29 @@
 </head>
 <body>
 
+<div class="container c-top70">
+    <div class="row col-md-10">
+        <table class="table">
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+            <c:forEach var="product" items="${requestScope.products}">
+                <tr>
+                    <td><c:out value="${product.title}"/></td>
+                    <td>$<c:out value="${product.price}"/></td>
+                    <td>
+                        <form action="/pages/shoppingCart" method="post">
+                            <input type="hidden" name="deleteProductId" value="${product.id}">
+                            <input type="submit" class="btn btn-primary btn-xs" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
+</div>
 </body>
 </html>
