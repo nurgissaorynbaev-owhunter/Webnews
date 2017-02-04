@@ -8,7 +8,7 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-<form action="/pages/addProduct" method="post" class="form-horizontal">
+<form action="/pages/addProduct" method="post" class="form-horizontal" enctype="multipart/form-data">
     <div class="col-lg-offset-3 col-md-6 c-top20">
         <div class="form-group text-center">
             <h2>Add Product</h2>
@@ -36,12 +36,11 @@
             <textarea class="form-control" rows="7" name="details" placeholder="Product Details" required></textarea>
         </div>
         <div class="form-group">
-            <textarea class="form-control" rows="5" name="aboutAuthor" placeholder="About The Author"
-                      required></textarea>
+            <textarea class="form-control" rows="5" name="aboutAuthor" placeholder="About The Author"></textarea>
         </div>
         <div class="form-group">
             <label for="InputImage">Choose Image</label>
-            <input type="file" id="InputImage">
+            <input type="file" name="fileUpload" id="InputImage" required>
         </div>
         <div class="form-group text-right">
             <button type="submit" class="btn btn-primary">Save</button>

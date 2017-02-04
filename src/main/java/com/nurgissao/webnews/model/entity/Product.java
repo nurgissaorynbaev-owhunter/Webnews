@@ -8,6 +8,7 @@ public class Product {
     private String description;
     private String details;
     private String aboutAuthor;
+    private String image;
 
     public int getId() {
         return id;
@@ -65,6 +66,14 @@ public class Product {
         this.aboutAuthor = aboutAuthor;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -75,6 +84,7 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", details='" + details + '\'' +
                 ", aboutAuthor='" + aboutAuthor + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 }

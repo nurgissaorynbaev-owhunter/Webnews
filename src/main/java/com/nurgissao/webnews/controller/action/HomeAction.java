@@ -36,14 +36,6 @@ public class HomeAction implements Action {
                 }
             }
 
-//            String deleteProductId = req.getParameter("deleteProductId");
-//            ShoppingCartDAO shoppingCartDAO = daoFactory.getShoppingCartDAO();
-//            if (deleteProductId != null) {
-//                System.out.println("delete id: " + deleteProductId);
-//                String jsessionid = (String) req.getAttribute("jsessionid");
-//                shoppingCartDAO.delete(Integer.parseInt(deleteProductId), jsessionid);
-//            }
-
         } catch (DAOException e) {
             throw new ActionException(e);
         }

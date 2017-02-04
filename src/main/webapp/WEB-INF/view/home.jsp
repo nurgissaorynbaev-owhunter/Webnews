@@ -11,29 +11,6 @@
 </head>
 <body>
 <div class="container c-top70">
-    <c:forEach var="product" items="${requestScope.products}">
-        <div class="row">
-            <div class="col-md-offset-1 col-md-3">
-                <img src="" width="200" height="300" class="img-rounded"><br>
-            </div>
-            <div class="col-md-6">
-                <c:out value="${product.title}"/><br>
-                by <em><c:out value="${product.author}"/></em><br><br>
-                Price: $<c:out value="${product.price}"/><br><br>
-                <form action="/pages/productDetails" method="get">
-                    <input type="hidden" name="productId" value="${product.id}">
-                    <input type="submit" class="btn btn-default" value="Details">
-                </form>
-                <form action="/pages/addShoppingCart" method="post">
-                    <input type="hidden" name="productId" value="${product.id}">
-                    <input type="submit" class="btn btn-info" value="Add to Shopping Cart">
-                </form>
-            </div>
-        </div>
-        <hr>
-    </c:forEach>
-</div>
-<div class="container">
     <ul class="list-inline">
         <li>
             <form action="/pages/shoppingCart" method="get">
@@ -57,6 +34,28 @@
         </li>
     </ul>
 </div>
-
+<div class="container c-top70">
+    <c:forEach var="product" items="${requestScope.products}">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-3">
+                <img src="../../image/${product.image}" alt="Product image" class="img-rounded c-image-percent50">
+            </div>
+            <div class="col-md-6">
+                <c:out value="${product.title}"/><br>
+                by <em><c:out value="${product.author}"/></em><br><br>
+                Price: $<c:out value="${product.price}"/><br><br>
+                <form action="/pages/productDetails" method="get">
+                    <input type="hidden" name="productId" value="${product.id}">
+                    <input type="submit" class="btn btn-default" value="Details">
+                </form>
+                <form action="/pages/addShoppingCart" method="post">
+                    <input type="hidden" name="productId" value="${product.id}">
+                    <input type="submit" class="btn btn-info" value="Add to Shopping Cart">
+                </form>
+            </div>
+        </div>
+        <hr>
+    </c:forEach>
+</div>
 </body>
 </html>

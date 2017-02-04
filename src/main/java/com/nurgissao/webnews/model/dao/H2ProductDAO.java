@@ -53,6 +53,7 @@ public class H2ProductDAO implements ProductDAO {
                 product.setDescription(resultSet.getString(5));
                 product.setDetails(resultSet.getString(6));
                 product.setAboutAuthor(resultSet.getString(7));
+                product.setImage(resultSet.getString(8));
 
                 products.add(product);
             }
@@ -72,8 +73,8 @@ public class H2ProductDAO implements ProductDAO {
         Product tProduct = new Product();
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO Product (title, author, price, description, details, aboutAuthor)" +
-                        "VALUES (?, ?, ?, ?, ?, ?)")) {
+                "INSERT INTO Product (title, author, price, description, details, aboutAuthor, image)" +
+                        "VALUES (?,?,?,?,?,?,?)")) {
 
             ps.setString(1, product.getTitle());
             ps.setString(2, product.getAuthor());
@@ -81,6 +82,7 @@ public class H2ProductDAO implements ProductDAO {
             ps.setString(4, product.getDescription());
             ps.setString(5, product.getDetails());
             ps.setString(6, product.getAboutAuthor());
+            ps.setString(7, product.getImage());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getGeneratedKeys();
@@ -103,7 +105,7 @@ public class H2ProductDAO implements ProductDAO {
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "UPDATE Product SET title=?, author=?, price=?, description=?," +
-                        " details=?, aboutAuthor=? WHERE id=?")) {
+                        " details=?, aboutAuthor=? image=? WHERE id=?")) {
 
             ps.setString(1, product.getTitle());
             ps.setString(2, product.getAuthor());
@@ -112,6 +114,7 @@ public class H2ProductDAO implements ProductDAO {
             ps.setString(5, product.getDetails());
             ps.setString(6, product.getAboutAuthor());
             ps.setInt(7, product.getId());
+            ps.setString(8, product.getImage());
 
             affectedRowCount = ps.executeUpdate();
 
@@ -145,9 +148,10 @@ public class H2ProductDAO implements ProductDAO {
     }
 
     private Product map(ResultSet resultSet) throws SQLException {
-        Product product = new Product();
+        Product product = null;
 
         if (resultSet.next()) {
+            product = new Product();
             product.setId(resultSet.getInt(1));
             product.setTitle(resultSet.getString(2));
             product.setAuthor(resultSet.getString(3));
@@ -155,6 +159,7 @@ public class H2ProductDAO implements ProductDAO {
             product.setDescription(resultSet.getString(5));
             product.setDetails(resultSet.getString(6));
             product.setAboutAuthor(resultSet.getString(7));
+            product.setImage(resultSet.getString(8));
         }
         return product;
     }

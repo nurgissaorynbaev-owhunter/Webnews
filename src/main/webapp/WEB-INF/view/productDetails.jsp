@@ -13,9 +13,9 @@
 <div class="container c-top70">
     <div class="row">
         <div class="col-md-offset-3 col-md-2">
-            <img src="" width="150" height="200" alt="Product image" class="img-rounded">
+            <img src="../../image/${requestScope.product.image}" width="200" height="300" alt="Product image" class="img-rounded">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-offset-1 col-md-3">
             <strong>
                 ${requestScope.product.title}
             </strong><br>

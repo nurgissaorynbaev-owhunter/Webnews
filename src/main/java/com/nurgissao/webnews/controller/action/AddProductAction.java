@@ -7,12 +7,16 @@ import com.nurgissao.webnews.model.dao.ProductDAO;
 import com.nurgissao.webnews.model.entity.Product;
 import com.nurgissao.webnews.utils.Validator;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import javax.servlet.http.Part;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@MultipartConfig
 public class AddProductAction implements Action {
 
     @Override
@@ -27,6 +31,7 @@ public class AddProductAction implements Action {
             String description = req.getParameter("description");
             String details = req.getParameter("details");
             String aboutAuthor = req.getParameter("aboutAuthor");
+            String image = getFileName(req);
 
             Map<String, String> formValue = new HashMap<>();
             formValue.put("title", title);
@@ -45,7 +50,6 @@ public class AddProductAction implements Action {
 
                     //TODO throw appropriate Exception.
                 }
-                return "addProduct";
             }
 
             Product product = new Product();
@@ -55,18 +59,34 @@ public class AddProductAction implements Action {
             product.setDescription(description);
             product.setDetails(details);
             product.setAboutAuthor(aboutAuthor);
+            product.setImage(image);
 
-
-            Product generatedProductId = productDAO.create(product);
-            if (generatedProductId != null) {
-                req.setAttribute("product", product);
-
-            }
+            productDAO.create(product);
 
         } catch (DAOException e) {
             throw new ActionException(e);
         }
 
-        return "productDetails";
+        return "showAddProduct";
     }
+
+    private String getFileName(HttpServletRequest req) {
+        String fileName = null;
+        try {
+            Part part = req.getPart("fileUpload");
+            String contentDisposition = part.getHeader("content-disposition");
+
+            String[] tokens = contentDisposition.split(";");
+            for (String token : tokens) {
+                if (token.trim().startsWith("filename")) {
+                    fileName = token.substring(token.indexOf("=") + 2, token.length() - 1);
+                }
+            }
+
+        } catch (IOException | ServletException e) {
+            e.printStackTrace();
+        }
+        return fileName;
+    }
+
 }

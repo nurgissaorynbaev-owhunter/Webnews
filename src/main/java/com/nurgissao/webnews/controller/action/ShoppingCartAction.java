@@ -35,11 +35,10 @@ public class ShoppingCartAction implements Action {
                 shoppingCart.setQuantity(Integer.parseInt(pQuantity));
                 shoppingCart.setProductId(Integer.parseInt(productId));
 
-                System.out.println(shoppingCart);
                 shoppingCartDAO.update(shoppingCart);
             }
 
-            String deleteProductId = req.getParameter("deleteProductId");
+            String deleteProductId =  req.getParameter("deleteProductId");
             if (deleteProductId != null) {
                 shoppingCartDAO.delete(Integer.parseInt(deleteProductId), cookieId);
             }

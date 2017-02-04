@@ -7,6 +7,6 @@ public class ShowAddProductAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
-        return "addProduct";
+        return "showAddProduct";
     }
 }
