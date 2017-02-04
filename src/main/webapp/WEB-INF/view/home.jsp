@@ -10,31 +10,32 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-<div class="container c-top70">
-    <ul class="list-inline">
-        <li>
-            <form action="/pages/shoppingCart" method="get">
-                <input type="submit" value="Show shopping cart">
-            </form>
-        </li>
-        <li>
-            <form action="/pages/showSignIn" method="get">
-                <input type="submit" name="submit" value="Sign In">
-            </form>
-        </li>
-        <li>
-            <form action="/pages/showProfile" method="get">
-                <input type="submit" value="Profile">
-            </form>
-        </li>
-        <li>
-            <form action="/pages/showAddProduct" method="get">
-                <input type="submit" value="Add product">
-            </form>
-        </li>
-    </ul>
-</div>
-<div class="container c-top70">
+<%--<div class="container c-top70">--%>
+    <%--<ul class="list-inline">--%>
+        <%--<li>--%>
+            <%--<form action="/pages/shoppingCart" method="get">--%>
+                <%--<input type="submit" value="Show shopping cart">--%>
+            <%--</form>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<form action="/pages/showSignIn" method="get">--%>
+                <%--<input type="submit" name="submit" value="Sign In">--%>
+            <%--</form>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<form action="/pages/showProfile" method="get">--%>
+                <%--<input type="submit" value="Profile">--%>
+            <%--</form>--%>
+        <%--</li>--%>
+        <%--<li>--%>
+            <%--<form action="/pages/showAddProduct" method="get">--%>
+                <%--<input type="submit" value="Add product">--%>
+            <%--</form>--%>
+        <%--</li>--%>
+    <%--</ul>--%>
+<%--</div>--%>
+<jsp:include page="header.jsp"/>
+<div class="container c-top10">
     <c:forEach var="product" items="${requestScope.products}">
         <div class="row">
             <div class="col-md-offset-1 col-md-3">
@@ -57,5 +58,6 @@
         <hr>
     </c:forEach>
 </div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

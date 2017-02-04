@@ -10,6 +10,7 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
+<jsp:include page="header.jsp"/>
 <div class="container c-top70">
     <div class="row">
         <div class="col-md-offset-3 col-md-2">
@@ -67,5 +68,6 @@
         </div>
     </div>
 </div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

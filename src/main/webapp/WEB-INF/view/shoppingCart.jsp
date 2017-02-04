@@ -10,7 +10,7 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-
+<jsp:include page="header.jsp"/>
 <div class="container c-top70">
     <div class="row col-md-10">
         <table class="table">
@@ -44,5 +44,6 @@
         </table>
     </div>
 </div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>
