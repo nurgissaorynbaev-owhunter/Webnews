@@ -8,10 +8,10 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-<div class="container c-bottom10">
+<div class="container c-footer">
     <div class="row">
         <div class="col-md-offset-10">
-            <p>&copy; 2017 Webnews, Inc.</p>
+            <p>&copy; 2017 Webnews.</p>
         </div>
     </div>
 </div>

@@ -11,12 +11,12 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div class="container c-top70">
+<div class="container c-wrapper">
     <div class="row">
-        <div class="col-md-offset-3 col-md-2">
+        <div class="col-md-offset-2 col-md-2">
             <img src="../../image/${requestScope.product.image}" width="200" height="300" alt="Product image" class="img-rounded">
         </div>
-        <div class="col-md-offset-1 col-md-3">
+        <div class="col-md-offset-1 col-md-5">
             <strong>
                 ${requestScope.product.title}
             </strong><br>
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-offset-3 col-md-6">
+        <div class="col-md-offset-2 col-md-8">
             <br>
             <strong>
                 <h3>Product Description</h3>
@@ -54,7 +54,7 @@
                         <c:out value="${item}"/><br>
                     </c:forEach>
                 </li>
-            </ul>
+            </ul><br>
             <strong>
                 <h3>Editorial Reviews</h3>
             </strong><br>

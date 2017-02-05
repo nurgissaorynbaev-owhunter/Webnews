@@ -9,6 +9,6 @@ public class ShowSignUpAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        return "signUp";
+        return "showSignUp";
     }
 }

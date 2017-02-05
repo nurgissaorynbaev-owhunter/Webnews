@@ -11,15 +11,17 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div class="container c-top70">
-    <div class="row col-md-10">
-        <table class="table">
+<div class="container c-wrapper">
+    <table class="table">
+        <div class="row">
             <tr>
                 <th>Product</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th></th>
             </tr>
+        </div>
+        <div class="row">
             <c:forEach var="product" items="${requestScope.products}">
                 <tr>
                     <td><c:out value="${product.title}"/></td>
@@ -41,8 +43,8 @@
                     </td>
                 </tr>
             </c:forEach>
-        </table>
-    </div>
+        </div>
+    </table>
 </div>
 <jsp:include page="footer.jsp"/>
 </body>

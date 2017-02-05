@@ -8,7 +8,7 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-<div class="container c-top10">
+<div class="container c-header">
     <div class="row">
         <div class="col-lg-offset-8">
             <ul class="list-inline">
@@ -20,10 +20,15 @@
                         <input type="submit" class="btn btn-default" value="Shopping cart">
                     </form>
                 </li>
+                <li>
+                    <a href="/pages/showSignIn">Sign in</a>
+                </li>
+                <li>
+                    <a href="/pages/showSignUp">Sign up</a>
+                </li>
             </ul>
         </div>
     </div>
-    <hr>
 </div>
 </body>
 </html>
