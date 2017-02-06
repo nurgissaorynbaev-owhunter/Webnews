@@ -26,6 +26,7 @@ public class SignInAction implements Action {
 
             String email = req.getParameter("email");
             String password = req.getParameter("pwd");
+            String rememberMe = req.getParameter("rememberMe");
 
             Map<String, String> formValue = new HashMap<>();
             formValue.put("email", email);
@@ -43,12 +44,13 @@ public class SignInAction implements Action {
 
             User user = userDAO.find(email, password);
 
-            if (user.getId() != 0) {
+            if (user != null) {
                 HttpSession session = req.getSession();
+                if (rememberMe != null) {
+                    session.setMaxInactiveInterval(30*24*60*60);
+                }
                 session.setAttribute("user", user);
-                session.setMaxInactiveInterval(30*60);
 
-                System.out.println(session.getAttribute("user"));
             } else {
                 log.info("Not such User.");
                 //TODO throw appropriate exception

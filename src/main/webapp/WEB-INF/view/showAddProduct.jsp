@@ -8,6 +8,7 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
+<jsp:include page="header.jsp"/>
 <form action="/pages/addProduct" method="post" class="form-horizontal" enctype="multipart/form-data">
     <div class="col-lg-offset-3 col-md-6 c-top20">
         <div class="form-group text-center">
@@ -47,5 +48,6 @@
         </div>
     </div>
 </form>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

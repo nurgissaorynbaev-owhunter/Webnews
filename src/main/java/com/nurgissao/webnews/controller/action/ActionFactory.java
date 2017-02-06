@@ -9,10 +9,13 @@ public class ActionFactory {
 
     static {
         actions.put("home", new HomeAction());
+
         actions.put("showSignIn", new ShowSignInAction());
         actions.put("showSignUp", new ShowSignUpAction());
         actions.put("register", new SignUpAction());
         actions.put("signIn", new SignInAction());
+        actions.put("signOut", new SignOutAction());
+
         actions.put("showProfile", new ShowProfileAction());
         actions.put("profile", new ProfileAction());
 

@@ -72,21 +72,22 @@ public class H2UserDAO implements UserDAO {
     @Override
     public User create(User user) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        User tUser = new User();
+        User tUser = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO USER (firstName, lastName, email, password)" +
-                        "VALUES (?, ?, ?, ?)")) {
+                "INSERT INTO USER (firstName, lastName, email, password, role)" +
+                        "VALUES (?, ?, ?, ?, ?)")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
+            ps.setString(5, user.getRole());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getGeneratedKeys();
             if (resultSet.next()) {
-                tUser.setId(resultSet.getInt(1));
+                tUser = user;
             }
 
         } catch (SQLException e) {
@@ -103,13 +104,14 @@ public class H2UserDAO implements UserDAO {
         int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE USER SET firstName=?, lastName=?, email=?, password=? WHERE id=?")) {
+                "UPDATE USER SET firstName=?, lastName=?, email=?, password=?, role=? WHERE id=?")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
-            ps.setInt(5, user.getId());
+            ps.setString(5, user.getRole());
+            ps.setInt(6, user.getId());
 
             affectedRowCount = ps.executeUpdate();
 
@@ -163,13 +165,15 @@ public class H2UserDAO implements UserDAO {
     }
 
     private User map(ResultSet resultSet) throws SQLException {
-        User user = new User();
+        User user = null;
         if (resultSet.next()) {
+            user = new User();
             user.setId(resultSet.getInt(1));
             user.setFirstName(resultSet.getString(2));
             user.setLastName(resultSet.getString(3));
             user.setEmail(resultSet.getString(4));
             user.setPassword(resultSet.getString(5));
+            user.setRole(resultSet.getString(6));
         }
         return user;
     }

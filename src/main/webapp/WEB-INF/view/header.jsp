@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -10,24 +11,87 @@
 <body>
 <div class="container c-header">
     <div class="row">
-        <div class="col-lg-offset-8">
-            <ul class="list-inline">
-                <li>
-                    <a class="btn btn-default" href="http://localhost:8080/pages/home" role="button">Home</a>
-                </li>
-                <li>
-                    <form action="/pages/shoppingCart" method="get">
-                        <input type="submit" class="btn btn-default" value="Shopping cart">
-                    </form>
-                </li>
-                <li>
-                    <a href="/pages/showSignIn">Sign in</a>
-                </li>
-                <li>
-                    <a href="/pages/showSignUp">Sign up</a>
-                </li>
-            </ul>
-        </div>
+        <c:set var="user" value="${sessionScope.user}"/>
+        <c:choose>
+            <c:when test="${user.role eq 'admin'}">
+                <div>
+                    <ul class="list-inline">
+                        <li>
+                            <a class="btn btn-default" href="/pages/home" role="button">Home</a>
+                        </li>
+                        <li>
+                            <form action="/pages/shoppingCart" method="get">
+                                <input type="submit" class="btn btn-default" value="Shopping cart">
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/pages/showAddProduct" method="get">
+                                <input type="submit" class="btn btn-link" value="Add product">
+                            </form>
+                        </li>
+                        <li>
+                            <form>
+                                <input type="submit" class="btn btn-link" value="Show users">
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/pages/signOut" method="get">
+                                <input type="submit" class="btn btn-link" value="Sign out">
+                            </form>
+                        </li>
+                        <li>
+                            <form>
+                                <input type="submit" class="btn btn-link" value="${user.firstName}">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </c:when>
+            <c:when test="${user.role eq 'user'}">
+                <div class="col-md-offset-6">
+                    <ul class="list-inline">
+                        <li>
+                            <a class="btn btn-default" href="/pages/home" role="button">Home</a>
+                        </li>
+                        <li>
+                            <form action="/pages/shoppingCart" method="get">
+                                <input type="submit" class="btn btn-default" value="Shopping cart">
+                            </form>
+                        </li>
+                        <li>
+                            <form>
+                                <input type="submit" class="btn btn-link" value="Sign out">
+                            </form>
+                        </li>
+                        <li>
+                            <form>
+                                <input type="submit" class="btn btn-link" value="${user.firstName}">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </c:when>
+            <c:when test="${user eq null}">
+                <div class="col-md-offset-8">
+                    <ul class="list-inline">
+                        <li>
+                            <a class="btn btn-default" href="/pages/home" role="button">Home</a>
+                        </li>
+                        <li>
+                            <form action="/pages/shoppingCart" method="get">
+                                <input type="submit" class="btn btn-default" value="Shopping cart">
+                            </form>
+                        </li>
+                        <li>
+                            <a href="/pages/showSignIn">Sign in</a>
+                        </li>
+                        <li>
+                            <a href="/pages/showSignUp">Sign up</a>
+                        </li>
+                    </ul>
+                </div>
+            </c:when>
+        </c:choose>
     </div>
 </div>
 </body>

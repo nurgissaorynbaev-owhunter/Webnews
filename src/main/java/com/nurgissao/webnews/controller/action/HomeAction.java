@@ -7,6 +7,7 @@ import com.nurgissao.webnews.model.entity.Product;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ public class HomeAction implements Action {
             if (cookies == null) {
                 String cookieId = UUID.randomUUID().toString().replace("-", "");
                 Cookie cookie = new Cookie("cookieId", cookieId);
+                cookie.setMaxAge(90*24*60*60);
                 resp.addCookie(cookie);
             } else {
                 for (Cookie cookie : cookies) {

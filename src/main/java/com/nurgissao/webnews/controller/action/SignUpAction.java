@@ -4,9 +4,11 @@ import com.nurgissao.webnews.model.dao.DAOException;
 import com.nurgissao.webnews.model.dao.DAOFactory;
 import com.nurgissao.webnews.model.dao.DataSourceType;
 import com.nurgissao.webnews.model.dao.UserDAO;
+import com.nurgissao.webnews.model.entity.Role;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -47,12 +49,24 @@ public class SignUpAction implements Action {
             user.setLastName(lastName);
             user.setEmail(email);
             user.setPassword(password);
+            user.setRole("user");
 
-            User generatedUserId = userDAO.create(user);
-            if (generatedUserId != null) {
-                HttpSession session = req.getSession();
-                session.setAttribute("user", user);
-                session.setMaxInactiveInterval(30*60);
+            User tUser = userDAO.create(user);
+            if (tUser != null) {
+                String cookieId = null;
+                Cookie[] cookies = req.getCookies();
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("cookieId")) {
+                        cookieId = cookie.getValue();
+                        cookie.setMaxAge(365 * 24 * 60 * 60);
+                        resp.addCookie(cookie);
+                    }
+                }
+
+                if (cookieId != null) {
+                    HttpSession session = req.getSession();
+                    session.setAttribute("user", tUser);
+                }
 
             } else {
                 //TODO throw appropriate exception
