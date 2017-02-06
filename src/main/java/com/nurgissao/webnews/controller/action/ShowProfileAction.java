@@ -7,6 +7,6 @@ public class ShowProfileAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
-        return "profile";
+        return "showProfile";
     }
 }

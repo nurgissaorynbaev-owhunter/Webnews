@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class AddProductAction implements Action {
             Map<String, String> violations = validator.validateAddProductForm(formValue);
 
             if (!violations.isEmpty()) {
-                for (Map.Entry<String, String> entry : violations.entrySet()){
+                for (Map.Entry<String, String> entry : violations.entrySet()) {
                     System.out.println(entry.getKey() + " " + entry.getValue());
 
                     //TODO throw appropriate Exception.
@@ -61,12 +62,39 @@ public class AddProductAction implements Action {
             product.setAboutAuthor(aboutAuthor);
             product.setImage(image);
 
-            productDAO.create(product);
+            String submit = req.getParameter("submit");
+            if (submit != null) {
+                Product uProduct = new Product();
+                HttpSession session = req.getSession();
+                Product sProduct = (Product) session.getAttribute("product");
+
+
+                uProduct.setId(sProduct.getId());
+                uProduct.setTitle(title);
+                uProduct.setAuthor(author);
+                uProduct.setPrice(Integer.parseInt(price));
+                uProduct.setDescription(description);
+                uProduct.setDetails(details);
+                uProduct.setAboutAuthor(aboutAuthor);
+                uProduct.setImage(image);
+
+                System.out.println(uProduct);
+
+                int affectedRowCount = productDAO.update(uProduct);
+                if (affectedRowCount == 0) {
+                    //TODO throw appropriate Exception.
+                }
+                session.removeAttribute("product");
+
+                return "home";
+
+            } else {
+                productDAO.create(product);
+            }
 
         } catch (DAOException e) {
             throw new ActionException(e);
         }
-
         return "showAddProduct";
     }
 

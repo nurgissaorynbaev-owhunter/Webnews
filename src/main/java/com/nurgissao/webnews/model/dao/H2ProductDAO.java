@@ -104,8 +104,7 @@ public class H2ProductDAO implements ProductDAO {
         int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE Product SET title=?, author=?, price=?, description=?," +
-                        " details=?, aboutAuthor=? image=? WHERE id=?")) {
+                "UPDATE Product SET title=?, author=?, price=?, description=?, details=?, aboutAuthor=?, image=? WHERE id=?")) {
 
             ps.setString(1, product.getTitle());
             ps.setString(2, product.getAuthor());
@@ -113,8 +112,8 @@ public class H2ProductDAO implements ProductDAO {
             ps.setString(4, product.getDescription());
             ps.setString(5, product.getDetails());
             ps.setString(6, product.getAboutAuthor());
-            ps.setInt(7, product.getId());
-            ps.setString(8, product.getImage());
+            ps.setString(7, product.getImage());
+            ps.setInt(8, product.getId());
 
             affectedRowCount = ps.executeUpdate();
 

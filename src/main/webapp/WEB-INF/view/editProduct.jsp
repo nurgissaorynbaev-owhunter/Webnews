@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,50 +10,42 @@
 <body>
 <jsp:include page="header.jsp"/>
 <div class="container c-top10">
-    <c:set var="product" value="${sessionScope.product}"/>
     <form action="/pages/addProduct" method="post" class="form-horizontal" enctype="multipart/form-data">
         <div class="col-lg-offset-3 col-md-6">
             <div class="form-group text-center">
                 <h2>Add Product</h2>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="title" value="${product.title}" placeholder="Title"
-                       required>
+                <input type="text" class="form-control" name="title" placeholder="Title" required>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="author" value="${product.author}" placeholder="Author"
-                       required>
+                <input type="text" class="form-control" name="author" placeholder="Author" required>
             </div>
             <div class="form-group">
                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                 <div class="input-group">
                     <div class="input-group-addon">$</div>
-                    <input type="text" class="form-control" name="price" value="${product.price}"
-                           id="exampleInputAmount" placeholder="Amount"
+                    <input type="text" class="form-control" name="price" id="exampleInputAmount" placeholder="Amount"
                            required>
                     <div class="input-group-addon">.00</div>
                 </div>
             </div>
             <div class="form-group">
             <textarea class="form-control" rows="10" name="description" placeholder="Product Description"
-                      required>${product.description}</textarea>
+                      required></textarea>
             </div>
             <div class="form-group">
                 <textarea class="form-control" rows="7" name="details" placeholder="Product Details"
-                          required>${product.details}</textarea>
+                          required></textarea>
             </div>
             <div class="form-group">
-                <textarea class="form-control" rows="5" name="aboutAuthor"
-                          placeholder="About The Author">${product.aboutAuthor}</textarea>
+                <textarea class="form-control" rows="5" name="aboutAuthor" placeholder="About The Author"></textarea>
             </div>
             <div class="form-group">
                 <label for="InputImage">Choose Image</label>
                 <input type="file" name="fileUpload" id="InputImage" required>
             </div>
             <div class="form-group text-right">
-                <c:if test="${product ne null}">
-                    <input type="hidden" name="submit" value="click">
-                </c:if>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </div>

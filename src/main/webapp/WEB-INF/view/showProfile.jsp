@@ -8,6 +8,7 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
+<jsp:include page="header.jsp"/>
 <form action="/pages/profile" method="post" class="form-horizontal">
     <div class="col-md-offset-4 col-md-4 c-top20">
         <div class="form-group text-center">
@@ -41,5 +42,6 @@
         </div>
     </div>
 </form>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

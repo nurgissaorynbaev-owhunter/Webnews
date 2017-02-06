@@ -12,33 +12,70 @@
 <body>
 <jsp:include page="header.jsp"/>
 <div class="container c-wrapper">
-    <c:forEach var="product" items="${requestScope.products}">
-        <hr>
-        <div class="row">
-            <div class="col-md-offset-1 col-md-3">
-                <img src="../../image/${product.image}" alt="Product image" class="img-rounded c-image-percent50">
-            </div>
-            <div class="col-md-6">
-                <c:out value="${product.title}"/><br>
-                by <em><c:out value="${product.author}"/></em><br><br>
-                Price: $<c:out value="${product.price}"/><br><br>
-                <ul class="list-inline">
-                    <li>
+    <c:choose>
+        <c:when test="${sessionScope.user.role eq 'admin'}">
+            <c:forEach var="product" items="${requestScope.products}">
+                <hr>
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-3">
+                        <img src="../../image/${product.image}" alt="Product image"
+                             class="img-rounded c-image-percent50">
+                    </div>
+                    <div class="col-md-6">
                         <form action="/pages/productDetails" method="get">
                             <input type="hidden" name="productId" value="${product.id}">
-                            <input type="submit" class="btn btn-default btn-sm" value="Details">
+                            <input type="submit" class="btn btn-default btn-link" value="${product.title}">
                         </form>
-                    </li>
-                    <li>
+                        by <em><c:out value="${product.author}"/></em><br><br>
+                        Price: $<c:out value="${product.price}"/><br><br>
+                        <ul class="list-inline">
+                            <li>
+                                <form action="/pages/addShoppingCart" method="post">
+                                    <input type="hidden" name="productId" value="${product.id}">
+                                    <input type="submit" class="btn btn-info btn-sm" value="Add to Shopping Cart">
+                                </form>
+                            </li>
+                            <li>
+                                <form action="/pages/editProduct" method="get">
+                                    <input type="hidden" name="productId" value="${product.id}">
+                                    <input type="submit" class="btn btn-primary btn-sm" value="Edit">
+                                </form>
+                            </li>
+                            <li>
+                                <form action="/pages/deleteProduct">
+                                    <input type="hidden" name="productId" value="${product.id}">
+                                    <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <c:forEach var="product" items="${requestScope.products}">
+                <hr>
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-3">
+                        <img src="../../image/${product.image}" alt="Product image"
+                             class="img-rounded c-image-percent50">
+                    </div>
+                    <div class="col-md-6">
+                        <form action="/pages/productDetails" method="get">
+                            <input type="hidden" name="productId" value="${product.id}">
+                            <input type="submit" class="btn btn-default btn-link" value="${product.title}">
+                        </form>
+                        by <em><c:out value="${product.author}"/></em><br><br>
+                        Price: $<c:out value="${product.price}"/><br><br>
                         <form action="/pages/addShoppingCart" method="post">
                             <input type="hidden" name="productId" value="${product.id}">
                             <input type="submit" class="btn btn-info btn-sm" value="Add to Shopping Cart">
                         </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </c:forEach>
+                    </div>
+                </div>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
 </div>
 <jsp:include page="footer.jsp"/>
 </body>

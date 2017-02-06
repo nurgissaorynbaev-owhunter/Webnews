@@ -23,8 +23,10 @@ public class ActionFactory {
         actions.put("shoppingCart", new ShoppingCartAction());
 
         actions.put("showAddProduct", new ShowAddProductAction());
-        actions.put("addProduct", new AddProductAction());
         actions.put("productDetails", new ProductDetailsAction());
+        actions.put("addProduct", new AddProductAction());
+        actions.put("deleteProduct", new DeleteProductAction());
+        actions.put("editProduct", new EditProductAction());
     }
 
     public static Action getAction(HttpServletRequest req) {

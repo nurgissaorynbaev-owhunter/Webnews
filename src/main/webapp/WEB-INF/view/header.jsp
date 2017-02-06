@@ -40,7 +40,7 @@
                             </form>
                         </li>
                         <li>
-                            <form>
+                            <form action="/pages/showProfile" method="get">
                                 <input type="submit" class="btn btn-link" value="${user.firstName}">
                             </form>
                         </li>
@@ -59,12 +59,12 @@
                             </form>
                         </li>
                         <li>
-                            <form>
+                            <form action="/pages/signOut" method="get">
                                 <input type="submit" class="btn btn-link" value="Sign out">
                             </form>
                         </li>
                         <li>
-                            <form>
+                            <form action="/pages/showProfile" method="get">
                                 <input type="submit" class="btn btn-link" value="${user.firstName}">
                             </form>
                         </li>
