@@ -30,8 +30,8 @@
                             </form>
                         </li>
                         <li>
-                            <form>
-                                <input type="submit" class="btn btn-link" value="Show users">
+                            <form action="/pages/userList" method="get">
+                                <input type="submit" class="btn btn-link" value="Users">
                             </form>
                         </li>
                         <li>

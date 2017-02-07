@@ -68,7 +68,6 @@ public class AddProductAction implements Action {
                 HttpSession session = req.getSession();
                 Product sProduct = (Product) session.getAttribute("product");
 
-
                 uProduct.setId(sProduct.getId());
                 uProduct.setTitle(title);
                 uProduct.setAuthor(author);
@@ -77,8 +76,6 @@ public class AddProductAction implements Action {
                 uProduct.setDetails(details);
                 uProduct.setAboutAuthor(aboutAuthor);
                 uProduct.setImage(image);
-
-                System.out.println(uProduct);
 
                 int affectedRowCount = productDAO.update(uProduct);
                 if (affectedRowCount == 0) {

@@ -9,6 +9,7 @@ public class User implements Serializable {
     private String email;
     private String password;
     private String role;
+    private String status;
 
     public int getId() {
         return id;
@@ -58,6 +59,14 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -67,6 +76,7 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
+                ", status=" + status +
                 '}';
     }
 }

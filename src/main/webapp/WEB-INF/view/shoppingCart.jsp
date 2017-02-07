@@ -21,8 +21,8 @@
                 <th></th>
             </tr>
         </div>
-        <div class="row">
-            <c:forEach var="product" items="${requestScope.products}">
+        <c:forEach var="product" items="${requestScope.products}">
+            <div class="row">
                 <tr>
                     <td><c:out value="${product.title}"/></td>
                     <td>$<c:out value="${product.price}"/></td>
@@ -30,7 +30,7 @@
                         <c:set var="pQuantity" value="${requestScope.productQuantity}"/>
                         <c:set var="productId" value="${product.id}"/>
                         <form action="/pages/shoppingCart" method="post">
-                            <input type="number" min="0" name="pQuantity" value="${pQuantity[productId]}">
+                            <input type="number" min="0" style="width: 45px;" name="pQuantity" value="${pQuantity[productId]}">
                             <input type="hidden" name="productId" value="${productId}">
                             <input type="submit" class="btn btn-primary btn-xs" value="save">
                         </form>
@@ -42,8 +42,8 @@
                         </form>
                     </td>
                 </tr>
-            </c:forEach>
-        </div>
+            </div>
+        </c:forEach>
     </table>
 </div>
 <jsp:include page="footer.jsp"/>

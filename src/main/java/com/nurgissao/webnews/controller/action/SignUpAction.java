@@ -4,7 +4,6 @@ import com.nurgissao.webnews.model.dao.DAOException;
 import com.nurgissao.webnews.model.dao.DAOFactory;
 import com.nurgissao.webnews.model.dao.DataSourceType;
 import com.nurgissao.webnews.model.dao.UserDAO;
-import com.nurgissao.webnews.model.entity.Role;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
 
@@ -16,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpAction implements Action {
+    private static final String NORMAL_STATUS = "normal";
+    private static final String USER_ROLE = "user";
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -49,7 +50,8 @@ public class SignUpAction implements Action {
             user.setLastName(lastName);
             user.setEmail(email);
             user.setPassword(password);
-            user.setRole("user");
+            user.setRole(USER_ROLE);
+            user.setStatus(NORMAL_STATUS);
 
             User tUser = userDAO.create(user);
             if (tUser != null) {
