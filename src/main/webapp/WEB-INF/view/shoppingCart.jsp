@@ -45,6 +45,11 @@
             </div>
         </c:forEach>
     </table>
+    <div class="text-right">
+        <form action="/pages/showCustomerRegistration" method="get">
+            <input type="submit" class="btn btn-primary btn-sm" value="Proceed to checkout">
+        </form>
+    </div>
 </div>
 <jsp:include page="footer.jsp"/>
 </body>

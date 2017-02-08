@@ -13,7 +13,7 @@
 <div class="container c-top10">
     <c:set var="product" value="${sessionScope.product}"/>
     <form action="/pages/addProduct" method="post" class="form-horizontal" enctype="multipart/form-data">
-        <div class="col-lg-offset-3 col-md-6">
+        <div class="col-md-offset-3 col-md-6">
             <div class="form-group text-center">
                 <h2>Add Product</h2>
             </div>

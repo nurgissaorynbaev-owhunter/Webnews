@@ -40,6 +40,7 @@ public class AddShoppingCartAction implements Action {
             } else {
                 quantity++;
                 shoppingCart.setQuantity(quantity);
+
                 shoppingCartDAO.create(shoppingCart);
             }
 

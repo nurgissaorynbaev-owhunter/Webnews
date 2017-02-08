@@ -16,4 +16,14 @@ public class H2DAOFactory extends DAOFactory {
     public ShoppingCartDAO getShoppingCartDAO() {
         return new H2ShoppingCartDAO();
     }
+
+    @Override
+    public CustomerDAO getCustomerDAO() {
+        return new H2CustomerDAO();
+    }
+
+    @Override
+    public ProductOrderDAO getProductOrderDAO() {
+        return new H2ProductOrderDAO();
+    }
 }

@@ -93,9 +93,8 @@ public class H2UserDAO implements UserDAO {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getRole());
 
-            ps.executeUpdate();
-            ResultSet resultSet = ps.getGeneratedKeys();
-            if (resultSet.next()) {
+            int affectedRowCount = ps.executeUpdate();
+            if (affectedRowCount != 0) {
                 tUser = user;
             }
 

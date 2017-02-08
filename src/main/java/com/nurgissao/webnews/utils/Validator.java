@@ -5,6 +5,11 @@ import java.util.Map;
 
 public class Validator {
     private static final String FILE_NAME = "validator.properties";
+    private static final String SIGN_SPECIFIC_KEY = "sign";
+    private static final String PRODUCT_SPECIFIC_KEY = "product";
+    private static final String CUSTOMER_SPECIFIC_KEY = "customer";
+    private static final String MIN_LENGTH_ERROR_MSG = "too short";
+    private static final String MAX_LENGTH_ERROR_MSG = "too long";
     private static PropertiesLoader properties;
     private String specificKey;
 
@@ -23,7 +28,7 @@ public class Validator {
 
     public Map<String, String> validateProfileForm(Map<String, String> formValue) {
         Map<String, String> violations = new HashMap<>();
-        specificKey = "sign";
+        specificKey = SIGN_SPECIFIC_KEY;
         String password = formValue.get("password");
         String confirmPassword = formValue.get("confirmPassword");
 
@@ -38,7 +43,16 @@ public class Validator {
 
     public Map<String, String> validateAddProductForm(Map<String, String> formValue) {
         Map<String, String> violations = new HashMap<>();
-        specificKey = "product";
+        specificKey = PRODUCT_SPECIFIC_KEY;
+
+        checkLength(formValue, violations);
+
+        return violations;
+    }
+
+    public Map<String, String> validateCustomerRegistrationForm(Map<String, String> formValue) {
+        Map<String, String> violations = new HashMap<>();
+        specificKey = CUSTOMER_SPECIFIC_KEY;
 
         checkLength(formValue, violations);
 
@@ -47,8 +61,6 @@ public class Validator {
 
     private Map<String, String> checkLength(Map<String, String> formValue, Map<String, String> violations) {
         String key, value;
-        String minErrorMsg = "too short.";
-        String maxErrorMsg = "too long.";
 
         for (Map.Entry<String, String> entry : formValue.entrySet()) {
             key = entry.getKey();
@@ -62,15 +74,21 @@ public class Validator {
             if (minValue != null) {
                 int minLength = Integer.parseInt(minValue);
                 if (value.length() < minLength) {
-                    violations.put(key, minErrorMsg);
+                    violations.put(key, MIN_LENGTH_ERROR_MSG);
                 }
+
+            } else {
+                //TODO throw appropriate Exception
             }
 
             if (maxValue != null) {
                 int maxLength = Integer.parseInt(maxValue);
                 if (value.length() > maxLength) {
-                    violations.put(key, maxErrorMsg);
+                    violations.put(key, MAX_LENGTH_ERROR_MSG);
                 }
+
+            } else {
+                //TODO throw appropriate Exception
             }
         }
         return violations;

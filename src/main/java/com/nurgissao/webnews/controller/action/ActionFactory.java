@@ -29,6 +29,14 @@ public class ActionFactory {
         actions.put("editProduct", new EditProductAction());
 
         actions.put("userList", new UserListAction());
+
+        actions.put("showCustomerRegistration", new ShowCustomerRegistrationAction());
+        actions.put("customer", new CustomerAction());
+
+        actions.put("showProductOrder", new ShowProductOrderAction());
+        actions.put("productOrder", new ProductOrderAction());
+
+        actions.put("successProductOrder", new SuccessProductOrderAction());
     }
 
     public static Action getAction(HttpServletRequest req) {
