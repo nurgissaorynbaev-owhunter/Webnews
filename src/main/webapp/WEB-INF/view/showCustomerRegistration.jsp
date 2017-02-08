@@ -10,14 +10,15 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div class="container c-top10">
+<div class="container">
+    <h3>Customer address</h3>
     <hr>
     <div class="row">
         <div class="col-md-6">
             <form action="/pages/customer" method="post">
                 <div class="form-group">
-                    <label for="inputFullname">Fullname</label>
-                    <input type="text" class="form-control" id="inputFullname" name="fullName" placeholder="Type full Firstname, Lastname, Surname" required>
+                    <label for="inputFullName">Fullname</label>
+                    <input type="text" class="form-control" id="inputFullName" name="fullName" placeholder="Type full Firstname, Lastname, Surname" required>
                 </div>
                 <div class="form-group">
                     <label for="inputCounty">Country</label>
@@ -40,7 +41,7 @@
                     <input type="text" class="form-control" id="inputEmail" name="email" required>
                 </div>
                 <div class="form-group text-right">
-                    <input type="submit" class="btn btn-primary" value="Checkout">
+                    <input type="submit" class="btn btn-primary" value="Next">
                 </div>
             </form>
         </div>

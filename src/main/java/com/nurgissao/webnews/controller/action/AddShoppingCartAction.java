@@ -25,13 +25,12 @@ public class AddShoppingCartAction implements Action {
 
             int productId = Integer.parseInt(req.getParameter("productId"));
 
-            ShoppingCart takenShoppingCart = shoppingCartDAO.find(productId, cookieId);
-
             ShoppingCart shoppingCart = new ShoppingCart();
             shoppingCart.setProductId(productId);
             shoppingCart.setCookieId(cookieId);
 
             int quantity = 0;
+            ShoppingCart takenShoppingCart = shoppingCartDAO.find(productId, cookieId);
             if (takenShoppingCart != null) {
                 quantity = takenShoppingCart.getQuantity() + 1;
                 shoppingCart.setQuantity(quantity);

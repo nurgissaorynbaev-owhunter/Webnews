@@ -21,17 +21,18 @@
                 <th></th>
             </tr>
         </div>
-        <c:forEach var="product" items="${requestScope.products}">
+        <c:set var="productQuantityMap" value="${sessionScope.productQuantity}"/>
+        <c:forEach var="product" items="${sessionScope.products}">
             <div class="row">
                 <tr>
                     <td><c:out value="${product.title}"/></td>
                     <td>$<c:out value="${product.price}"/></td>
                     <td>
-                        <c:set var="pQuantity" value="${requestScope.productQuantity}"/>
-                        <c:set var="productId" value="${product.id}"/>
+                        <%--<c:set var="productId" value="${product.id}"/>--%>
                         <form action="/pages/shoppingCart" method="post">
-                            <input type="number" min="0" style="width: 45px;" name="pQuantity" value="${pQuantity[productId]}">
-                            <input type="hidden" name="productId" value="${productId}">
+                            <input type="number" min="0" style="width: 45px;" name="pQuantity"
+                                   value="${productQuantityMap[product.id]}">
+                            <input type="hidden" name="productId" value="${product.id}">
                             <input type="submit" class="btn btn-primary btn-xs" value="save">
                         </form>
                     </td>

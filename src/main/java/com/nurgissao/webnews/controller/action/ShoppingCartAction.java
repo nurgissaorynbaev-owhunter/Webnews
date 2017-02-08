@@ -7,6 +7,7 @@ import com.nurgissao.webnews.model.entity.ShoppingCart;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,28 +36,45 @@ public class ShoppingCartAction implements Action {
                 shoppingCart.setQuantity(Integer.parseInt(pQuantity));
                 shoppingCart.setProductId(Integer.parseInt(productId));
 
-                shoppingCartDAO.update(shoppingCart);
+                int affectedRowCount = shoppingCartDAO.update(shoppingCart);
+                if (affectedRowCount == 0) {
+                    //TODO throw appropriate Exception
+                }
             }
 
-            String deleteProductId =  req.getParameter("deleteProductId");
+            String deleteProductId = req.getParameter("deleteProductId");
             if (deleteProductId != null) {
-                shoppingCartDAO.delete(Integer.parseInt(deleteProductId), cookieId);
+                int affectedRowCount = shoppingCartDAO.delete(Integer.parseInt(deleteProductId), cookieId);
+                if (affectedRowCount == 0) {
+                    //TODO throw appropriate Exception
+                }
             }
 
-            List<ShoppingCart> shoppingCarts = shoppingCartDAO.find(cookieId);
             ProductDAO productDAO = daoFactory.getProductDAO();
             List<Product> products = new ArrayList<>();
             Product product;
             Map<Integer, Integer> productQuantity = new HashMap<>();
 
+            List<ShoppingCart> shoppingCarts = shoppingCartDAO.find(cookieId);
             if (!shoppingCarts.isEmpty()) {
                 for (ShoppingCart sh : shoppingCarts) {
                     productQuantity.put(sh.getProductId(), sh.getQuantity());
                     product = productDAO.find(sh.getProductId());
                     products.add(product);
                 }
-                req.setAttribute("products", products);
-                req.setAttribute("productQuantity", productQuantity);
+                HttpSession session = req.getSession();
+                session.setAttribute("products", products);
+                session.setAttribute("productQuantity", productQuantity);
+//                req.setAttribute("products", products);
+//                req.setAttribute("productQuantity", productQuantity);
+
+                int totalCost = 0;
+                for (Product p : products) {
+                    int quantity = productQuantity.get(p.getId());
+                    int cost = p.getPrice() * quantity;
+                    totalCost = totalCost + cost;
+                }
+                session.setAttribute("totalCost", totalCost);
             }
 
         } catch (DAOException e) {

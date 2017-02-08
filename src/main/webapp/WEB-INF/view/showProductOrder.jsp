@@ -10,10 +10,32 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-    <div class="row">
-
-    </div>
+<jsp:include page="header.jsp"/>
+<div class="container c-wrapper">
+    <table class="table">
+        <div class="row">
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </div>
+        <c:set var="productQuantityMap" value="${sessionScope.productQuantity}"/>
+        <c:forEach var="product" items="${sessionScope.products}">
+            <div class="row">
+                <tr>
+                    <td>${product.title}</td>
+                    <td>$${product.price}</td>
+                    <td>${productQuantityMap[product.id]}</td>
+                </tr>
+            </div>
+        </c:forEach>
+    </table>
+    <h3 class="text-right">Total cost: $<c:out value="${sessionScope.totalCost}"/></h3><br>
+    <form action="/pages/productOrder" method="get">
+        <input type="submit" class="btn btn-primary text-right" value="Checkout">
+    </form>
 </div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>
