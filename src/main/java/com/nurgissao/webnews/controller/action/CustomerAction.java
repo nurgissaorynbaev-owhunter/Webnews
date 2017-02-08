@@ -47,6 +47,7 @@ public class CustomerAction implements Action {
                 customer.setEmail(email);
 
                 Customer tCustomer = customerDAO.create(customer);
+                req.getSession().setAttribute("customer", tCustomer);
             }
 
         } catch (DAOException e) {

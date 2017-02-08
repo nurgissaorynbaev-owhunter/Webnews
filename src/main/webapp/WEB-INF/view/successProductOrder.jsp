@@ -9,7 +9,36 @@
     <link href="/bootstrap/css/custom.css" rel="stylesheet">
 </head>
 <body>
-<h1>Order get successfully!</h1>
+<jsp:include page="header.jsp"/>
+<div class="container">
+    <h1>My orders</h1>
+    <table class="table c-top10">
+        <div class="row">
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </div>
+        <c:set var="productQuantityMap" value="${sessionScope.productQuantity}"/>
+        <c:forEach var="product" items="${sessionScope.products}">
+            <div class="row">
+                <tr>
+                    <td>
+                        <small style="color: green">${product.title}</small>
+                    </td>
+                    <td>
+                        <small style="color: green">$${product.price}</small>
+                    </td>
+                    <td>
+                        <small style="color: green">${productQuantityMap[product.id]}</small>
+                    </td>
+                </tr>
+            </div>
+        </c:forEach>
+    </table>
+</div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>
 

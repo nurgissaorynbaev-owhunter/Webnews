@@ -11,7 +11,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div class="container c-wrapper">
+<div class="container">
     <table class="table">
         <div class="row">
             <tr>
@@ -24,9 +24,15 @@
         <c:forEach var="product" items="${sessionScope.products}">
             <div class="row">
                 <tr>
-                    <td>${product.title}</td>
-                    <td>$${product.price}</td>
-                    <td>${productQuantityMap[product.id]}</td>
+                    <td>
+                        <small>${product.title}</small>
+                    </td>
+                    <td>
+                        <small>$${product.price}</small>
+                    </td>
+                    <td>
+                        <small>${productQuantityMap[product.id]}</small>
+                    </td>
                 </tr>
             </div>
         </c:forEach>

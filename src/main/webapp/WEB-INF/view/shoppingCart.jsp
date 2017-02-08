@@ -11,7 +11,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<div class="container c-wrapper">
+<div class="container">
     <table class="table">
         <div class="row">
             <tr>
@@ -25,28 +25,35 @@
         <c:forEach var="product" items="${sessionScope.products}">
             <div class="row">
                 <tr>
-                    <td><c:out value="${product.title}"/></td>
-                    <td>$<c:out value="${product.price}"/></td>
                     <td>
-                        <%--<c:set var="productId" value="${product.id}"/>--%>
-                        <form action="/pages/shoppingCart" method="post">
-                            <input type="number" min="0" style="width: 45px;" name="pQuantity"
-                                   value="${productQuantityMap[product.id]}">
-                            <input type="hidden" name="productId" value="${product.id}">
-                            <input type="submit" class="btn btn-primary btn-xs" value="save">
-                        </form>
+                        <small><c:out value="${product.title}"/></small>
                     </td>
                     <td>
-                        <form action="/pages/shoppingCart" method="post">
-                            <input type="hidden" name="deleteProductId" value="${product.id}">
-                            <input type="submit" class="btn btn-primary btn-xs" value="Delete">
-                        </form>
+                        <small>$<c:out value="${product.price}"/></small>
+                    </td>
+                    <td>
+                        <small>
+                            <form action="/pages/shoppingCart" method="post">
+                                <input type="number" min="0" style="width: 45px;" name="pQuantity"
+                                       value="${productQuantityMap[product.id]}">
+                                <input type="hidden" name="productId" value="${product.id}">
+                                <input type="submit" class="btn btn-primary btn-xs" value="save">
+                            </form>
+                        </small>
+                    </td>
+                    <td>
+                        <small>
+                            <form action="/pages/shoppingCart" method="post">
+                                <input type="hidden" name="deleteProductId" value="${product.id}">
+                                <input type="submit" class="btn btn-primary btn-xs" value="Delete">
+                            </form>
+                        </small>
                     </td>
                 </tr>
             </div>
         </c:forEach>
     </table>
-    <div class="text-right">
+    <div class="text-left">
         <form action="/pages/showCustomerRegistration" method="get">
             <input type="submit" class="btn btn-primary btn-sm" value="Proceed to checkout">
         </form>
