@@ -66,6 +66,7 @@ public class H2UserDAO implements UserDAO {
                 user.setPassword(resultSet.getString(5));
                 user.setRole(resultSet.getString(6));
                 user.setStatus(resultSet.getString(7));
+                user.setCustomerId(resultSet.getInt(8));
 
                 users.add(user);
             }
@@ -84,17 +85,22 @@ public class H2UserDAO implements UserDAO {
         User tUser = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO USER (firstName, lastName, email, password, role)" +
-                        "VALUES (?, ?, ?, ?, ?)")) {
+                "INSERT INTO USER (firstName, lastName, email, password, role, status, customerId)" +
+                        "VALUES (?,?,?,?,?,?,?)")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getRole());
+            ps.setString(6, user.getStatus());
+            ps.setInt(7, user.getCustomerId());
 
-            int affectedRowCount = ps.executeUpdate();
-            if (affectedRowCount != 0) {
+            ps.executeUpdate();
+
+            ResultSet resultSet = ps.getGeneratedKeys();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(1));
                 tUser = user;
             }
 
@@ -112,7 +118,8 @@ public class H2UserDAO implements UserDAO {
         int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE USER SET firstName=?, lastName=?, email=?, password=?, role=?, status=? WHERE id=?")) {
+                "UPDATE USER SET firstName=?, lastName=?, email=?, password=?, role=?, status=?," +
+                        "customerId=? WHERE id=?")) {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -120,7 +127,8 @@ public class H2UserDAO implements UserDAO {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getRole());
             ps.setString(6, user.getStatus());
-            ps.setInt(7, user.getId());
+            ps.setInt(7, user.getCustomerId());
+            ps.setInt(8, user.getId());
 
             affectedRowCount = ps.executeUpdate();
 
@@ -184,6 +192,7 @@ public class H2UserDAO implements UserDAO {
             user.setPassword(resultSet.getString(5));
             user.setRole(resultSet.getString(6));
             user.setStatus(resultSet.getString(7));
+            user.setCustomerId(resultSet.getInt(8));
         }
         return user;
     }

@@ -16,7 +16,7 @@ public class H2ProductDAO implements ProductDAO {
     @Override
     public Product find(int id) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        Product product;
+        Product product = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT * FROM Product WHERE id = ?")) {
@@ -24,7 +24,17 @@ public class H2ProductDAO implements ProductDAO {
             ps.setInt(1, id);
 
             ResultSet resultSet = ps.executeQuery();
-            product = map(resultSet);
+            if (resultSet.next()) {
+                product = new Product();
+                product.setId(resultSet.getInt(1));
+                product.setTitle(resultSet.getString(2));
+                product.setAuthor(resultSet.getString(3));
+                product.setPrice(resultSet.getInt(4));
+                product.setDescription(resultSet.getString(5));
+                product.setDetails(resultSet.getString(6));
+                product.setAboutAuthor(resultSet.getString(7));
+                product.setImage(resultSet.getString(8));
+            }
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find Product.", e);
@@ -144,22 +154,5 @@ public class H2ProductDAO implements ProductDAO {
         }
 
         return affectedRowCount;
-    }
-
-    private Product map(ResultSet resultSet) throws SQLException {
-        Product product = null;
-
-        if (resultSet.next()) {
-            product = new Product();
-            product.setId(resultSet.getInt(1));
-            product.setTitle(resultSet.getString(2));
-            product.setAuthor(resultSet.getString(3));
-            product.setPrice(resultSet.getInt(4));
-            product.setDescription(resultSet.getString(5));
-            product.setDetails(resultSet.getString(6));
-            product.setAboutAuthor(resultSet.getString(7));
-            product.setImage(resultSet.getString(8));
-        }
-        return product;
     }
 }

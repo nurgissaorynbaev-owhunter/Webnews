@@ -55,20 +55,16 @@ public class SignUpAction implements Action {
 
             User tUser = userDAO.create(user);
             if (tUser != null) {
-                String cookieId = null;
                 Cookie[] cookies = req.getCookies();
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().equals("cookieId")) {
-                        cookieId = cookie.getValue();
-                        cookie.setMaxAge(365 * 24 * 60 * 60);
+                        cookie.setMaxAge(180 * 24 * 60 * 60);
                         resp.addCookie(cookie);
                     }
                 }
-
-                if (cookieId != null) {
-                    HttpSession session = req.getSession();
-                    session.setAttribute("user", tUser);
-                }
+                HttpSession session = req.getSession();
+                session.setMaxInactiveInterval(15*24*60*60);
+                session.setAttribute("user", tUser);
 
             } else {
                 //TODO throw appropriate exception
@@ -78,7 +74,7 @@ public class SignUpAction implements Action {
             throw new ActionException(e);
         }
 
-        return "home";
+        return "showCustomerRegistration";
     }
 }
 

@@ -22,6 +22,12 @@ public class ProductOrderAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             ProductOrderDAO productOrderDAO = daoFactory.getProductOrderDAO();
 
+            String checkoutClicked = req.getParameter("checkoutClicked");
+            System.out.println(checkoutClicked);
+            if (checkoutClicked != null) {
+                req.setAttribute("checkoutClicked", checkoutClicked);
+            }
+
             HttpSession session = req.getSession();
             List<Product> products = (List<Product>) session.getAttribute("products");
             Map<Integer, Integer> productQuantity = (Map<Integer, Integer>) session.getAttribute("productQuantity");
@@ -41,6 +47,6 @@ public class ProductOrderAction implements Action {
             throw new ActionException(e);
         }
 
-        return "successProductOrder";
+        return "myOrders";
     }
 }

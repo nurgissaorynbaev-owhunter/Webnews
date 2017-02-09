@@ -10,6 +10,7 @@ public class User implements Serializable {
     private String password;
     private String role;
     private String status;
+    private int customerId;
 
     public int getId() {
         return id;
@@ -67,6 +68,14 @@ public class User implements Serializable {
         this.status = status;
     }
 
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -77,6 +86,7 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", status=" + status +
+                ", customerId=" + customerId +
                 '}';
     }
 }

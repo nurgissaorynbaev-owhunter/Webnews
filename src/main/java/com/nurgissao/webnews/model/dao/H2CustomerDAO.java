@@ -15,14 +15,24 @@ public class H2CustomerDAO implements CustomerDAO {
     @Override
     public Customer find(int id) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        Customer customer;
+        Customer customer = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT * FROM Customer WHERE id=?")) {
 
             ps.setInt(1, id);
 
-            customer = map(ps.executeQuery());
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                customer = new Customer();
+                customer.setId(resultSet.getInt(1));
+                customer.setFullName(resultSet.getString(2));
+                customer.setCountry(resultSet.getString(3));
+                customer.setCity(resultSet.getString(4));
+                customer.setHomeAddress(resultSet.getString(5));
+                customer.setPhoneNumber(resultSet.getString(6));
+                customer.setEmail(resultSet.getString(7));
+            }
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find customer by id.", e);
@@ -79,9 +89,9 @@ public class H2CustomerDAO implements CustomerDAO {
             ps.setString(6, customer.getEmail());
 
             ps.executeUpdate();
-            ResultSet getGeneratedKey = ps.getGeneratedKeys();
-            if (getGeneratedKey.next()) {
-                customer.setId(getGeneratedKey.getInt(1));
+            ResultSet resultSet = ps.getGeneratedKeys();
+            if (resultSet.next()) {
+                customer.setId(resultSet.getInt(1));
                 tCustomer = customer;
             }
 
@@ -138,20 +148,5 @@ public class H2CustomerDAO implements CustomerDAO {
             connectionPool.closeConnection(connection);
         }
         return affectedRowCount;
-    }
-
-    private Customer map(ResultSet resultSet) throws SQLException {
-        Customer customer = null;
-        if (resultSet.next()) {
-            customer = new Customer();
-            customer.setId(resultSet.getInt(1));
-            customer.setFullName(resultSet.getString(2));
-            customer.setCountry(resultSet.getString(3));
-            customer.setCity(resultSet.getString(4));
-            customer.setHomeAddress(resultSet.getString(5));
-            customer.setPhoneNumber(resultSet.getString(6));
-            customer.setEmail(resultSet.getString(7));
-        }
-        return customer;
     }
 }

@@ -19,7 +19,7 @@ public class ActionFactory {
         actions.put("showProfile", new ShowProfileAction());
         actions.put("profile", new ProfileAction());
 
-        actions.put("addShoppingCart", new AddShoppingCartAction());
+        actions.put("addToShoppingCart", new AddToShoppingCartAction());
         actions.put("shoppingCart", new ShoppingCartAction());
 
         actions.put("showAddProduct", new ShowAddProductAction());
@@ -31,14 +31,14 @@ public class ActionFactory {
         actions.put("userList", new UserListAction());
 
         actions.put("showCustomerRegistration", new ShowCustomerRegistrationAction());
-        actions.put("customer", new CustomerAction());
+        actions.put("customerRegistration", new CustomerRegistrationAction());
 
         actions.put("showProductOrder", new ShowProductOrderAction());
         actions.put("productOrder", new ProductOrderAction());
 
         actions.put("orders", new OrdersAction());
 
-        actions.put("successProductOrder", new SuccessProductOrderAction());
+        actions.put("myOrders", new MyOrdersAction());
     }
 
     public static Action getAction(HttpServletRequest req) {

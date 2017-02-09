@@ -46,7 +46,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
     @Override
     public ShoppingCart find(int productId, String cookieId) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        ShoppingCart shoppingCart;
+        ShoppingCart shoppingCart = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT * FROM ShoppingCart WHERE productId=? and cookieId=?")) {
@@ -54,8 +54,15 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             ps.setInt(1, productId);
             ps.setString(2, cookieId);
 
-            shoppingCart = map(ps.executeQuery());
+            ResultSet resultSet = ps.executeQuery();
 
+            if (resultSet.next()) {
+                shoppingCart = new ShoppingCart();
+                shoppingCart.setId(resultSet.getInt(1));
+                shoppingCart.setProductId(resultSet.getInt(2));
+                shoppingCart.setCookieId(resultSet.getString(3));
+                shoppingCart.setQuantity(resultSet.getInt(4));
+            }
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find ShoppingCart item.", e);
@@ -69,7 +76,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
     @Override
     public ShoppingCart create(ShoppingCart shoppingCart) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        ShoppingCart tShoppingCart = new ShoppingCart();
+        ShoppingCart tShoppingCart = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO ShoppingCart (productId, cookieId, quantity) VALUES (?,?,?)")) {
@@ -81,7 +88,8 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             ps.executeUpdate();
             ResultSet resultSet = ps.getGeneratedKeys();
             if (resultSet.next()) {
-                tShoppingCart.setId(resultSet.getInt(1));
+                shoppingCart.setId(resultSet.getInt(1));
+                tShoppingCart = shoppingCart;
             }
 
         } catch (SQLException e) {
@@ -158,15 +166,4 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
         return affectedRowCount;
     }
 
-    private ShoppingCart map(ResultSet resultSet) throws SQLException {
-        ShoppingCart shoppingCart = null;
-        if (resultSet.next()) {
-            shoppingCart = new ShoppingCart();
-            shoppingCart.setId(resultSet.getInt(1));
-            shoppingCart.setProductId(resultSet.getInt(2));
-            shoppingCart.setCookieId(resultSet.getString(3));
-            shoppingCart.setQuantity(resultSet.getInt(4));
-        }
-        return shoppingCart;
-    }
 }

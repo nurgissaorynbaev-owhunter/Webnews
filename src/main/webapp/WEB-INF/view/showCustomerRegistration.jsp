@@ -11,15 +11,24 @@
 <body>
 <jsp:include page="header.jsp"/>
 <div class="container">
-    <h3>Customer address</h3>
-    <hr>
+    <h3 class="text-center">Customer address</h3>
     <div class="row">
-        <div class="col-md-6">
-            <form action="/pages/customer" method="post">
-                <div class="form-group">
-                    <label for="inputFullName">Fullname</label>
-                    <input type="text" class="form-control" id="inputFullName" name="fullName" placeholder="Type full Firstname, Lastname, Surname" required>
-                </div>
+        <div class="col-md-offset-3 col-md-6">
+            <form action="/pages/customerRegistration" method="post">
+                <c:set var="user" value="${sessionScope.user}"/>
+                <c:choose>
+                    <c:when test="${user ne null}">
+                        <input type="hidden" name="userFirstName" value="${user.firstName}">
+                        <input type="hidden" name="userLastName" value="${user.lastName}">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="form-group">
+                            <label for="inputFullName">Fullname</label>
+                            <input type="text" class="form-control" id="inputFullName" name="fullName"
+                                   placeholder="Type full Firstname, Lastname, Surname" required>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
                 <div class="form-group">
                     <label for="inputCounty">Country</label>
                     <input type="text" class="form-control" id="inputCounty" name="country" required>
@@ -30,19 +39,37 @@
                 </div>
                 <div class="form-group">
                     <label for="inputHomeAddress">Home address</label>
-                    <input type="text" class="form-control" id="inputHomeAddress" name="homeAddress" placeholder="Street, house, flat number.." required>
+                    <input type="text" class="form-control" id="inputHomeAddress" name="homeAddress"
+                           placeholder="Street, house, flat number.." required>
                 </div>
                 <div class="form-group">
                     <label for="inputPhoneNumber">Phone Number</label>
-                    <input type="text" class="form-control" id="inputPhoneNumber" name="phoneNumber" placeholder="+7 700 948 82 18" required>
+                    <input type="text" class="form-control" id="inputPhoneNumber" name="phoneNumber"
+                           placeholder="+7 700 948 82 18" required>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail">Email</label>
-                    <input type="text" class="form-control" id="inputEmail" name="email" required>
-                </div>
-                <div class="form-group text-right">
-                    <input type="submit" class="btn btn-primary" value="Next">
-                </div>
+                <c:choose>
+                    <c:when test="${user ne null}">
+                        <input type="hidden" name="userEmail" value="${user.email}">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="form-group">
+                            <label for="inputEmail">Email</label>
+                            <input type="text" class="form-control" id="inputEmail" name="email" required>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${user ne null}">
+                        <div class="form-group text-right">
+                            <input type="submit" class="btn btn-primary" name="signedUser" value="Next">
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="form-group text-right">
+                            <input type="submit" class="btn btn-primary" value="Next">
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </form>
         </div>
     </div>

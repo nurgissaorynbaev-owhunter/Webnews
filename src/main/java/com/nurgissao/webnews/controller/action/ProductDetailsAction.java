@@ -16,15 +16,17 @@ public class ProductDetailsAction implements Action {
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             ProductDAO productDAO = daoFactory.getProductDAO();
-            Product product = null;
+            Product product;
 
             String productId = req.getParameter("productId");
             if (productId != null) {
                 product = productDAO.find(Integer.parseInt(productId));
-            }
+                if (product != null) {
+                    req.setAttribute("product", product);
 
-            if (product != null) {
-                req.setAttribute("product", product);
+                } else {
+                    //TODO throw appropriate Exception
+                }
             } else {
                 //TODO throw appropriate Exception
             }

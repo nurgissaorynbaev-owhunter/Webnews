@@ -10,7 +10,6 @@ public class SignOutAction implements Action {
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
         HttpSession session = req.getSession();
         session.removeAttribute("user");
-        session.removeAttribute("rememberMe");
 
         return "home";
     }

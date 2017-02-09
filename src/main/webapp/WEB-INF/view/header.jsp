@@ -10,94 +10,85 @@
 </head>
 <body>
 <div class="container c-header">
-    <div class="row">
-        <c:set var="user" value="${sessionScope.user}"/>
-        <c:choose>
-            <c:when test="${user.role eq 'admin'}">
-                <div>
-                    <ul class="list-inline">
-                        <li>
-                            <a class="btn btn-default" href="/pages/home" role="button">Home</a>
-                        </li>
-                        <li>
-                            <form action="/pages/shoppingCart" method="get">
-                                <input type="submit" class="btn btn-default" value="Shopping cart">
-                            </form>
-                        </li>
-                        <li>
-                            <form action="/pages/showAddProduct" method="get">
-                                <input type="submit" class="btn btn-link" value="Add product">
-                            </form>
-                        </li>
-                        <li>
-                            <form action="/pages/userList" method="get">
-                                <input type="submit" class="btn btn-link" value="Users">
-                            </form>
-                        </li>
-                        <li>
-                            <form action="/pages/orders" method="get">
-                                <input type="submit" class="btn btn-link" value="Orders">
-                            </form>
-                        </li>
-                        <li>
-                            <form action="/pages/signOut" method="get">
-                                <input type="submit" class="btn btn-link" value="Sign out">
-                            </form>
-                        </li>
-                        <li>
-                            <form action="/pages/showProfile" method="get">
-                                <input type="submit" class="btn btn-link" value="${user.firstName}">
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </c:when>
-            <c:when test="${user.role eq 'user'}">
-                <div class="col-md-offset-6">
-                    <ul class="list-inline">
-                        <li>
-                            <a class="btn btn-default" href="/pages/home" role="button">Home</a>
-                        </li>
-                        <li>
-                            <form action="/pages/shoppingCart" method="get">
-                                <input type="submit" class="btn btn-default" value="Shopping cart">
-                            </form>
-                        </li>
-                        <li>
-                            <form action="/pages/signOut" method="get">
-                                <input type="submit" class="btn btn-link" value="Sign out">
-                            </form>
-                        </li>
-                        <li>
-                            <form action="/pages/showProfile" method="get">
-                                <input type="submit" class="btn btn-link" value="${user.firstName}">
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </c:when>
-            <c:when test="${user eq null}">
-                <div class="col-md-offset-8">
-                    <ul class="list-inline">
-                        <li>
-                            <a class="btn btn-default" href="/pages/home" role="button">Home</a>
-                        </li>
-                        <li>
-                            <form action="/pages/shoppingCart" method="get">
-                                <input type="submit" class="btn btn-default" value="Shopping cart">
-                            </form>
-                        </li>
-                        <li>
-                            <a href="/pages/showSignIn">Sign in</a>
-                        </li>
-                        <li>
-                            <a href="/pages/showSignUp">Sign up</a>
-                        </li>
-                    </ul>
-                </div>
-            </c:when>
-        </c:choose>
+    <c:set var="user" value="${sessionScope.user}"/>
+    <c:choose>
+    <c:when test="${user.role eq 'admin'}">
+        <div class="row text-right">
+            <ul class="list-inline">
+                <li>
+                    <a class="btn btn-default" href="/pages/home" role="button">Home</a>
+                </li>
+                <li>
+                    <form action="/pages/shoppingCart" method="get">
+                        <input type="submit" class="btn btn-default" value="Shopping cart">
+                    </form>
+                </li>
+                <li>
+                    <form action="/pages/showAddProduct" method="get">
+                        <input type="submit" class="btn btn-link" value="Add product">
+                    </form>
+                </li>
+                <li>
+                    <form action="/pages/userList" method="get">
+                        <input type="submit" class="btn btn-link" value="Users">
+                    </form>
+                </li>
+                <li>
+                    <form action="/pages/orders" method="get">
+                        <input type="submit" class="btn btn-link" value="Orders">
+                    </form>
+                </li>
+                <li>
+                    <form action="/pages/signOut" method="get">
+                        <input type="submit" class="btn btn-link" value="Sign out">
+                    </form>
+                </li>
+                <li>
+                    <form action="/pages/showProfile" method="get">
+                        <input type="submit" class="btn btn-link" value="${user.firstName}">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </c:when>
+    <c:otherwise>
+    <div class="row text-right">
+        <ul class="list-inline">
+            <li>
+                <a class="btn btn-default" href="/pages/home" role="button">Home</a>
+            </li>
+            <li>
+                <form action="/pages/shoppingCart" method="get">
+                    <input type="submit" class="btn btn-default" value="Shopping cart">
+                </form>
+            </li>
+            <c:choose>
+                <c:when test="${user.role eq 'user'}">
+                    <li>
+                        <form action="/pages/signOut" method="get">
+                            <input type="submit" class="btn btn-link" value="Sign out">
+                        </form>
+                    </li>
+                    <li>
+                        <form action="/pages/showProfile" method="get">
+                            <input type="submit" class="btn btn-link" value="${user.firstName}">
+                        </form>
+                    </li>
+                </c:when>
+                <c:when test="${user.role ne 'user'}">
+                    <li>
+                        <a href="/pages/showSignIn">Sign in</a>
+                    </li>
+                    <li>
+                        <a href="/pages/showSignUp">Sign up</a>
+                    </li>
+                </c:when>
+            </c:choose>
+        </ul>
     </div>
+</div>
+</c:otherwise>
+</c:choose>
 </div>
 </body>
 </html>

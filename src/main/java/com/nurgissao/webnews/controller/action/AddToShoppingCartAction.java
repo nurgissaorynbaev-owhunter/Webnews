@@ -7,7 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddShoppingCartAction implements Action {
+public class AddToShoppingCartAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -30,9 +30,9 @@ public class AddShoppingCartAction implements Action {
             shoppingCart.setCookieId(cookieId);
 
             int quantity = 0;
-            ShoppingCart takenShoppingCart = shoppingCartDAO.find(productId, cookieId);
-            if (takenShoppingCart != null) {
-                quantity = takenShoppingCart.getQuantity() + 1;
+            ShoppingCart tShoppingCart = shoppingCartDAO.find(productId, cookieId);
+            if (tShoppingCart != null) {
+                quantity = tShoppingCart.getQuantity() + 1;
                 shoppingCart.setQuantity(quantity);
 
                 shoppingCartDAO.update(shoppingCart);

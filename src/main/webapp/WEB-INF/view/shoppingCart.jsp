@@ -21,7 +21,7 @@
                 <th></th>
             </tr>
         </div>
-        <c:set var="productQuantityMap" value="${sessionScope.productQuantity}"/>
+        <c:set var="productQuantityMap" value="${sessionScope.productQuantityMap}"/>
         <c:forEach var="product" items="${sessionScope.products}">
             <div class="row">
                 <tr>
@@ -34,7 +34,7 @@
                     <td>
                         <small>
                             <form action="/pages/shoppingCart" method="post">
-                                <input type="number" min="0" style="width: 45px;" name="pQuantity"
+                                <input type="number" min="0" style="width: 50px;" name="pQuantity"
                                        value="${productQuantityMap[product.id]}">
                                 <input type="hidden" name="productId" value="${product.id}">
                                 <input type="submit" class="btn btn-primary btn-xs" value="save">
@@ -54,9 +54,18 @@
         </c:forEach>
     </table>
     <div class="text-left">
-        <form action="/pages/showCustomerRegistration" method="get">
-            <input type="submit" class="btn btn-primary btn-sm" value="Proceed to checkout">
-        </form>
+        <c:choose>
+            <c:when test="${sessionScope.user ne null}">
+                <form action="/pages/showProductOrder" method="get">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Proceed to checkout">
+                </form>
+            </c:when>
+            <c:otherwise>
+                <form action="/pages/showCustomerRegistration" method="get">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Proceed to checkout">
+                </form>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 <jsp:include page="footer.jsp"/>

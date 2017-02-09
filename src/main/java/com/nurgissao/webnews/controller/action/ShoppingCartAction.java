@@ -23,9 +23,9 @@ public class ShoppingCartAction implements Action {
             String cookieId = null;
 
             Cookie[] cookies = req.getCookies();
-            for (Cookie c : cookies) {
-                if (c.getName().equals("cookieId")) {
-                    cookieId = c.getValue();
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("cookieId")) {
+                    cookieId = cookie.getValue();
                 }
             }
 
@@ -53,27 +53,26 @@ public class ShoppingCartAction implements Action {
             ProductDAO productDAO = daoFactory.getProductDAO();
             List<Product> products = new ArrayList<>();
             Product product;
-            Map<Integer, Integer> productQuantity = new HashMap<>();
+            Map<Integer, Integer> productQuantityMap = new HashMap<>();
 
             List<ShoppingCart> shoppingCarts = shoppingCartDAO.find(cookieId);
             if (!shoppingCarts.isEmpty()) {
                 for (ShoppingCart sh : shoppingCarts) {
-                    productQuantity.put(sh.getProductId(), sh.getQuantity());
+                    productQuantityMap.put(sh.getProductId(), sh.getQuantity());
                     product = productDAO.find(sh.getProductId());
                     products.add(product);
                 }
                 HttpSession session = req.getSession();
                 session.setAttribute("products", products);
-                session.setAttribute("productQuantity", productQuantity);
-//                req.setAttribute("products", products);
-//                req.setAttribute("productQuantity", productQuantity);
+                session.setAttribute("productQuantityMap", productQuantityMap);
 
                 int totalCost = 0;
                 for (Product p : products) {
-                    int quantity = productQuantity.get(p.getId());
+                    int quantity = productQuantityMap.get(p.getId());
                     int cost = p.getPrice() * quantity;
                     totalCost = totalCost + cost;
                 }
+                session.setAttribute("totalCost", totalCost);
                 session.setAttribute("totalCost", totalCost);
             }
 

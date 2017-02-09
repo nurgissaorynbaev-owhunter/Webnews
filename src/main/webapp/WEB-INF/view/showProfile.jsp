@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -10,24 +11,44 @@
 <body>
 <jsp:include page="header.jsp"/>
 <form action="/pages/profile" method="post" class="form-horizontal">
-    <div class="col-md-offset-4 col-md-4 c-top20">
-        <div class="form-group text-center">
-            <h2>My Profile</h2>
-        </div>
+    <c:set var="user" value="${sessionScope.user}"/>
+    <c:set var="customer" value="${sessionScope.customer}"/>
+    <div class="text-center">
+        <h1>Personal info</h1>
+    </div>
+    <div class="col-md-offset-4 col-md-4">
         <div class="form-group">
             <label for="inputFirstName">FirstName</label>
             <input type="text" class="form-control" name="fname" id="inputFirstName"
-                   value="${sessionScope.user.firstName}">
+                   value="${user.firstName}">
         </div>
         <div class="form-group">
             <label for="inputLastName">LastName</label>
             <input type="text" class="form-control" name="lname" id="inputLastName"
-                   value="${sessionScope.user.lastName}">
+                   value="${user.lastName}">
         </div>
         <div class="form-group">
             <label for="inputEmail">Email</label>
             <input type="text" class="form-control" name="email" id="inputEmail"
-                   value="${sessionScope.user.email}">
+                   value="${user.email}">
+        </div>
+        <div class="form-group">
+            <label for="inputCounty">Country</label>
+            <input type="text" class="form-control" id="inputCounty" name="country" value="${customer.country}" required>
+        </div>
+        <div class="form-group">
+            <label for="inputCity">City</label>
+            <input type="text" class="form-control" id="inputCity" name="city" value="${customer.city}" required>
+        </div>
+        <div class="form-group">
+            <label for="inputHomeAddress">Home address</label>
+            <input type="text" class="form-control" id="inputHomeAddress" name="homeAddress"
+                   value="${customer.homeAddress}" required>
+        </div>
+        <div class="form-group">
+            <label for="inputPhoneNumber">Phone Number</label>
+            <input type="text" class="form-control" id="inputPhoneNumber" name="phoneNumber"
+                   value="${customer.phoneNumber}" required>
         </div>
         <div class="form-group">
             <label for="inputPassword">New password</label>
@@ -42,6 +63,5 @@
         </div>
     </div>
 </form>
-<jsp:include page="footer.jsp"/>
 </body>
 </html>

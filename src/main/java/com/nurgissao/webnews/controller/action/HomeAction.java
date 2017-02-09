@@ -30,13 +30,14 @@ public class HomeAction implements Action {
                 Cookie cookie = new Cookie("cookieId", cookieId);
                 cookie.setMaxAge(90*24*60*60);
                 resp.addCookie(cookie);
-            } else {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals("cookieId")) {
-                        req.setAttribute("cookieId", cookie.getValue());
-                    }
-                }
             }
+//            else {
+//                for (Cookie cookie : cookies) {
+//                    if (cookie.getName().equals("cookieId")) {
+//                        req.setAttribute("cookieId", cookie.getValue());
+//                    }
+//                }
+//            }
 
         } catch (DAOException e) {
             throw new ActionException(e);

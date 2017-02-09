@@ -43,11 +43,10 @@ public class SignInAction implements Action {
             }
 
             User user = userDAO.find(email, password);
-
             if (user != null) {
                 HttpSession session = req.getSession();
                 if (rememberMe != null) {
-                    session.setMaxInactiveInterval(30*24*60*60);
+                    session.setMaxInactiveInterval(15*24*60*60);
                 }
                 session.setAttribute("user", user);
 

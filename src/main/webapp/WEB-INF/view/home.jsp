@@ -67,7 +67,7 @@
                         </form>
                         by <em><c:out value="${product.author}"/></em><br><br>
                         Price: $<c:out value="${product.price}"/><br><br>
-                        <form action="/pages/addShoppingCart" method="post">
+                        <form action="/pages/addToShoppingCart" method="get">
                             <input type="hidden" name="productId" value="${product.id}">
                             <input type="submit" class="btn btn-info btn-sm" value="Add to Shopping Cart">
                         </form>
