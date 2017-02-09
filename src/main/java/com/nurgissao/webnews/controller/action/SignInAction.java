@@ -1,9 +1,7 @@
 package com.nurgissao.webnews.controller.action;
 
-import com.nurgissao.webnews.model.dao.DAOException;
-import com.nurgissao.webnews.model.dao.DAOFactory;
-import com.nurgissao.webnews.model.dao.DataSourceType;
-import com.nurgissao.webnews.model.dao.UserDAO;
+import com.nurgissao.webnews.model.dao.*;
+import com.nurgissao.webnews.model.entity.Customer;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
 import org.apache.log4j.Logger;
@@ -23,6 +21,7 @@ public class SignInAction implements Action {
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             UserDAO userDAO = daoFactory.getUserDAO();
+            CustomerDAO customerDAO = daoFactory.getCustomerDAO();
 
             String email = req.getParameter("email");
             String password = req.getParameter("pwd");
@@ -46,9 +45,16 @@ public class SignInAction implements Action {
             if (user != null) {
                 HttpSession session = req.getSession();
                 if (rememberMe != null) {
-                    session.setMaxInactiveInterval(15*24*60*60);
+                    session.setMaxInactiveInterval(15 * 24 * 60 * 60);
                 }
                 session.setAttribute("user", user);
+
+                Customer customer = customerDAO.find(user.getCustomerId());
+                if (customer != null) {
+                    session.setAttribute("customer", customer);
+                } else {
+                    //TODO throw appropriate exception
+                }
 
             } else {
                 log.info("Not such User.");

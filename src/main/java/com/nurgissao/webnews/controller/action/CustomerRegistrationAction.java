@@ -46,6 +46,7 @@ public class CustomerRegistrationAction implements Action {
 
             Map<String, String> violations = validator.validateCustomerRegistrationForm(formValue);
             if (!violations.isEmpty()) {
+                System.out.println("violations in customer creating.");
                 //TODO throw appropriate Exception
 
             } else {
@@ -70,9 +71,7 @@ public class CustomerRegistrationAction implements Action {
                     //TODO throw appropriate Exception
                 }
             }
-
             String signedUser = req.getParameter("signedUser");
-            System.out.println("signedUser:" + signedUser);
             if (signedUser != null) {
                 return "home";
             }

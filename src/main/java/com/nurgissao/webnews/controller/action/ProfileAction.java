@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProfileAction implements Action {
+    private static final String USER_NORMAL_STATUS = "normal";
+    private static final String USER_ROLE = "user";
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -68,6 +70,8 @@ public class ProfileAction implements Action {
                 user.setLastName(lastName);
                 user.setEmail(email);
                 user.setPassword(password);
+                user.setRole(USER_ROLE);
+                user.setStatus(USER_NORMAL_STATUS);
 
                 Customer customer = new Customer();
                 customer.setId(sessionUser.getCustomerId());
@@ -76,6 +80,7 @@ public class ProfileAction implements Action {
                 customer.setCity(city);
                 customer.setHomeAddress(homeAddress);
                 customer.setPhoneNumber(phoneNumber);
+                customer.setEmail(email);
 
                 int affectedUserRowCount = userDAO.update(user);
                 int affectedCustomerRowCount = customerDAO.update(customer);

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignUpAction implements Action {
-    private static final String NORMAL_STATUS = "normal";
+    private static final String USER_NORMAL_STATUS = "normal";
     private static final String USER_ROLE = "user";
 
     @Override
@@ -51,7 +51,7 @@ public class SignUpAction implements Action {
             user.setEmail(email);
             user.setPassword(password);
             user.setRole(USER_ROLE);
-            user.setStatus(NORMAL_STATUS);
+            user.setStatus(USER_NORMAL_STATUS);
 
             User tUser = userDAO.create(user);
             if (tUser != null) {
