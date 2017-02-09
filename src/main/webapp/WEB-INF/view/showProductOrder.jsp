@@ -37,6 +37,7 @@
             </div>
         </c:forEach>
     </table>
+    <hr>
     <h3 class="text-right">Total cost: $<c:out value="${sessionScope.totalCost}"/></h3><br>
     <form action="/pages/productOrder" method="get">
         <input type="submit" class="btn btn-primary text-right" value="Checkout">

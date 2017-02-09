@@ -36,6 +36,8 @@ public class ActionFactory {
         actions.put("showProductOrder", new ShowProductOrderAction());
         actions.put("productOrder", new ProductOrderAction());
 
+        actions.put("orders", new OrdersAction());
+
         actions.put("successProductOrder", new SuccessProductOrderAction());
     }
 

@@ -78,8 +78,10 @@ public class H2CustomerDAO implements CustomerDAO {
             ps.setString(5, customer.getPhoneNumber());
             ps.setString(6, customer.getEmail());
 
-            int affectedRowCount = ps.executeUpdate();
-            if (affectedRowCount != 0) {
+            ps.executeUpdate();
+            ResultSet getGeneratedKey = ps.getGeneratedKeys();
+            if (getGeneratedKey.next()) {
+                customer.setId(getGeneratedKey.getInt(1));
                 tCustomer = customer;
             }
 

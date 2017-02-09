@@ -35,6 +35,11 @@
                             </form>
                         </li>
                         <li>
+                            <form action="/pages/orders" method="get">
+                                <input type="submit" class="btn btn-link" value="Orders">
+                            </form>
+                        </li>
+                        <li>
                             <form action="/pages/signOut" method="get">
                                 <input type="submit" class="btn btn-link" value="Sign out">
                             </form>
