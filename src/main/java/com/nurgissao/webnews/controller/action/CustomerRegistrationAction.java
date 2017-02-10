@@ -2,13 +2,16 @@ package com.nurgissao.webnews.controller.action;
 
 import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.Customer;
+import com.nurgissao.webnews.model.entity.ShoppingCart;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CustomerRegistrationAction implements Action {
@@ -19,6 +22,7 @@ public class CustomerRegistrationAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             CustomerDAO customerDAO = daoFactory.getCustomerDAO();
             UserDAO userDAO = daoFactory.getUserDAO();
+            ShoppingCartDAO shoppingCartDAO = daoFactory.getShoppingCartDAO();
             Validator validator = new Validator();
 
             String fullName = req.getParameter("fullName");
@@ -61,11 +65,27 @@ public class CustomerRegistrationAction implements Action {
                 Customer tCustomer = customerDAO.create(customer);
                 if (tCustomer != null) {
                     HttpSession session = req.getSession();
-                    session.setAttribute("customer", tCustomer);
-                    User user = (User) session.getAttribute("user");
-                    user.setCustomerId(tCustomer.getId());
 
-                    userDAO.update(user);
+                    User user = (User) session.getAttribute("user");
+                    if (user != null) {
+                        session.setAttribute("customer", tCustomer);
+                        user.setCustomerId(tCustomer.getId());
+                        userDAO.update(user);
+
+                    } else {
+                        String cookieId = null;
+                        Cookie[] cookies = req.getCookies();
+                        for (Cookie cookie : cookies) {
+                            if (cookie.getName().equals("cookieId")) {
+                               cookieId = cookie.getValue();
+                            }
+                        }
+                        ShoppingCart shoppingCart = shoppingCartDAO.find(cookieId);
+                        if (shoppingCart != null) {
+                            shoppingCart.setGuestCustomerId(tCustomer.getId());
+                            shoppingCartDAO.update(shoppingCart);
+                        }
+                    }
 
                 } else {
                     //TODO throw appropriate Exception

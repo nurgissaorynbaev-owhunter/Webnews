@@ -20,7 +20,7 @@
                 <th>Quantity</th>
             </tr>
         </div>
-        <c:set var="productQuantityMap" value="${sessionScope.productQuantity}"/>
+        <c:set var="productQuantityMap" value="${sessionScope.productQuantityMap}"/>
         <c:forEach var="product" items="${sessionScope.products}">
             <div class="row">
                 <tr>

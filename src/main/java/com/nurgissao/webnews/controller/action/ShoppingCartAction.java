@@ -73,7 +73,6 @@ public class ShoppingCartAction implements Action {
                     totalCost = totalCost + cost;
                 }
                 session.setAttribute("totalCost", totalCost);
-                session.setAttribute("totalCost", totalCost);
             }
 
         } catch (DAOException e) {

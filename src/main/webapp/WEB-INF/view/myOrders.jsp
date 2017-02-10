@@ -20,8 +20,11 @@
                 <th>Quantity</th>
             </tr>
         </div>
-        <c:set var="productQuantityMap" value="${sessionScope.productQuantity}"/>
-        <c:forEach var="product" items="${sessionScope.products}">
+        <c:set var="productsMap" value="${sessionScope.productsMap}"/>
+        <c:set var="quantityMap" value="${sessionScope.quantityMap}"/>
+        <c:forEach var="order" items="${sessionScope.productOrders}">
+            <c:set var="product" value="${productsMap[order.id]}"/>
+            <c:set var="quantity" value="${quantityMap[order.id]}"/>
             <div class="row">
                 <tr>
                     <td>
@@ -31,7 +34,7 @@
                         <small style="color: green">$${product.price}</small>
                     </td>
                     <td>
-                        <small style="color: green">${productQuantityMap[product.id]}</small>
+                        <small style="color: green">${quantity}</small>
                     </td>
                 </tr>
             </div>

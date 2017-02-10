@@ -45,6 +45,41 @@ public class H2ProductDAO implements ProductDAO {
     }
 
     @Override
+    public List<Product> findAll(int id) throws DAOException {
+        Connection connection = connectionPool.getConnection();
+        List<Product> products = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT * FROM Product WHERE id=?")) {
+
+            ps.setInt(1, id);
+
+            ResultSet resultSet = ps.executeQuery();
+            products = productListMap(resultSet);
+//            while (resultSet.next()) {
+//                Product product = new Product();
+//
+//                product.setId(resultSet.getInt(1));
+//                product.setTitle(resultSet.getString(2));
+//                product.setAuthor(resultSet.getString(3));
+//                product.setPrice(resultSet.getInt(4));
+//                product.setDescription(resultSet.getString(5));
+//                product.setDetails(resultSet.getString(6));
+//                product.setAboutAuthor(resultSet.getString(7));
+//                product.setImage(resultSet.getString(8));
+//                products.add(product);
+//            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to find all Product.", e);
+        } finally {
+            connectionPool.closeConnection(connection);
+        }
+
+        return products;
+    }
+
+    @Override
     public List<Product> findAll() throws DAOException {
         Connection connection = connectionPool.getConnection();
         List<Product> products = new ArrayList<>();
@@ -53,20 +88,20 @@ public class H2ProductDAO implements ProductDAO {
                 "SELECT * FROM Product")) {
 
             ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                Product product = new Product();
-
-                product.setId(resultSet.getInt(1));
-                product.setTitle(resultSet.getString(2));
-                product.setAuthor(resultSet.getString(3));
-                product.setPrice(resultSet.getInt(4));
-                product.setDescription(resultSet.getString(5));
-                product.setDetails(resultSet.getString(6));
-                product.setAboutAuthor(resultSet.getString(7));
-                product.setImage(resultSet.getString(8));
-
-                products.add(product);
-            }
+            products = productListMap(resultSet);
+//            while (resultSet.next()) {
+//                Product product = new Product();
+//
+//                product.setId(resultSet.getInt(1));
+//                product.setTitle(resultSet.getString(2));
+//                product.setAuthor(resultSet.getString(3));
+//                product.setPrice(resultSet.getInt(4));
+//                product.setDescription(resultSet.getString(5));
+//                product.setDetails(resultSet.getString(6));
+//                product.setAboutAuthor(resultSet.getString(7));
+//                product.setImage(resultSet.getString(8));
+//                products.add(product);
+//            }
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find all Product.", e);
@@ -154,5 +189,25 @@ public class H2ProductDAO implements ProductDAO {
         }
 
         return affectedRowCount;
+    }
+
+    private List<Product> productListMap(ResultSet resultSet) throws SQLException {
+        List<Product> products = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Product product = new Product();
+
+            product.setId(resultSet.getInt(1));
+            product.setTitle(resultSet.getString(2));
+            product.setAuthor(resultSet.getString(3));
+            product.setPrice(resultSet.getInt(4));
+            product.setDescription(resultSet.getString(5));
+            product.setDetails(resultSet.getString(6));
+            product.setAboutAuthor(resultSet.getString(7));
+            product.setImage(resultSet.getString(8));
+
+            products.add(product);
+        }
+        return products;
     }
 }

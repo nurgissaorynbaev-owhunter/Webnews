@@ -6,16 +6,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class H2ShoppingCartDAO implements ShoppingCartDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     @Override
-    public List<ShoppingCart> find(String cookieId) throws DAOException {
+    public ShoppingCart find(String cookieId) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        List<ShoppingCart> shoppingCarts = new ArrayList<>();
+        ShoppingCart shoppingCart = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT * FROM ShoppingCart WHERE cookieId=?")) {
@@ -23,16 +21,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             ps.setString(1, cookieId);
 
             ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                ShoppingCart shoppingCart = new ShoppingCart();
-
-                shoppingCart.setId(resultSet.getInt(1));
-                shoppingCart.setProductId(resultSet.getInt(2));
-                shoppingCart.setCookieId(resultSet.getString(3));
-                shoppingCart.setQuantity(resultSet.getInt(4));
-
-                shoppingCarts.add(shoppingCart);
-            }
+            shoppingCart = map(resultSet);
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find shopping cart item by jsessionid", e);
@@ -40,7 +29,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             connectionPool.closeConnection(connection);
         }
 
-        return shoppingCarts;
+        return shoppingCart;
     }
 
     @Override
@@ -55,14 +44,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             ps.setString(2, cookieId);
 
             ResultSet resultSet = ps.executeQuery();
-
-            if (resultSet.next()) {
-                shoppingCart = new ShoppingCart();
-                shoppingCart.setId(resultSet.getInt(1));
-                shoppingCart.setProductId(resultSet.getInt(2));
-                shoppingCart.setCookieId(resultSet.getString(3));
-                shoppingCart.setQuantity(resultSet.getInt(4));
-            }
+            shoppingCart = map(resultSet);
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find ShoppingCart item.", e);
@@ -79,11 +61,12 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
         ShoppingCart tShoppingCart = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO ShoppingCart (productId, cookieId, quantity) VALUES (?,?,?)")) {
+                "INSERT INTO ShoppingCart (productId, cookieId, quantity, guestCustomerId) VALUES (?,?,?,?)")) {
 
             ps.setInt(1, shoppingCart.getProductId());
             ps.setString(2, shoppingCart.getCookieId());
             ps.setInt(3, shoppingCart.getQuantity());
+            ps.setInt(4, shoppingCart.getGuestCustomerId());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getGeneratedKeys();
@@ -107,7 +90,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
         int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE ShoppingCart SET quantity=? WHERE productId=?")) {
+                "UPDATE ShoppingCart SET quantity=?, guestCustomerId=? WHERE productId=?")) {
 
             ps.setInt(1, shoppingCart.getQuantity());
             ps.setInt(2, shoppingCart.getProductId());
@@ -164,6 +147,19 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
         }
 
         return affectedRowCount;
+    }
+
+    private ShoppingCart map(ResultSet resultSet) throws SQLException {
+        ShoppingCart shoppingCart = null;
+        if (resultSet.next()) {
+            shoppingCart = new ShoppingCart();
+            shoppingCart.setId(resultSet.getInt(1));
+            shoppingCart.setProductId(resultSet.getInt(2));
+            shoppingCart.setCookieId(resultSet.getString(3));
+            shoppingCart.setQuantity(resultSet.getInt(4));
+            shoppingCart.setGuestCustomerId(resultSet.getInt(5));
+        }
+        return shoppingCart;
     }
 
 }

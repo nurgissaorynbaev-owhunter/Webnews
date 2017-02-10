@@ -22,22 +22,16 @@ public class ProductOrderAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             ProductOrderDAO productOrderDAO = daoFactory.getProductOrderDAO();
 
-            String checkoutClicked = req.getParameter("checkoutClicked");
-            System.out.println(checkoutClicked);
-            if (checkoutClicked != null) {
-                req.setAttribute("checkoutClicked", checkoutClicked);
-            }
-
             HttpSession session = req.getSession();
             List<Product> products = (List<Product>) session.getAttribute("products");
-            Map<Integer, Integer> productQuantity = (Map<Integer, Integer>) session.getAttribute("productQuantity");
+            Map<Integer, Integer> productQuantityMap = (Map<Integer, Integer>) session.getAttribute("productQuantityMap");
             Customer customer = (Customer) session.getAttribute("customer");
 
             for (Product product : products) {
                 ProductOrder productOrder = new ProductOrder();
 
                 productOrder.setProductId(product.getId());
-                productOrder.setProductQuantity(productQuantity.get(product.getId()));
+                productOrder.setProductQuantity(productQuantityMap.get(product.getId()));
                 productOrder.setCustomerId(customer.getId());
 
                 productOrderDAO.create(productOrder);

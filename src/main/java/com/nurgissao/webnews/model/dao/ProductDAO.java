@@ -8,6 +8,8 @@ public interface ProductDAO {
 
     Product find(int id) throws DAOException;
 
+    List<Product> findAll(int id) throws DAOException;
+
     List<Product> findAll() throws DAOException;
 
     Product create(Product product) throws DAOException;

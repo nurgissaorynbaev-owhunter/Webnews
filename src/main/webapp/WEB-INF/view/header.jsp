@@ -64,6 +64,13 @@
             </li>
             <c:choose>
                 <c:when test="${user.role eq 'user'}">
+                    <c:if test="${sessionScope.productOrders ne null}">
+                        <li>
+                            <form action="/pages/myOrders" method="get">
+                                <input type="submit" class="btn btn-link" value="My Orders">
+                            </form>
+                        </li>
+                    </c:if>
                     <li>
                         <form action="/pages/signOut" method="get">
                             <input type="submit" class="btn btn-link" value="Sign out">

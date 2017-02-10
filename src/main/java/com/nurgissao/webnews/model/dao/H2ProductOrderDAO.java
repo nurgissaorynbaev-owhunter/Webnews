@@ -23,13 +23,7 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
             ps.setInt(1, id);
 
             ResultSet resultSet = ps.executeQuery();
-            if (resultSet.next()) {
-                tProductOrder = new ProductOrder();
-                tProductOrder.setId(resultSet.getInt(1));
-                tProductOrder.setCustomerId(resultSet.getInt(2));
-                tProductOrder.setProductId(resultSet.getInt(3));
-                tProductOrder.setProductQuantity(resultSet.getInt(4));
-            }
+            tProductOrder = map(resultSet);
 
         } catch (SQLException e) {
             throw new DAOException("Failed to find productOrder by id.", e);
@@ -41,6 +35,60 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
     }
 
     @Override
+    public ProductOrder findByCustomerId(int guestCustomerId) throws DAOException {
+        Connection connection = connectionPool.getConnection();
+        ProductOrder tProductOrder = null;
+
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT * FROM ProductOrder WHERE guestCustomerId=?")) {
+
+            ps.setInt(1, guestCustomerId);
+
+            ResultSet resultSet = ps.executeQuery();
+            tProductOrder = map(resultSet);
+
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to find productOrder by id.", e);
+        } finally {
+            connectionPool.closeConnection(connection);
+        }
+
+        return tProductOrder;
+    }
+
+    @Override
+    public List<ProductOrder> findAll(int id) throws DAOException {
+        Connection connection = connectionPool.getConnection();
+        List<ProductOrder> productOrders = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT * FROM ProductOrder WHERE customerId=?")) {
+
+            ps.setInt(1, id);
+
+            ResultSet resultSet = ps.executeQuery();
+            productOrders = mapList(resultSet);
+//            while (resultSet.next()) {
+//                ProductOrder productOrder = new ProductOrder();
+//                productOrder.setId(resultSet.getInt(1));
+//                productOrder.setCustomerId(resultSet.getInt(2));
+//                productOrder.setProductId(resultSet.getInt(3));
+//                productOrder.setProductQuantity(resultSet.getInt(4));
+//
+//                productOrders.add(productOrder);
+//            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Failed to findAll productOrders by id.", e);
+        } finally {
+            connectionPool.closeConnection(connection);
+        }
+
+        return productOrders;
+    }
+
+    @Override
     public List<ProductOrder> findAll() throws DAOException {
         Connection connection = connectionPool.getConnection();
         List<ProductOrder> productOrders = new ArrayList<>();
@@ -49,15 +97,16 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
                 "SELECT * FROM ProductOrder")) {
 
             ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                ProductOrder productOrder = new ProductOrder();
-                productOrder.setId(resultSet.getInt(1));
-                productOrder.setCustomerId(resultSet.getInt(2));
-                productOrder.setProductId(resultSet.getInt(3));
-                productOrder.setProductQuantity(resultSet.getInt(4));
-
-                productOrders.add(productOrder);
-            }
+            productOrders = mapList(resultSet);
+//            while (resultSet.next()) {
+//                ProductOrder productOrder = new ProductOrder();
+//                productOrder.setId(resultSet.getInt(1));
+//                productOrder.setCustomerId(resultSet.getInt(2));
+//                productOrder.setProductId(resultSet.getInt(3));
+//                productOrder.setProductQuantity(resultSet.getInt(4));
+//
+//                productOrders.add(productOrder);
+//            }
 
         } catch (SQLException e) {
             throw new DAOException("Failed to findAll productOrders.", e);
@@ -80,8 +129,10 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
             ps.setInt(2, productOrder.getProductId());
             ps.setInt(3, productOrder.getProductQuantity());
 
-            int affectedRowCount = ps.executeUpdate();
-            if (affectedRowCount != 0) {
+            ps.executeUpdate();
+            ResultSet resultSet = ps.getGeneratedKeys();
+            if (resultSet.next()) {
+                productOrder.setId(resultSet.getInt(1));
                 tProductOrder = productOrder;
             }
 
@@ -137,5 +188,31 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
         }
 
         return affectedRowCount;
+    }
+
+    private List<ProductOrder> mapList(ResultSet resultSet) throws SQLException {
+        List<ProductOrder> productOrders = new ArrayList<>();
+        while (resultSet.next()) {
+            ProductOrder productOrder = new ProductOrder();
+            productOrder.setId(resultSet.getInt(1));
+            productOrder.setCustomerId(resultSet.getInt(2));
+            productOrder.setProductId(resultSet.getInt(3));
+            productOrder.setProductQuantity(resultSet.getInt(4));
+
+            productOrders.add(productOrder);
+        }
+        return productOrders;
+    }
+
+    private ProductOrder map(ResultSet resultSet) throws SQLException {
+        ProductOrder productOrder = null;
+        if (resultSet.next()) {
+            productOrder = new ProductOrder();
+            productOrder.setId(resultSet.getInt(1));
+            productOrder.setCustomerId(resultSet.getInt(2));
+            productOrder.setProductId(resultSet.getInt(3));
+            productOrder.setProductQuantity(resultSet.getInt(4));
+        }
+        return productOrder;
     }
 }

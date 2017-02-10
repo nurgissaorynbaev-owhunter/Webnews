@@ -2,6 +2,8 @@ package com.nurgissao.webnews.controller.action;
 
 import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.Customer;
+import com.nurgissao.webnews.model.entity.Product;
+import com.nurgissao.webnews.model.entity.ProductOrder;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
 import org.apache.log4j.Logger;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SignInAction implements Action {
@@ -22,6 +25,8 @@ public class SignInAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             UserDAO userDAO = daoFactory.getUserDAO();
             CustomerDAO customerDAO = daoFactory.getCustomerDAO();
+            ProductOrderDAO productOrderDAO = daoFactory.getProductOrderDAO();
+            ProductDAO productDAO = daoFactory.getProductDAO();
 
             String email = req.getParameter("email");
             String password = req.getParameter("pwd");
@@ -45,8 +50,24 @@ public class SignInAction implements Action {
             if (user != null) {
                 HttpSession session = req.getSession();
                 if (rememberMe != null) {
-                    session.setMaxInactiveInterval(15 * 24 * 60 * 60);
+                    session.setMaxInactiveInterval(7 * 24 * 60 * 60);
                 }
+
+                List<ProductOrder> productOrders = productOrderDAO.findAll(user.getCustomerId());
+                if (!productOrders.isEmpty()) {
+                    Map<Integer, Product> productsMap = new HashMap<>();
+                    Map<Integer, Integer> quantityMap = new HashMap<>();
+                    for (ProductOrder productOrder : productOrders) {
+                        Product product = productDAO.find(productOrder.getProductId());
+                        productsMap.put(productOrder.getId(), product);
+                        quantityMap.put(productOrder.getId(), productOrder.getProductQuantity());
+                    }
+                    session.setAttribute("productsMap", productsMap);
+                    session.setAttribute("quantityMap", quantityMap);
+                    session.setAttribute("productOrders", productOrders);
+                }
+
+
                 session.setAttribute("user", user);
 
                 Customer customer = customerDAO.find(user.getCustomerId());

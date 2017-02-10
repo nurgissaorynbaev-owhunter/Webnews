@@ -8,6 +8,10 @@ public interface ProductOrderDAO {
 
     ProductOrder find(int id) throws DAOException;
 
+    ProductOrder findByCustomerId(int guestCustomerId) throws DAOException;
+
+    List<ProductOrder> findAll(int id) throws DAOException;
+
     List<ProductOrder> findAll() throws DAOException;
 
     ProductOrder create(ProductOrder productOrder) throws DAOException;
