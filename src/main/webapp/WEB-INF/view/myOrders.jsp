@@ -22,7 +22,7 @@
         </div>
         <c:set var="productOrderMap" value="${sessionScope.productOrderMap}"/>
         <c:set var="productQuantityOrderMap" value="${sessionScope.productQuantityOrderMap}"/>
-        <c:forEach var="order" items="${sessionScope.producsOrder}">
+        <c:forEach var="order" items="${sessionScope.productsOrder}">
             <c:set var="product" value="${productOrderMap[order.id]}"/>
             <c:set var="quantity" value="${productQuantityOrderMap[order.id]}"/>
             <div class="row">
