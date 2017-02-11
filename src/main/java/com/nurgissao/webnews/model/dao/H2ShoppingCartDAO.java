@@ -6,14 +6,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class H2ShoppingCartDAO implements ShoppingCartDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     @Override
-    public ShoppingCart find(String cookieId) throws DAOException {
+    public List<ShoppingCart> findAllByCookieId(String cookieId) throws DAOException {
         Connection connection = connectionPool.getConnection();
-        ShoppingCart shoppingCart = null;
+        List<ShoppingCart> shoppingCarts = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT * FROM ShoppingCart WHERE cookieId=?")) {
@@ -21,15 +23,23 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             ps.setString(1, cookieId);
 
             ResultSet resultSet = ps.executeQuery();
-            shoppingCart = map(resultSet);
+            while (resultSet.next()) {
+                ShoppingCart shoppingCart = new ShoppingCart();
+                shoppingCart.setId(resultSet.getInt(1));
+                shoppingCart.setProductId(resultSet.getInt(2));
+                shoppingCart.setCookieId(resultSet.getString(3));
+                shoppingCart.setQuantity(resultSet.getInt(4));
+
+                shoppingCarts.add(shoppingCart);
+            }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find shopping cart item by jsessionid", e);
+            throw new DAOException("Failed to findAll Shopping cart item by cookieId.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
 
-        return shoppingCart;
+        return shoppingCarts;
     }
 
     @Override
@@ -61,12 +71,11 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
         ShoppingCart tShoppingCart = null;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO ShoppingCart (productId, cookieId, quantity, guestCustomerId) VALUES (?,?,?,?)")) {
+                "INSERT INTO ShoppingCart (productId, cookieId, quantity) VALUES (?,?,?)")) {
 
             ps.setInt(1, shoppingCart.getProductId());
             ps.setString(2, shoppingCart.getCookieId());
             ps.setInt(3, shoppingCart.getQuantity());
-            ps.setInt(4, shoppingCart.getGuestCustomerId());
 
             ps.executeUpdate();
             ResultSet resultSet = ps.getGeneratedKeys();
@@ -76,7 +85,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to create shopping cart item.", e);
+            throw new DAOException("Failed to create Shopping cart item.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -90,7 +99,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
         int affectedRowCount;
 
         try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE ShoppingCart SET quantity=?, guestCustomerId=? WHERE productId=?")) {
+                "UPDATE ShoppingCart SET quantity=? WHERE productId=?")) {
 
             ps.setInt(1, shoppingCart.getQuantity());
             ps.setInt(2, shoppingCart.getProductId());
@@ -98,7 +107,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to delete shopping cart item.", e);
+            throw new DAOException("Failed to update Shopping cart item.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -114,34 +123,12 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
         try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM ShoppingCart WHERE id=?")) {
 
-            ps.setInt(1, shoppingCart.getProductId());
+            ps.setInt(1, shoppingCart.getId());
 
             affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to delete shopping cart item.", e);
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-
-        return affectedRowCount;
-    }
-
-    @Override
-    public int delete(int productId, String cookieId) throws DAOException {
-        Connection connection = connectionPool.getConnection();
-        int affectedRowCount;
-
-        try (PreparedStatement ps = connection.prepareStatement(
-                "DELETE FROM ShoppingCart WHERE cookieId=? AND productId=?")) {
-
-            ps.setString(1, cookieId);
-            ps.setInt(2, productId);
-
-            affectedRowCount = ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DAOException("Failed to delete shopping cart item.", e);
+            throw new DAOException("Failed to delete Shopping cart item.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -157,7 +144,6 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             shoppingCart.setProductId(resultSet.getInt(2));
             shoppingCart.setCookieId(resultSet.getString(3));
             shoppingCart.setQuantity(resultSet.getInt(4));
-            shoppingCart.setGuestCustomerId(resultSet.getInt(5));
         }
         return shoppingCart;
     }

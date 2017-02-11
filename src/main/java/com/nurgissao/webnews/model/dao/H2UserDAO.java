@@ -21,7 +21,7 @@ public class H2UserDAO implements UserDAO {
             user = map(ps.executeQuery());
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find a User.", e);
+            throw new DAOException("Failed to findAllByCookieId a User.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -41,7 +41,7 @@ public class H2UserDAO implements UserDAO {
             user = map(ps.executeQuery());
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find User by email, password.", e);
+            throw new DAOException("Failed to findAllByCookieId User by email, password.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }

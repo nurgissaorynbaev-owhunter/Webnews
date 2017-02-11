@@ -24,21 +24,26 @@ public class MyOrdersAction implements Action {
 
             HttpSession session = req.getSession();
 
+            List<ProductOrder> productOrders = null;
             User user = (User) session.getAttribute("user");
             if (user != null) {
-                List<ProductOrder> productOrders = productOrderDAO.findAll(user.getCustomerId());
-
-                Map<Integer, Product> productsMap = new HashMap<>();
-                Map<Integer, Integer> quantityMap = new HashMap<>();
-                for (ProductOrder productOrder : productOrders) {
-                    Product product = productDAO.find(productOrder.getProductId());
-                    productsMap.put(productOrder.getId(), product);
-                    quantityMap.put(productOrder.getId(), productOrder.getProductQuantity());
-                }
-                session.setAttribute("productsMap", productsMap);
-                session.setAttribute("quantityMap", quantityMap);
-                session.setAttribute("productOrders", productOrders);
+                productOrders = productOrderDAO.findAll(user.getCustomerId());
             }
+            User guestUser = (User) session.getAttribute("guestUser");
+            if (guestUser != null) {
+                productOrders = productOrderDAO.findAll(guestUser.getCustomerId());
+            }
+
+            Map<Integer, Product> productsMap = new HashMap<>();
+            Map<Integer, Integer> quantityMap = new HashMap<>();
+            for (ProductOrder productOrder : productOrders) {
+                Product product = productDAO.find(productOrder.getProductId());
+                productsMap.put(productOrder.getId(), product);
+                quantityMap.put(productOrder.getId(), productOrder.getProductQuantity());
+            }
+            session.setAttribute("productsMap", productsMap);
+            session.setAttribute("quantityMap", quantityMap);
+            session.setAttribute("productOrders", productOrders);
 
         } catch (DAOException e) {
             throw new ActionException(e);

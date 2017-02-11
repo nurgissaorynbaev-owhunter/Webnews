@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ShoppingCartDAO {
 
-    ShoppingCart find(String cookieId) throws DAOException;
+    List<ShoppingCart> findAllByCookieId(String cookieId) throws DAOException;
 
     ShoppingCart find(int productId, String cookieId) throws DAOException;
 
@@ -15,7 +15,5 @@ public interface ShoppingCartDAO {
     int update(ShoppingCart shoppingCart) throws DAOException;
 
     int delete(ShoppingCart shoppingCart) throws DAOException;
-
-    int delete(int productId, String cookieId) throws DAOException;
 
 }

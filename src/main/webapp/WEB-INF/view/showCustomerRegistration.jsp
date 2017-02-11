@@ -58,18 +58,21 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-                <c:choose>
-                    <c:when test="${user ne null}">
-                        <div class="form-group text-right">
-                            <input type="submit" class="btn btn-primary" name="signedUser" value="Next">
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="form-group text-right">
-                            <input type="submit" class="btn btn-primary" value="Next">
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                <div class="form-group text-right">
+                    <input type="submit" class="btn btn-primary" value="Next">
+                </div>
+                <%--<c:choose>--%>
+                <%--<c:when test="${user ne null}">--%>
+                <%--<div class="form-group text-right">--%>
+                <%--<input type="submit" class="btn btn-primary" name="signedUser" value="Next">--%>
+                <%--</div>--%>
+                <%--</c:when>--%>
+                <%--<c:otherwise>--%>
+                <%--<div class="form-group text-right">--%>
+                <%--<input type="submit" class="btn btn-primary" value="Next">--%>
+                <%--</div>--%>
+                <%--</c:otherwise>--%>
+                <%--</c:choose>--%>
             </form>
         </div>
     </div>

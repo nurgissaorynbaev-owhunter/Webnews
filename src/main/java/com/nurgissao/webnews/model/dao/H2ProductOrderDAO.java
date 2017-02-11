@@ -26,7 +26,7 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
             tProductOrder = map(resultSet);
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find productOrder by id.", e);
+            throw new DAOException("Failed to findAllByCookieId productOrder by id.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -49,7 +49,7 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
 
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find productOrder by id.", e);
+            throw new DAOException("Failed to findAllByCookieId productOrder by id.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }

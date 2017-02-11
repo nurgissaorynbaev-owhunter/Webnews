@@ -35,7 +35,7 @@ public class H2CustomerDAO implements CustomerDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find customer by id.", e);
+            throw new DAOException("Failed to findAllByCookieId customer by id.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }

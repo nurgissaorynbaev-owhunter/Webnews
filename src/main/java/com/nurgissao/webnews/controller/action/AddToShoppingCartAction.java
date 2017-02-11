@@ -35,7 +35,10 @@ public class AddToShoppingCartAction implements Action {
                 quantity = tShoppingCart.getQuantity() + 1;
                 shoppingCart.setQuantity(quantity);
 
-                shoppingCartDAO.update(shoppingCart);
+                int affectedRowCount = shoppingCartDAO.update(shoppingCart);
+                if (affectedRowCount == 0) {
+                    //TODO throw appropriate Exception
+                }
             } else {
                 quantity++;
                 shoppingCart.setQuantity(quantity);

@@ -2,16 +2,13 @@ package com.nurgissao.webnews.controller.action;
 
 import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.Customer;
-import com.nurgissao.webnews.model.entity.ShoppingCart;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CustomerRegistrationAction implements Action {
@@ -22,7 +19,6 @@ public class CustomerRegistrationAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             CustomerDAO customerDAO = daoFactory.getCustomerDAO();
             UserDAO userDAO = daoFactory.getUserDAO();
-            ShoppingCartDAO shoppingCartDAO = daoFactory.getShoppingCartDAO();
             Validator validator = new Validator();
 
             String fullName = req.getParameter("fullName");
@@ -70,30 +66,36 @@ public class CustomerRegistrationAction implements Action {
                     if (user != null) {
                         session.setAttribute("customer", tCustomer);
                         user.setCustomerId(tCustomer.getId());
-                        userDAO.update(user);
+
+                        int affectedRowCount = userDAO.update(user);
+                        if (affectedRowCount != 0) {
+                            return "home";
+
+                        } else {
+                            //TODO throw appropriate Exception
+                        }
 
                     } else {
-                        String cookieId = null;
-                        Cookie[] cookies = req.getCookies();
-                        for (Cookie cookie : cookies) {
-                            if (cookie.getName().equals("cookieId")) {
-                               cookieId = cookie.getValue();
-                            }
-                        }
-                        ShoppingCart shoppingCart = shoppingCartDAO.find(cookieId);
-                        if (shoppingCart != null) {
-                            shoppingCart.setGuestCustomerId(tCustomer.getId());
-                            shoppingCartDAO.update(shoppingCart);
+                        User guestUser = new User();
+                        guestUser.setFirstName("guestUser");
+                        guestUser.setLastName("guestUser");
+                        guestUser.setEmail("guestUser");
+                        guestUser.setRole("guestUser");
+                        guestUser.setStatus("guestUser");
+                        guestUser.setCustomerId(tCustomer.getId());
+
+                        User tGuestUser = userDAO.create(guestUser);
+                        if (tGuestUser != null) {
+                            session.setAttribute("guestUser", tGuestUser);
+
+                        } else {
+                            //TODO throw appropriate Exception
                         }
                     }
 
                 } else {
                     //TODO throw appropriate Exception
                 }
-            }
-            String signedUser = req.getParameter("signedUser");
-            if (signedUser != null) {
-                return "home";
             }
 
         } catch (DAOException e) {

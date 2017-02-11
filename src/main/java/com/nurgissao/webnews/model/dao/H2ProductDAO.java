@@ -37,7 +37,7 @@ public class H2ProductDAO implements ProductDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find Product.", e);
+            throw new DAOException("Failed to findAllByCookieId Product.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -71,7 +71,7 @@ public class H2ProductDAO implements ProductDAO {
 //            }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find all Product.", e);
+            throw new DAOException("Failed to findAllByCookieId all Product.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -104,7 +104,7 @@ public class H2ProductDAO implements ProductDAO {
 //            }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find all Product.", e);
+            throw new DAOException("Failed to findAllByCookieId all Product.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }

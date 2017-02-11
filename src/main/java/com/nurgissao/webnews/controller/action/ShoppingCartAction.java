@@ -20,6 +20,7 @@ public class ShoppingCartAction implements Action {
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             ShoppingCartDAO shoppingCartDAO = daoFactory.getShoppingCartDAO();
+            ProductDAO productDAO = daoFactory.getProductDAO();
             String cookieId = null;
 
             Cookie[] cookies = req.getCookies();
@@ -44,20 +45,23 @@ public class ShoppingCartAction implements Action {
 
             String deleteProductId = req.getParameter("deleteProductId");
             if (deleteProductId != null) {
-                int affectedRowCount = shoppingCartDAO.delete(Integer.parseInt(deleteProductId), cookieId);
-                if (affectedRowCount == 0) {
+                ShoppingCart shoppingCart = shoppingCartDAO.find(Integer.parseInt(deleteProductId), cookieId);
+                if (shoppingCart != null) {
+                    System.out.println("shopping cart id:" + shoppingCart.getId());
+                    shoppingCartDAO.delete(shoppingCart);
+
+                } else {
                     //TODO throw appropriate Exception
                 }
             }
 
-            ProductDAO productDAO = daoFactory.getProductDAO();
             List<Product> products = new ArrayList<>();
-            Product product;
             Map<Integer, Integer> productQuantityMap = new HashMap<>();
+            Product product;
 
-            List<ShoppingCart> shoppingCarts = shoppingCartDAO.find(cookieId);
-            if (!shoppingCarts.isEmpty()) {
-                for (ShoppingCart sh : shoppingCarts) {
+            List<ShoppingCart> shoppingCartItems = shoppingCartDAO.findAllByCookieId(cookieId);
+            if (!shoppingCartItems.isEmpty()) {
+                for (ShoppingCart sh : shoppingCartItems) {
                     productQuantityMap.put(sh.getProductId(), sh.getQuantity());
                     product = productDAO.find(sh.getProductId());
                     products.add(product);

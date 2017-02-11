@@ -30,12 +30,6 @@
                         Price: $<c:out value="${product.price}"/><br><br>
                         <ul class="list-inline">
                             <li>
-                                <form action="/pages/addShoppingCart" method="post">
-                                    <input type="hidden" name="productId" value="${product.id}">
-                                    <input type="submit" class="btn btn-info btn-sm" value="Add to Shopping Cart">
-                                </form>
-                            </li>
-                            <li>
                                 <form action="/pages/editProduct" method="get">
                                     <input type="hidden" name="productId" value="${product.id}">
                                     <input type="submit" class="btn btn-primary btn-sm" value="Edit">

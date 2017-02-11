@@ -16,12 +16,7 @@
         <div class="row text-right">
             <ul class="list-inline">
                 <li>
-                    <a class="btn btn-default" href="/pages/home" role="button">Home</a>
-                </li>
-                <li>
-                    <form action="/pages/shoppingCart" method="get">
-                        <input type="submit" class="btn btn-default" value="Shopping cart">
-                    </form>
+                    <a class="btn btn-default btn-link" href="/pages/home" role="button">Home</a>
                 </li>
                 <li>
                     <form action="/pages/showAddProduct" method="get">

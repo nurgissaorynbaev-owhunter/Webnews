@@ -33,7 +33,7 @@
                     </td>
                     <td>
                         <small>
-                            <form action="/pages/shoppingCart" method="post">
+                            <form action="/pages/shoppingCart" method="get">
                                 <input type="number" min="0" style="width: 50px;" name="pQuantity"
                                        value="${productQuantityMap[product.id]}">
                                 <input type="hidden" name="productId" value="${product.id}">
@@ -43,7 +43,7 @@
                     </td>
                     <td>
                         <small>
-                            <form action="/pages/shoppingCart" method="post">
+                            <form action="/pages/shoppingCart" method="get">
                                 <input type="hidden" name="deleteProductId" value="${product.id}">
                                 <input type="submit" class="btn btn-primary btn-xs" value="Delete">
                             </form>
