@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerRegistrationAction implements Action {
+    private static final String GUEST_USER = "guest";
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -19,7 +20,6 @@ public class CustomerRegistrationAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             CustomerDAO customerDAO = daoFactory.getCustomerDAO();
             UserDAO userDAO = daoFactory.getUserDAO();
-            Validator validator = new Validator();
 
             String fullName = req.getParameter("fullName");
             String country = req.getParameter("country");
@@ -44,6 +44,7 @@ public class CustomerRegistrationAction implements Action {
             formValue.put("homeAddress", homeAddress);
             formValue.put("phoneNumber", phoneNumber);
 
+            Validator validator = new Validator();
             Map<String, String> violations = validator.validateCustomerRegistrationForm(formValue);
             if (!violations.isEmpty()) {
                 System.out.println("violations in customer creating.");
@@ -61,12 +62,11 @@ public class CustomerRegistrationAction implements Action {
                 Customer tCustomer = customerDAO.create(customer);
                 if (tCustomer != null) {
                     HttpSession session = req.getSession();
+                    session.setAttribute("customer", tCustomer);
 
                     User user = (User) session.getAttribute("user");
                     if (user != null) {
-                        session.setAttribute("customer", tCustomer);
                         user.setCustomerId(tCustomer.getId());
-
                         int affectedRowCount = userDAO.update(user);
                         if (affectedRowCount != 0) {
                             return "home";
@@ -77,22 +77,18 @@ public class CustomerRegistrationAction implements Action {
 
                     } else {
                         User guestUser = new User();
-                        guestUser.setFirstName("guestUser");
-                        guestUser.setLastName("guestUser");
-                        guestUser.setEmail("guestUser");
-                        guestUser.setRole("guestUser");
-                        guestUser.setStatus("guestUser");
+                        guestUser.setFirstName(GUEST_USER);
+                        guestUser.setLastName(GUEST_USER);
+                        guestUser.setEmail(GUEST_USER);
+                        guestUser.setRole(GUEST_USER);
+                        guestUser.setStatus(GUEST_USER);
                         guestUser.setCustomerId(tCustomer.getId());
 
                         User tGuestUser = userDAO.create(guestUser);
-                        if (tGuestUser != null) {
-                            session.setAttribute("guestUser", tGuestUser);
-
-                        } else {
+                        if (tGuestUser == null) {
                             //TODO throw appropriate Exception
                         }
                     }
-
                 } else {
                     //TODO throw appropriate Exception
                 }

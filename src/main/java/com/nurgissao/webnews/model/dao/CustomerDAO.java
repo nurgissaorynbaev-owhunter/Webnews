@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CustomerDAO {
 
-    Customer find(int id) throws DAOException;
+    Customer findById(int id) throws DAOException;
 
     List<Customer> findAll() throws DAOException;
 

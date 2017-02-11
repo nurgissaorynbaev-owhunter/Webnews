@@ -28,7 +28,7 @@ public class OrdersAction implements Action {
                 for (ProductOrder productOrder : productOrders) {
 
                     Product product = productDAO.find(productOrder.getProductId());
-                    Customer customer = customerDAO.find(productOrder.getCustomerId());
+                    Customer customer = customerDAO.findById(productOrder.getCustomerId());
 
                     if (customer != null) {
                         productMap.put(productOrder.getId(), product);

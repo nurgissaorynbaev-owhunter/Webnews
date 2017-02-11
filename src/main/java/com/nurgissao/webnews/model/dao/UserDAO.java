@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserDAO {
 
-    User find(int id) throws DAOException;
+    User findById(int id) throws DAOException;
 
     User find(String email, String password) throws DAOException;
 

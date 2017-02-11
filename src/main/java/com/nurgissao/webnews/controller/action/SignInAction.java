@@ -53,7 +53,7 @@ public class SignInAction implements Action {
                     session.setMaxInactiveInterval(7 * 24 * 60 * 60);
                 }
 
-                List<ProductOrder> productOrders = productOrderDAO.findAll(user.getCustomerId());
+                List<ProductOrder> productOrders = productOrderDAO.findAllByCustomerId(user.getCustomerId());
                 if (!productOrders.isEmpty()) {
                     Map<Integer, Product> productsMap = new HashMap<>();
                     Map<Integer, Integer> quantityMap = new HashMap<>();
@@ -70,7 +70,7 @@ public class SignInAction implements Action {
 
                 session.setAttribute("user", user);
 
-                Customer customer = customerDAO.find(user.getCustomerId());
+                Customer customer = customerDAO.findById(user.getCustomerId());
                 if (customer != null) {
                     session.setAttribute("customer", customer);
                 } else {

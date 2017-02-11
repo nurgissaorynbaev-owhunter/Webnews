@@ -8,7 +8,6 @@ import com.nurgissao.webnews.model.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,26 +23,22 @@ public class MyOrdersAction implements Action {
 
             HttpSession session = req.getSession();
 
-            List<ProductOrder> productOrders = null;
+            List<ProductOrder> productsOrder = null;
             User user = (User) session.getAttribute("user");
             if (user != null) {
-                productOrders = productOrderDAO.findAll(user.getCustomerId());
-            }
-            User guestUser = (User) session.getAttribute("guestUser");
-            if (guestUser != null) {
-                productOrders = productOrderDAO.findAll(guestUser.getCustomerId());
+                productsOrder = productOrderDAO.findAllByCustomerId(user.getCustomerId());
             }
 
-            Map<Integer, Product> productsMap = new HashMap<>();
-            Map<Integer, Integer> quantityMap = new HashMap<>();
-            for (ProductOrder productOrder : productOrders) {
+            Map<Integer, Product> productOrderMap = new HashMap<>();
+            Map<Integer, Integer> productQuantityOrderMap = new HashMap<>();
+            for (ProductOrder productOrder : productsOrder) {
                 Product product = productDAO.find(productOrder.getProductId());
-                productsMap.put(productOrder.getId(), product);
-                quantityMap.put(productOrder.getId(), productOrder.getProductQuantity());
+                productOrderMap.put(productOrder.getId(), product);
+                productQuantityOrderMap.put(productOrder.getId(), productOrder.getProductQuantity());
             }
-            session.setAttribute("productsMap", productsMap);
-            session.setAttribute("quantityMap", quantityMap);
-            session.setAttribute("productOrders", productOrders);
+            session.setAttribute("productOrderMap", productOrderMap);
+            session.setAttribute("productQuantityOrderMap", productQuantityOrderMap);
+            session.setAttribute("productsOrder", productsOrder);
 
         } catch (DAOException e) {
             throw new ActionException(e);

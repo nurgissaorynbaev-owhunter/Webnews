@@ -20,11 +20,11 @@
                 <th>Quantity</th>
             </tr>
         </div>
-        <c:set var="productsMap" value="${sessionScope.productsMap}"/>
-        <c:set var="quantityMap" value="${sessionScope.quantityMap}"/>
-        <c:forEach var="order" items="${sessionScope.productOrders}">
-            <c:set var="product" value="${productsMap[order.id]}"/>
-            <c:set var="quantity" value="${quantityMap[order.id]}"/>
+        <c:set var="productOrderMap" value="${sessionScope.productOrderMap}"/>
+        <c:set var="productQuantityOrderMap" value="${sessionScope.productQuantityOrderMap}"/>
+        <c:forEach var="order" items="${sessionScope.producsOrder}">
+            <c:set var="product" value="${productOrderMap[order.id]}"/>
+            <c:set var="quantity" value="${productQuantityOrderMap[order.id]}"/>
             <div class="row">
                 <tr>
                     <td>

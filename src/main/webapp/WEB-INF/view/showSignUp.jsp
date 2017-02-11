@@ -28,7 +28,7 @@
                     <input type="password" class="form-control" name="pwd" placeholder="Password" required>
                 </div>
                 <div class="form-group text-right">
-                    <button type="submit" class="form-control btn btn-primary">Submit</button>
+                    <button type="submit" class="form-control btn btn-primary">Next</button>
                 </div>
             </div>
         </form>

@@ -47,7 +47,6 @@ public class ShoppingCartAction implements Action {
             if (deleteProductId != null) {
                 ShoppingCart shoppingCart = shoppingCartDAO.find(Integer.parseInt(deleteProductId), cookieId);
                 if (shoppingCart != null) {
-                    System.out.println("shopping cart id:" + shoppingCart.getId());
                     shoppingCartDAO.delete(shoppingCart);
 
                 } else {

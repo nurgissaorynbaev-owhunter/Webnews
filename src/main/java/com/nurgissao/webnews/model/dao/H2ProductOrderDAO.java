@@ -13,7 +13,7 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     @Override
-    public ProductOrder find(int id) throws DAOException {
+    public ProductOrder findById(int id) throws DAOException {
         Connection connection = connectionPool.getConnection();
         ProductOrder tProductOrder = null;
 
@@ -26,7 +26,7 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
             tProductOrder = map(resultSet);
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId productOrder by id.", e);
+            throw new DAOException("Failed to find Product order by id.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -35,52 +35,20 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
     }
 
     @Override
-    public ProductOrder findByCustomerId(int guestCustomerId) throws DAOException {
-        Connection connection = connectionPool.getConnection();
-        ProductOrder tProductOrder = null;
-
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM ProductOrder WHERE guestCustomerId=?")) {
-
-            ps.setInt(1, guestCustomerId);
-
-            ResultSet resultSet = ps.executeQuery();
-            tProductOrder = map(resultSet);
-
-
-        } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId productOrder by id.", e);
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-
-        return tProductOrder;
-    }
-
-    @Override
-    public List<ProductOrder> findAll(int id) throws DAOException {
+    public List<ProductOrder> findAllByCustomerId(int customerId) throws DAOException {
         Connection connection = connectionPool.getConnection();
         List<ProductOrder> productOrders = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(
                 "SELECT * FROM ProductOrder WHERE customerId=?")) {
 
-            ps.setInt(1, id);
+            ps.setInt(1, customerId);
 
             ResultSet resultSet = ps.executeQuery();
             productOrders = mapList(resultSet);
-//            while (resultSet.next()) {
-//                ProductOrder productOrder = new ProductOrder();
-//                productOrder.setId(resultSet.getInt(1));
-//                productOrder.setCustomerId(resultSet.getInt(2));
-//                productOrder.setProductId(resultSet.getInt(3));
-//                productOrder.setProductQuantity(resultSet.getInt(4));
-//
-//                productOrders.add(productOrder);
-//            }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAll productOrders by id.", e);
+            throw new DAOException("Failed to find all Product orders by customerId.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -98,18 +66,9 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
 
             ResultSet resultSet = ps.executeQuery();
             productOrders = mapList(resultSet);
-//            while (resultSet.next()) {
-//                ProductOrder productOrder = new ProductOrder();
-//                productOrder.setId(resultSet.getInt(1));
-//                productOrder.setCustomerId(resultSet.getInt(2));
-//                productOrder.setProductId(resultSet.getInt(3));
-//                productOrder.setProductQuantity(resultSet.getInt(4));
-//
-//                productOrders.add(productOrder);
-//            }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAll productOrders.", e);
+            throw new DAOException("Failed to find all by Product orders.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -161,7 +120,7 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
             affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to update productOrder.", e);
+            throw new DAOException("Failed to update Product order.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -182,7 +141,7 @@ public class H2ProductOrderDAO implements ProductOrderDAO {
             affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to delete productOrder.", e);
+            throw new DAOException("Failed to delete Product order.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }

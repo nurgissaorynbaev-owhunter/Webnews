@@ -34,7 +34,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAll Shopping cart item by cookieId.", e);
+            throw new DAOException("Failed to findAllByCustomerId Shopping cart item by cookieId.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -57,7 +57,7 @@ public class H2ShoppingCartDAO implements ShoppingCartDAO {
             shoppingCart = map(resultSet);
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to find ShoppingCart item.", e);
+            throw new DAOException("Failed to findById ShoppingCart item.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }

@@ -16,27 +16,28 @@ public class ActionFactory {
         actions.put("signIn", new SignInAction());
         actions.put("signOut", new SignOutAction());
 
+        actions.put("showCustomerRegistration", new ShowCustomerRegistrationAction());
+        actions.put("customerRegistration", new CustomerRegistrationAction());
+
         actions.put("showProfile", new ShowProfileAction());
         actions.put("profile", new ProfileAction());
 
         actions.put("addToShoppingCart", new AddToShoppingCartAction());
         actions.put("shoppingCart", new ShoppingCartAction());
 
-        actions.put("showAddProduct", new ShowAddProductAction());
         actions.put("productDetails", new ProductDetailsAction());
-        actions.put("addProduct", new AddProductAction());
-        actions.put("deleteProduct", new DeleteProductAction());
-        actions.put("editProduct", new EditProductAction());
-
-        actions.put("userList", new UserListAction());
-
-        actions.put("showCustomerRegistration", new ShowCustomerRegistrationAction());
-        actions.put("customerRegistration", new CustomerRegistrationAction());
 
         actions.put("showProductOrder", new ShowProductOrderAction());
         actions.put("productOrder", new ProductOrderAction());
 
         actions.put("orders", new OrdersAction());
+        actions.put("userList", new UserListAction());
+
+        actions.put("addProduct", new AddProductAction());
+        actions.put("deleteProduct", new DeleteProductAction());
+        actions.put("editProduct", new EditProductAction());
+
+        actions.put("showAddProduct", new ShowAddProductAction());
 
         actions.put("myOrders", new MyOrdersAction());
     }

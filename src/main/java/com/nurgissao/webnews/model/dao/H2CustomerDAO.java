@@ -13,7 +13,7 @@ public class H2CustomerDAO implements CustomerDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     @Override
-    public Customer find(int id) throws DAOException {
+    public Customer findById(int id) throws DAOException {
         Connection connection = connectionPool.getConnection();
         Customer customer = null;
 
@@ -35,7 +35,7 @@ public class H2CustomerDAO implements CustomerDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId customer by id.", e);
+            throw new DAOException("Failed to findById Customer by id.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -65,7 +65,7 @@ public class H2CustomerDAO implements CustomerDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAll customers.", e);
+            throw new DAOException("Failed to findById all Customers.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -96,7 +96,7 @@ public class H2CustomerDAO implements CustomerDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to create customer.", e);
+            throw new DAOException("Failed to create Customer.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -123,7 +123,7 @@ public class H2CustomerDAO implements CustomerDAO {
             affectedRowCount = ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to create customer.", e);
+            throw new DAOException("Failed to update Customer.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }

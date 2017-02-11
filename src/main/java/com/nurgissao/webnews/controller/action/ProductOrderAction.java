@@ -23,9 +23,9 @@ public class ProductOrderAction implements Action {
             ProductOrderDAO productOrderDAO = daoFactory.getProductOrderDAO();
 
             HttpSession session = req.getSession();
+            Customer customer = (Customer) session.getAttribute("customer");
             List<Product> products = (List<Product>) session.getAttribute("products");
             Map<Integer, Integer> productQuantityMap = (Map<Integer, Integer>) session.getAttribute("productQuantityMap");
-            Customer customer = (Customer) session.getAttribute("customer");
 
             for (Product product : products) {
                 ProductOrder productOrder = new ProductOrder();

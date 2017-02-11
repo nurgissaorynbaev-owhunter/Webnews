@@ -23,7 +23,7 @@ public class UserListAction implements Action {
             String deletedUserId = req.getParameter("deletedUserId");
 
             if (deletedUserId != null) {
-                User user = userDAO.find(Integer.parseInt(deletedUserId));
+                User user = userDAO.findById(Integer.parseInt(deletedUserId));
 
                 int affectedRowCount = userDAO.delete(user);
                 if (affectedRowCount == 0) {
@@ -35,7 +35,7 @@ public class UserListAction implements Action {
             }
 
             if (bannedUserId != null) {
-                User user = userDAO.find(Integer.parseInt(bannedUserId));
+                User user = userDAO.findById(Integer.parseInt(bannedUserId));
                 System.out.println(user);
                 if (user != null) {
                     user.setStatus("ban");
@@ -50,7 +50,7 @@ public class UserListAction implements Action {
                 }
 
             } else if (unbannedUserId != null) {
-                User user = userDAO.find(Integer.parseInt(unbannedUserId));
+                User user = userDAO.findById(Integer.parseInt(unbannedUserId));
                 System.out.println(user);
                 if (user != null) {
                     user.setStatus("unban");

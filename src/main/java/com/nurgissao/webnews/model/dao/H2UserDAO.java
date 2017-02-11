@@ -10,7 +10,7 @@ public class H2UserDAO implements UserDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     @Override
-    public User find(int id) throws DAOException {
+    public User findById(int id) throws DAOException {
         Connection connection = connectionPool.getConnection();
         User user;
 
@@ -21,7 +21,7 @@ public class H2UserDAO implements UserDAO {
             user = map(ps.executeQuery());
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId a User.", e);
+            throw new DAOException("Failed to findById User by id.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -41,7 +41,7 @@ public class H2UserDAO implements UserDAO {
             user = map(ps.executeQuery());
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId User by email, password.", e);
+            throw new DAOException("Failed to User by email, password.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -72,7 +72,7 @@ public class H2UserDAO implements UserDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAll Users.", e);
+            throw new DAOException("Failed to findById all Users.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
