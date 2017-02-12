@@ -25,6 +25,7 @@ public class SignUpAction implements Action {
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             UserDAO userDAO = daoFactory.getUserDAO();
+            HttpSession session = req.getSession();
 
             String firstName = req.getParameter("fname");
             String lastName = req.getParameter("lname");
@@ -40,7 +41,7 @@ public class SignUpAction implements Action {
             Validator validator = new Validator();
             Map<String, String> violations = validator.validateSignForm(formValue);
             if (!violations.isEmpty()) {
-                req.getSession().setAttribute("signUpViolations", violations);
+                session.setAttribute("signUpViolations", violations);
                 return "showSignUp";
 
             } else {
@@ -61,20 +62,19 @@ public class SignUpAction implements Action {
                             resp.addCookie(cookie);
                         }
                     }
-                    HttpSession session = req.getSession();
                     session.setMaxInactiveInterval(15 * 24 * 60 * 60);
                     session.setAttribute("user", tUser);
-
-                    session.removeAttribute("signUpViolations");
                 } else {
                     log.error("Failed to create user.");
                 }
+                Map<String, String> sViolations = (Map<String, String>) session.getAttribute("signUpViolations");
+                if (sViolations != null) {
+                    session.removeAttribute("signUpViolations");
+                }
             }
-
         } catch (DAOException e) {
             throw new ActionException(e);
         }
-
         return "showCustomerRegistration";
     }
 }

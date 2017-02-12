@@ -12,10 +12,7 @@ public class SignOutAction implements Action {
 
         session.removeAttribute("user");
         session.removeAttribute("customer");
-
-        session.removeAttribute("productOrderMap");
-        session.removeAttribute("productQuantityOrderMap");
-        session.removeAttribute("productsOrder");
+        session.removeAttribute("productOrders");
 
         return "home";
     }

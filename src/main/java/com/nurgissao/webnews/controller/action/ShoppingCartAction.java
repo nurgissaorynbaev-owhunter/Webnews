@@ -3,6 +3,7 @@ package com.nurgissao.webnews.controller.action;
 import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.Product;
 import com.nurgissao.webnews.model.entity.ShoppingCart;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ShoppingCartAction implements Action {
+    public static Logger log = Logger.getLogger(ShoppingCartAction.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -39,7 +41,7 @@ public class ShoppingCartAction implements Action {
 
                 int affectedRowCount = shoppingCartDAO.update(shoppingCart);
                 if (affectedRowCount == 0) {
-                    //TODO throw appropriate Exception
+                    log.info("shopping cart item not updated.");
                 }
             }
 
@@ -50,7 +52,7 @@ public class ShoppingCartAction implements Action {
                     shoppingCartDAO.delete(shoppingCart);
 
                 } else {
-                    //TODO throw appropriate Exception
+                    log.info("shopping cart item not deleted.");
                 }
             }
 

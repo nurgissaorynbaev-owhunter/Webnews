@@ -20,13 +20,12 @@ public class SignInAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
-
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             UserDAO userDAO = daoFactory.getUserDAO();
             CustomerDAO customerDAO = daoFactory.getCustomerDAO();
             ProductOrderDAO productOrderDAO = daoFactory.getProductOrderDAO();
-            ProductDAO productDAO = daoFactory.getProductDAO();
+            HttpSession session = req.getSession();
 
             String email = req.getParameter("email");
             String password = req.getParameter("pwd");
@@ -40,51 +39,36 @@ public class SignInAction implements Action {
             Map<String, String> violations = validator.validateSignForm(formValue);
 
             if (!violations.isEmpty()) {
-                req.getSession().setAttribute("signInViolations", violations);
+                session.setAttribute("signInViolations", violations);
                 return "showSignIn";
-            }
-
-            User user = userDAO.find(email, password);
-            if (user != null) {
-                HttpSession session = req.getSession();
-                if (rememberMe != null) {
-                    session.setMaxInactiveInterval(7 * 24 * 60 * 60);
-                }
-
-                List<ProductOrder> productOrders = productOrderDAO.findAllByCustomerId(user.getCustomerId());
-                if (!productOrders.isEmpty()) {
-                    Map<Integer, Product> productsMap = new HashMap<>();
-                    Map<Integer, Integer> quantityMap = new HashMap<>();
-                    for (ProductOrder productOrder : productOrders) {
-                        Product product = productDAO.findById(productOrder.getProductId());
-                        productsMap.put(productOrder.getId(), product);
-                        quantityMap.put(productOrder.getId(), productOrder.getProductQuantity());
-                    }
-                    session.setAttribute("productsMap", productsMap);
-                    session.setAttribute("quantityMap", quantityMap);
-                    session.setAttribute("productOrders", productOrders);
-                }
-
-                session.setAttribute("user", user);
-
-                Customer customer = customerDAO.findById(user.getCustomerId());
-                if (customer != null) {
-                    session.setAttribute("customer", customer);
-                } else {
-                    //TODO throw appropriate exception
-                }
-                req.getSession().removeAttribute("signInViolations");
 
             } else {
-                violations.put("Error","Please check email or password.");
-                req.getSession().setAttribute("signInViolations", violations);
-                return "showSignIn";
-            }
+                User user = userDAO.find(email, password);
+                if (user != null) {
+                    if (rememberMe != null) {
+                        session.setMaxInactiveInterval(7 * 24 * 60 * 60);
+                    }
+                    List<ProductOrder> productOrders = productOrderDAO.findAllByCustomerId(user.getCustomerId());
+                    if (!productOrders.isEmpty()) {
+                        session.setAttribute("productOrders", productOrders);
+                        session.setAttribute("user", user);
 
+                        Customer customer = customerDAO.findById(user.getCustomerId());
+                        if (customer != null) {
+                            session.setAttribute("customer", customer);
+                        } else {
+                            log.info("customer is null.");
+                        }
+                    }
+                    Map<String, String> sViolations = (Map<String, String>) session.getAttribute("signInViolations");
+                    if (sViolations != null) {
+                        session.removeAttribute("signInViolations");
+                    }
+                }
+            }
         } catch (DAOException e) {
             throw new ActionException(e);
         }
-
         return "home";
     }
 }

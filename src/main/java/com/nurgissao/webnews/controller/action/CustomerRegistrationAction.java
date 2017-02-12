@@ -77,7 +77,6 @@ public class CustomerRegistrationAction implements Action {
                         } else {
                             log.info("User not updated.");
                         }
-
                     } else {
                         User guestUser = new User();
                         guestUser.setFirstName(GUEST_USER);
