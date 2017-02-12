@@ -62,7 +62,7 @@ public class ShoppingCartAction implements Action {
             if (!shoppingCartItems.isEmpty()) {
                 for (ShoppingCart sh : shoppingCartItems) {
                     productQuantityMap.put(sh.getProductId(), sh.getQuantity());
-                    product = productDAO.find(sh.getProductId());
+                    product = productDAO.findById(sh.getProductId());
                     products.add(product);
                 }
                 HttpSession session = req.getSession();

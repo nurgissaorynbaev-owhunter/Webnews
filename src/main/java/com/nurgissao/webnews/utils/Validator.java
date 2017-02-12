@@ -1,9 +1,12 @@
 package com.nurgissao.webnews.utils;
 
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Validator {
+    public static final Logger log = Logger.getLogger(Validator.class);
     private static final String FILE_NAME = "validator.properties";
     private static final String SIGN_SPECIFIC_KEY = "sign";
     private static final String PRODUCT_SPECIFIC_KEY = "product";
@@ -78,7 +81,7 @@ public class Validator {
                 }
 
             } else {
-                //TODO throw appropriate Exception
+                log.info("Min length is null.");
             }
 
             if (maxValue != null) {
@@ -88,7 +91,7 @@ public class Validator {
                 }
 
             } else {
-                //TODO throw appropriate Exception
+                log.info("Max length is null.");
             }
         }
         return violations;

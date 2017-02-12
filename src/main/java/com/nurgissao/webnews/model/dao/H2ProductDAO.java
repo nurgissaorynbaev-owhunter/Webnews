@@ -14,7 +14,7 @@ public class H2ProductDAO implements ProductDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     @Override
-    public Product find(int id) throws DAOException {
+    public Product findById(int id) throws DAOException {
         Connection connection = connectionPool.getConnection();
         Product product = null;
 
@@ -37,46 +37,11 @@ public class H2ProductDAO implements ProductDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId Product.", e);
+            throw new DAOException("Failed to find Product by id.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
         return product;
-    }
-
-    @Override
-    public List<Product> findAll(int id) throws DAOException {
-        Connection connection = connectionPool.getConnection();
-        List<Product> products = new ArrayList<>();
-
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM Product WHERE id=?")) {
-
-            ps.setInt(1, id);
-
-            ResultSet resultSet = ps.executeQuery();
-            products = productListMap(resultSet);
-//            while (resultSet.next()) {
-//                Product product = new Product();
-//
-//                product.setId(resultSet.getInt(1));
-//                product.setTitle(resultSet.getString(2));
-//                product.setAuthor(resultSet.getString(3));
-//                product.setPrice(resultSet.getInt(4));
-//                product.setDescription(resultSet.getString(5));
-//                product.setDetails(resultSet.getString(6));
-//                product.setAboutAuthor(resultSet.getString(7));
-//                product.setImage(resultSet.getString(8));
-//                products.add(product);
-//            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId all Product.", e);
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-
-        return products;
     }
 
     @Override
@@ -88,23 +53,23 @@ public class H2ProductDAO implements ProductDAO {
                 "SELECT * FROM Product")) {
 
             ResultSet resultSet = ps.executeQuery();
-            products = productListMap(resultSet);
-//            while (resultSet.next()) {
-//                Product product = new Product();
-//
-//                product.setId(resultSet.getInt(1));
-//                product.setTitle(resultSet.getString(2));
-//                product.setAuthor(resultSet.getString(3));
-//                product.setPrice(resultSet.getInt(4));
-//                product.setDescription(resultSet.getString(5));
-//                product.setDetails(resultSet.getString(6));
-//                product.setAboutAuthor(resultSet.getString(7));
-//                product.setImage(resultSet.getString(8));
-//                products.add(product);
-//            }
+            while (resultSet.next()) {
+                Product product = new Product();
+
+                product.setId(resultSet.getInt(1));
+                product.setTitle(resultSet.getString(2));
+                product.setAuthor(resultSet.getString(3));
+                product.setPrice(resultSet.getInt(4));
+                product.setDescription(resultSet.getString(5));
+                product.setDetails(resultSet.getString(6));
+                product.setAboutAuthor(resultSet.getString(7));
+                product.setImage(resultSet.getString(8));
+
+                products.add(product);
+            }
 
         } catch (SQLException e) {
-            throw new DAOException("Failed to findAllByCookieId all Product.", e);
+            throw new DAOException("Failed to find all Products.", e);
         } finally {
             connectionPool.closeConnection(connection);
         }
@@ -189,25 +154,5 @@ public class H2ProductDAO implements ProductDAO {
         }
 
         return affectedRowCount;
-    }
-
-    private List<Product> productListMap(ResultSet resultSet) throws SQLException {
-        List<Product> products = new ArrayList<>();
-
-        while (resultSet.next()) {
-            Product product = new Product();
-
-            product.setId(resultSet.getInt(1));
-            product.setTitle(resultSet.getString(2));
-            product.setAuthor(resultSet.getString(3));
-            product.setPrice(resultSet.getInt(4));
-            product.setDescription(resultSet.getString(5));
-            product.setDetails(resultSet.getString(6));
-            product.setAboutAuthor(resultSet.getString(7));
-            product.setImage(resultSet.getString(8));
-
-            products.add(product);
-        }
-        return products;
     }
 }

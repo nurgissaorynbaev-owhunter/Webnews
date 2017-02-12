@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface ProductDAO {
 
-    Product find(int id) throws DAOException;
-
-    List<Product> findAll(int id) throws DAOException;
+    Product findById(int id) throws DAOException;
 
     List<Product> findAll() throws DAOException;
 

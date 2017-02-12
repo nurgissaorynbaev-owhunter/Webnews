@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -15,6 +16,11 @@
                 <div class="form-group text-left">
                     <h3>Please sign up</h3>
                 </div>
+                <c:if test="${sessionScope.signUpViolations != null}">
+                    <c:forEach var="violation" items="${sessionScope.signUpViolations}">
+                        <p style="color: red">${violation.key} : ${violation.value}</p>
+                    </c:forEach>
+                </c:if>
                 <div class="form-group">
                     <input type="text" class="form-control" name="fname" placeholder="Firstname" required>
                 </div>

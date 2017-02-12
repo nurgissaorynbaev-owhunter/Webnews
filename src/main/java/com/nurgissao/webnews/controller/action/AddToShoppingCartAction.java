@@ -2,12 +2,14 @@ package com.nurgissao.webnews.controller.action;
 
 import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.ShoppingCart;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class AddToShoppingCartAction implements Action {
+    public static final Logger log = Logger.getLogger(AddToShoppingCartAction.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -37,7 +39,7 @@ public class AddToShoppingCartAction implements Action {
 
                 int affectedRowCount = shoppingCartDAO.update(shoppingCart);
                 if (affectedRowCount == 0) {
-                    //TODO throw appropriate Exception
+                    log.info("Shopping cart not updated.");
                 }
             } else {
                 quantity++;

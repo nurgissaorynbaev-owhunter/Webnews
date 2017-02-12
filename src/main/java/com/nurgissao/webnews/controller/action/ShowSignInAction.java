@@ -1,6 +1,5 @@
 package com.nurgissao.webnews.controller.action;
 
-import com.nurgissao.webnews.controller.action.Action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

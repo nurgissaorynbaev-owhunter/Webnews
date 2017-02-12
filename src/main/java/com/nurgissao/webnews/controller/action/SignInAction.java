@@ -40,10 +40,8 @@ public class SignInAction implements Action {
             Map<String, String> violations = validator.validateSignForm(formValue);
 
             if (!violations.isEmpty()) {
-                for (Map.Entry<String, String> entry : violations.entrySet()) {
-                    System.out.println(entry.getKey() + " " + entry.getValue());
-                }
-                return "signIn";
+                req.getSession().setAttribute("signInViolations", violations);
+                return "showSignIn";
             }
 
             User user = userDAO.find(email, password);
@@ -58,7 +56,7 @@ public class SignInAction implements Action {
                     Map<Integer, Product> productsMap = new HashMap<>();
                     Map<Integer, Integer> quantityMap = new HashMap<>();
                     for (ProductOrder productOrder : productOrders) {
-                        Product product = productDAO.find(productOrder.getProductId());
+                        Product product = productDAO.findById(productOrder.getProductId());
                         productsMap.put(productOrder.getId(), product);
                         quantityMap.put(productOrder.getId(), productOrder.getProductQuantity());
                     }
@@ -66,7 +64,6 @@ public class SignInAction implements Action {
                     session.setAttribute("quantityMap", quantityMap);
                     session.setAttribute("productOrders", productOrders);
                 }
-
 
                 session.setAttribute("user", user);
 
@@ -76,11 +73,12 @@ public class SignInAction implements Action {
                 } else {
                     //TODO throw appropriate exception
                 }
+                req.getSession().removeAttribute("signInViolations");
 
             } else {
-                log.info("Not such User.");
-                //TODO throw appropriate exception
-                return "signIn";
+                violations.put("Error","Please check email or password.");
+                req.getSession().setAttribute("signInViolations", violations);
+                return "showSignIn";
             }
 
         } catch (DAOException e) {

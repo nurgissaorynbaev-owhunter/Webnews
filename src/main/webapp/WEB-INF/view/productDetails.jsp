@@ -12,20 +12,21 @@
 <body>
 <jsp:include page="header.jsp"/>
 <div class="container c-wrapper">
+    <c:set var="product" value="${requestScope.product}"/>
     <div class="row">
         <div class="col-md-offset-2 col-md-2">
-            <img src="../../image/${requestScope.product.image}" width="200" height="300" alt="Product image" class="img-rounded">
+            <img src="../../image/${product.image}" width="200" height="300" alt="Product image" class="img-rounded">
         </div>
         <div class="col-md-offset-1 col-md-5">
             <strong>
-                ${requestScope.product.title}
+                ${product.title}
             </strong><br>
             <em>
-                by ${requestScope.product.author}
+                by ${product.author}
             </em>
             <br><br>
             <strong>
-                Price: $${requestScope.product.price}
+                Price: $${product.price}
             </strong><br>
         </div>
     </div>
@@ -37,7 +38,7 @@
             </strong><br>
             <p>
                 <% request.setAttribute("newLine", "\n");%>
-                    <c:set var="description" value="${requestScope.product.description}"/>
+                    <c:set var="description" value="${product.description}"/>
                     <c:set var="list" value="${fn:split(description, newLine)}"/>
                     <c:forEach var="item" items="${list}">
                         <c:out value="${item}"/><br>
@@ -48,7 +49,7 @@
             </strong><br>
             <ul class="list-unstyled">
                 <li>
-                    <c:set var="details" value="${requestScope.product.details}"/>
+                    <c:set var="details" value="${product.details}"/>
                     <c:set var="list" value="${fn:split(details, newLine)}"/>
                     <c:forEach var="item" items="${list}">
                         <c:out value="${item}"/><br>
@@ -59,7 +60,7 @@
                 <h3>Editorial Reviews</h3>
             </strong><br>
             <p>
-                <c:set var="aboutAuthor" value="${requestScope.product.aboutAuthor}"/>
+                <c:set var="aboutAuthor" value="${product.aboutAuthor}"/>
                     <c:set var="list" value="${fn:split(aboutAuthor, newLine)}"/>
                     <c:forEach var="item" items="${list}">
                         <c:out value="${item}"/><br>

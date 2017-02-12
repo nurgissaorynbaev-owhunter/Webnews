@@ -5,6 +5,7 @@ import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.Customer;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProfileAction implements Action {
+    public static Logger log = Logger.getLogger(ProfileAction.class);
     private static final String USER_NORMAL_STATUS = "normal";
     private static final String USER_ROLE = "user";
 
@@ -22,6 +24,7 @@ public class ProfileAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             UserDAO userDAO = daoFactory.getUserDAO();
             CustomerDAO customerDAO = daoFactory.getCustomerDAO();
+            HttpSession session = req.getSession();
 
             String firstName = req.getParameter("fname");
             String lastName = req.getParameter("lname");
@@ -53,19 +56,17 @@ public class ProfileAction implements Action {
             Map<String, String> userViolations = validator.validateProfileForm(userFormValue);
             Map<String, String> customerViolations = validator.validateCustomerRegistrationForm(customerFormValue);
 
-
             if (!(userViolations.isEmpty() && customerViolations.isEmpty())) {
-                for (Map.Entry<String, String> entry : userViolations.entrySet()) {
-                    System.out.println(entry.getKey() + " " + entry.getValue());
-                }
-                return "profile";
+                session.setAttribute("userViolations", userViolations);
+                session.setAttribute("customerViolations", customerViolations);
+
+                return "showProfile";
 
             } else {
-                HttpSession session = req.getSession();
-                User sessionUser = (User) session.getAttribute("user");
+                User sUser = (User) session.getAttribute("user");
 
                 User user = new User();
-                user.setId(sessionUser.getId());
+                user.setId(sUser.getId());
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setEmail(email);
@@ -74,7 +75,7 @@ public class ProfileAction implements Action {
                 user.setStatus(USER_NORMAL_STATUS);
 
                 Customer customer = new Customer();
-                customer.setId(sessionUser.getCustomerId());
+                customer.setId(sUser.getCustomerId());
                 customer.setFullName(fullName);
                 customer.setCountry(country);
                 customer.setCity(city);
@@ -89,7 +90,16 @@ public class ProfileAction implements Action {
                     session.setAttribute("customer", customer);
 
                 } else {
-                    //TODO throw appropriate Exception
+                    log.info("User & customer not updated.");
+                }
+
+                Map<String, String> uViolations = (Map<String, String>) session.getAttribute("userViolations");
+                Map<String, String> cViolations = (Map<String, String>) session.getAttribute("customerViolations");
+                if (uViolations != null) {
+                    session.removeAttribute("userViolations");
+                }
+                if (cViolations != null) {
+                    session.removeAttribute("customerViolations");
                 }
             }
 

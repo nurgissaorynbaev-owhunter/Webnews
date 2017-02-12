@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class UserListAction implements Action {
+public class UsersAction implements Action {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -30,11 +30,7 @@ public class UserListAction implements Action {
                     //TODO throw appropriate Exception
                 }
 
-            } else {
-                //TODO throw appropriate Exception
-            }
-
-            if (bannedUserId != null) {
+            } else if (bannedUserId != null) {
                 User user = userDAO.findById(Integer.parseInt(bannedUserId));
                 System.out.println(user);
                 if (user != null) {
@@ -77,6 +73,6 @@ public class UserListAction implements Action {
             throw new ActionException(e);
         }
 
-        return "userList";
+        return "users";
     }
 }

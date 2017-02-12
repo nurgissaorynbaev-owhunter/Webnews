@@ -17,6 +17,11 @@
             <div class="form-group text-center">
                 <h2>Add Product</h2>
             </div>
+            <c:if test="${sessionScope.addProductViolations != null}">
+                <c:forEach var="violation" items="${sessionScope.addProductViolations}">
+                    <p style="color: red">${violation.key} : ${violation.value}</p>
+                </c:forEach>
+            </c:if>
             <div class="form-group">
                 <input type="text" class="form-control" name="title" value="${product.title}" placeholder="Title"
                        required>
@@ -52,10 +57,7 @@
                 <input type="file" name="fileUpload" id="InputImage" required>
             </div>
             <div class="form-group text-right">
-                <c:if test="${product ne null}">
-                    <input type="hidden" name="submit" value="click">
-                </c:if>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit"class="btn btn-primary">Save</button>
             </div>
         </div>
     </form>

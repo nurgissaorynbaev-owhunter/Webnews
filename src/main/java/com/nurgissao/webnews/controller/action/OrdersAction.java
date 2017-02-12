@@ -4,6 +4,7 @@ import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.Customer;
 import com.nurgissao.webnews.model.entity.Product;
 import com.nurgissao.webnews.model.entity.ProductOrder;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OrdersAction implements Action {
+    public static Logger log = Logger.getLogger(OrdersAction.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -27,16 +29,11 @@ public class OrdersAction implements Action {
             if (!productOrders.isEmpty()) {
                 for (ProductOrder productOrder : productOrders) {
 
-                    Product product = productDAO.find(productOrder.getProductId());
+                    Product product = productDAO.findById(productOrder.getProductId());
                     Customer customer = customerDAO.findById(productOrder.getCustomerId());
 
-                    if (customer != null) {
-                        productMap.put(productOrder.getId(), product);
-                        customerMap.put(productOrder.getId(), customer);
-
-                    } else {
-                        //TODO throw appropriate Exception
-                    }
+                    productMap.put(productOrder.getId(), product);
+                    customerMap.put(productOrder.getId(), customer);
                 }
 
                 req.setAttribute("productMap", productMap);

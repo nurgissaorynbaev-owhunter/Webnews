@@ -31,7 +31,7 @@ public class ActionFactory {
         actions.put("productOrder", new ProductOrderAction());
 
         actions.put("orders", new OrdersAction());
-        actions.put("userList", new UserListAction());
+        actions.put("user", new UsersAction());
 
         actions.put("addProduct", new AddProductAction());
         actions.put("deleteProduct", new DeleteProductAction());

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,6 +17,11 @@
                 <div class="form-group">
                     <h3>Please sign in</h3>
                 </div>
+                <c:if test="${sessionScope.signInViolations != null}">
+                    <c:forEach var="violation" items="${sessionScope.signInViolations}">
+                        <p style="color: red">${violation.key} : ${violation.value}</p>
+                    </c:forEach>
+                </c:if>
                 <div class="form-group">
                     <input type="text" class="form-control" name="email" placeholder="Email address" required>
                     <input type="password" class="form-control" name="pwd" placeholder="Password" required>

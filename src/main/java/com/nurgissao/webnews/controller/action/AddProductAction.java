@@ -6,9 +6,9 @@ import com.nurgissao.webnews.model.dao.DataSourceType;
 import com.nurgissao.webnews.model.dao.ProductDAO;
 import com.nurgissao.webnews.model.entity.Product;
 import com.nurgissao.webnews.utils.Validator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,14 +17,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@MultipartConfig
 public class AddProductAction implements Action {
+    public static final Logger log = Logger.getLogger(AddProductAction.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
         try {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             ProductDAO productDAO = daoFactory.getProductDAO();
+            HttpSession session = req.getSession();
 
             String title = req.getParameter("title");
             String author = req.getParameter("author");
@@ -46,49 +47,45 @@ public class AddProductAction implements Action {
             Map<String, String> violations = validator.validateAddProductForm(formValue);
 
             if (!violations.isEmpty()) {
-                for (Map.Entry<String, String> entry : violations.entrySet()) {
-                    System.out.println(entry.getKey() + " " + entry.getValue());
-
-                    //TODO throw appropriate Exception.
-                }
-            }
-
-            Product product = new Product();
-            product.setTitle(title);
-            product.setAuthor(author);
-            product.setPrice(Integer.parseInt(price));
-            product.setDescription(description);
-            product.setDetails(details);
-            product.setAboutAuthor(aboutAuthor);
-            product.setImage(image);
-
-            String submit = req.getParameter("submit");
-            if (submit != null) {
-                Product uProduct = new Product();
-                HttpSession session = req.getSession();
-                Product sProduct = (Product) session.getAttribute("product");
-
-                uProduct.setId(sProduct.getId());
-                uProduct.setTitle(title);
-                uProduct.setAuthor(author);
-                uProduct.setPrice(Integer.parseInt(price));
-                uProduct.setDescription(description);
-                uProduct.setDetails(details);
-                uProduct.setAboutAuthor(aboutAuthor);
-                uProduct.setImage(image);
-
-                int affectedRowCount = productDAO.update(uProduct);
-                if (affectedRowCount == 0) {
-                    //TODO throw appropriate Exception.
-                }
-                session.removeAttribute("product");
-
-                return "home";
+                session.setAttribute("addProductViolations", violations);
 
             } else {
-                productDAO.create(product);
-            }
+                Product product = new Product();
+                product.setTitle(title);
+                product.setAuthor(author);
+                product.setPrice(Integer.parseInt(price));
+                product.setDescription(description);
+                product.setDetails(details);
+                product.setAboutAuthor(aboutAuthor);
+                product.setImage(image);
 
+                Product sProduct = (Product) session.getAttribute("product");
+                if (sProduct != null) {
+                    Product uProduct = new Product();
+                    uProduct.setId(sProduct.getId());
+                    uProduct.setTitle(title);
+                    uProduct.setAuthor(author);
+                    uProduct.setPrice(Integer.parseInt(price));
+                    uProduct.setDescription(description);
+                    uProduct.setDetails(details);
+                    uProduct.setAboutAuthor(aboutAuthor);
+                    uProduct.setImage(image);
+
+                    int affectedRowCount = productDAO.update(uProduct);
+                    if (affectedRowCount == 0) {
+                        log.info("Product table row not updated.");
+                    }
+                    session.removeAttribute("product");
+                    return "home";
+
+                } else {
+                    productDAO.create(product);
+                }
+                Map<String, String> addProductViolations = (Map<String, String>) session.getAttribute("addProductViolations");
+                if (addProductViolations != null) {
+                    session.removeAttribute("addProductActionViolations");
+                }
+            }
         } catch (DAOException e) {
             throw new ActionException(e);
         }

@@ -5,12 +5,14 @@ import com.nurgissao.webnews.model.dao.DAOFactory;
 import com.nurgissao.webnews.model.dao.DataSourceType;
 import com.nurgissao.webnews.model.dao.ProductDAO;
 import com.nurgissao.webnews.model.entity.Product;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class EditProductAction implements Action {
+    public static Logger log = Logger.getLogger(EditProductAction.class);
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ActionException {
@@ -20,17 +22,15 @@ public class EditProductAction implements Action {
 
             String productId = req.getParameter("productId");
             if (productId != null) {
-                Product product = productDAO.find(Integer.parseInt(productId));
+                Product product = productDAO.findById(Integer.parseInt(productId));
                 if (product != null) {
-                    HttpSession session = req.getSession();
-                    session.setAttribute("product", product);
+                    req.getSession().setAttribute("product", product);
 
                 } else {
-                    //TODO throw appropriate Exception
+                    log.info("product is null.");
                 }
-
             } else {
-                //TODO throw appropriate Exception
+                log.info("product id is null.");
             }
 
         } catch (DAOException e) {

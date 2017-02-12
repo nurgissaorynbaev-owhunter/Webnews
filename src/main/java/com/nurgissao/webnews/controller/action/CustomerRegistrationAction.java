@@ -4,6 +4,7 @@ import com.nurgissao.webnews.model.dao.*;
 import com.nurgissao.webnews.model.entity.Customer;
 import com.nurgissao.webnews.model.entity.User;
 import com.nurgissao.webnews.utils.Validator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerRegistrationAction implements Action {
+    public static Logger log = Logger.getLogger(CustomerRegistrationAction.class);
     private static final String GUEST_USER = "guest";
 
     @Override
@@ -20,6 +22,7 @@ public class CustomerRegistrationAction implements Action {
             DAOFactory daoFactory = DAOFactory.getDAOFactory(DataSourceType.H2);
             CustomerDAO customerDAO = daoFactory.getCustomerDAO();
             UserDAO userDAO = daoFactory.getUserDAO();
+            HttpSession session = req.getSession();
 
             String fullName = req.getParameter("fullName");
             String country = req.getParameter("country");
@@ -47,8 +50,8 @@ public class CustomerRegistrationAction implements Action {
             Validator validator = new Validator();
             Map<String, String> violations = validator.validateCustomerRegistrationForm(formValue);
             if (!violations.isEmpty()) {
-                System.out.println("violations in customer creating.");
-                //TODO throw appropriate Exception
+                session.setAttribute("customerRegistrationViolations", violations);
+                return "showCustomerRegistration";
 
             } else {
                 Customer customer = new Customer();
@@ -61,18 +64,18 @@ public class CustomerRegistrationAction implements Action {
 
                 Customer tCustomer = customerDAO.create(customer);
                 if (tCustomer != null) {
-                    HttpSession session = req.getSession();
                     session.setAttribute("customer", tCustomer);
 
                     User user = (User) session.getAttribute("user");
                     if (user != null) {
                         user.setCustomerId(tCustomer.getId());
+
                         int affectedRowCount = userDAO.update(user);
                         if (affectedRowCount != 0) {
                             return "home";
 
                         } else {
-                            //TODO throw appropriate Exception
+                            log.info("User not updated.");
                         }
 
                     } else {
@@ -86,11 +89,15 @@ public class CustomerRegistrationAction implements Action {
 
                         User tGuestUser = userDAO.create(guestUser);
                         if (tGuestUser == null) {
-                            //TODO throw appropriate Exception
+                            log.info("Guest user is null.");
                         }
                     }
                 } else {
-                    //TODO throw appropriate Exception
+                    log.info("Customer is null.");
+                }
+                Map<String, String> customerRegistrationViolations = (Map<String, String>) session.getAttribute("customerRegistrationViolations");
+                if (customerRegistrationViolations != null) {
+                    session.removeAttribute("customerRegistrationViolations");
                 }
             }
 

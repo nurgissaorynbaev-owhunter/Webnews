@@ -17,6 +17,16 @@
         <h1>Personal info</h1>
     </div>
     <div class="col-md-offset-4 col-md-4">
+        <c:if test="${sessionScope.userViolations ne null}">
+            <c:forEach var="violations" items="${sessionScope.userViolations}">
+                <p style="color: red">${violations.key} : ${violations.value}</p>
+            </c:forEach>
+        </c:if>
+        <c:if test="${sessionScope.customerViolations ne null}">
+            <c:forEach var="violations" items="${sessionScope.customerViolations}">
+                <p style="color: red">${violations.key} : ${violations.value}</p>
+            </c:forEach>
+        </c:if>
         <div class="form-group">
             <label for="inputFirstName">FirstName</label>
             <input type="text" class="form-control" name="fname" id="inputFirstName"

@@ -14,6 +14,11 @@
     <h3 class="text-center">Customer address</h3>
     <div class="row">
         <div class="col-md-offset-3 col-md-6">
+            <c:if test="${sessionScope.customerRegistrationViolations ne null}">
+                <c:forEach var="violations" items="${sessionScope.customerRegistrationViolations}">
+                    <p style="color: red">${violations.key} : ${violations.value}</p>
+                </c:forEach>
+            </c:if>
             <form action="/pages/customerRegistration" method="post">
                 <c:set var="user" value="${sessionScope.user}"/>
                 <c:choose>
